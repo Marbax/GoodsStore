@@ -8,33 +8,85 @@ namespace GoodsStore.Domain.Concrete
     public class UnitOfWork : IUnitOfWork
     {
         private bool disposedValue = false;
-
         public DbContext db { get; }
 
-        public IRepository<Good> goodRepo { get; }
 
-        public IRepository<SalePos> salePosRepo { get; }
-
-        public IRepository<Sale> saleRepo { get; }
-
-        public IRepository<Photo> photoRepo { get; }
-
-        public IRepository<Manufacturer> manRepo { get; }
-
-        public IRepository<User> userRepo { get; }
-
-        public IRepository<Category> catRepo { get; }
-
-        public UnitOfWork(IRepository<Good> goodRepo, IRepository<SalePos> salePosRepo, IRepository<Sale> saleRepo,
-            IRepository<Photo> photoRepo, IRepository<Manufacturer> manRepo, IRepository<User> userRepo, IRepository<Category> catRepo)
+        private GenericRepository<Good> _goodRepo;
+        public IRepository<Good> Goods
         {
-            this.goodRepo = goodRepo;
-            this.salePosRepo = salePosRepo;
-            this.saleRepo = saleRepo;
-            this.photoRepo = photoRepo;
-            this.manRepo = manRepo;
-            this.userRepo = userRepo;
-            this.catRepo = catRepo;
+            get
+            {
+                if (_goodRepo == null)
+                    _goodRepo = new GenericRepository<Good>(db);
+                return _goodRepo;
+            }
+        }
+
+        private GenericRepository<SalePos> _salesPosRepo;
+        public IRepository<SalePos> SalesPoses
+        {
+            get
+            {
+                if (_salesPosRepo == null)
+                    _salesPosRepo = new GenericRepository<SalePos>(db);
+                return _salesPosRepo;
+            }
+        }
+
+        private GenericRepository<Sale> _salesRepo;
+        public IRepository<Sale> Sales
+        {
+            get
+            {
+                if (_salesRepo == null)
+                    _salesRepo = new GenericRepository<Sale>(db);
+                return _salesRepo;
+            }
+        }
+
+        private GenericRepository<Photo> _photosRepo;
+        public IRepository<Photo> Photos {
+            get
+            {
+                if (_photosRepo == null)
+                    _photosRepo = new GenericRepository<Photo>(db);
+                return _photosRepo;
+            }
+        }
+
+        private GenericRepository<Manufacturer> _mansRepo;
+        public IRepository<Manufacturer> Manufacturers {
+            get
+            {
+                if (_mansRepo == null)
+                    _mansRepo = new GenericRepository<Manufacturer>(db);
+                return _mansRepo;
+            }
+        }
+
+        private GenericRepository<User> _usersRepo;
+        public IRepository<User> Users {
+            get
+            {
+                if (_usersRepo == null)
+                    _usersRepo = new GenericRepository<User>(db);
+                return _usersRepo;
+            }
+        }
+
+        private GenericRepository<Category> _catsRepo;
+        public IRepository<Category> Categories {
+            get
+            {
+                if (_catsRepo == null)
+                    _catsRepo = new GenericRepository<Category>(db);
+                return _catsRepo;
+            }
+        }
+
+        public UnitOfWork(DbContext db)
+        {
+            this.db = db;
         }
 
         public void Save() => db.SaveChanges();

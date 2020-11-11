@@ -8,13 +8,13 @@ namespace GoodsStore.Domain.Abstract
     {
         DbContext db { get; }
 
-        IRepository<Good> goodRepo { get; }
-        IRepository<SalePos> salePosRepo { get; }
-        IRepository<Sale> saleRepo { get; }
-        IRepository<Photo> photoRepo { get; }
-        IRepository<Manufacturer> manRepo { get; }
-        IRepository<User> userRepo { get; }
-        IRepository<Category> catRepo { get; }
+        IRepository<Good> Goods{ get; }
+        IRepository<SalePos> SalesPoses { get; }
+        IRepository<Sale> Sales { get; }
+        IRepository<Photo> Photos { get; }
+        IRepository<Manufacturer> Manufacturers { get; }
+        IRepository<User> Users { get; }
+        IRepository<Category> Categories { get; }
 
         void Save();
     }
