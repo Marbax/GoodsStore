@@ -1,5 +1,5 @@
 ﻿using GoodsStore.Domain.Abstract;
-using GoodsStore.Entities.Domain;
+using GoodsStore.Domain.Entities;
 using System;
 using System.Data.Entity;
 

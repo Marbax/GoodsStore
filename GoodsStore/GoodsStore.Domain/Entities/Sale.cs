@@ -1,4 +1,4 @@
-namespace GoodsStore.Entities.Domain
+namespace GoodsStore.Domain.Entities
 {
     using System;
     using System.Collections.Generic;
