@@ -8,7 +8,7 @@ using System.Linq.Expressions;
 
 namespace GoodsStore.Domain.Concrete
 {
-    internal class GenericRepository<T> : IRepository<T> where T : class
+    public class GenericRepository<T> : IRepository<T> where T : class
     {
         private readonly DbContext _db;
         private readonly DbSet<T> _dbSet;

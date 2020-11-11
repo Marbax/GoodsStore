@@ -5,7 +5,7 @@ using System.Data.Entity;
 
 namespace GoodsStore.Domain.Concrete
 {
-    internal class UnitOfWork : IUnitOfWork
+    public class UnitOfWork : IUnitOfWork
     {
         private bool disposedValue = false;
 
