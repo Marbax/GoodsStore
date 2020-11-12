@@ -20,6 +20,7 @@ ASP .Net Framework/Core App
             <li>Entity Framework 6.*</li>
             <li>Ninject</li>
             <li>AutoMapper</li>
+            <li>AutoMapper.Extensions.ExpressionMapping</li>
         </ul>
     </div>
 </details>
