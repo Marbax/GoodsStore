@@ -34,6 +34,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="AutoMapper, Version=10.0.0.0, Culture=neutral, PublicKeyToken=be96cd2c38ef1005, processorArchitecture=MSIL">
+      <HintPath>..\packages\AutoMapper.10.1.1\lib\net461\AutoMapper.dll</HintPath>
+    </Reference>
     <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <HintPath>..\packages\EntityFramework.6.4.4\lib\net45\EntityFramework.dll</HintPath>
     </Reference>
@@ -78,17 +81,22 @@
     <Compile Include="Infrastrucure\NinjectDependencyResolver.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\Abstract\IService.cs" />
+    <Compile Include="Services\Abstract\IServicesUnitOfWork.cs" />
+    <Compile Include="Services\Concrete\GenericService.cs" />
+    <Compile Include="Services\Concrete\RawUnitOfWork.cs" />
+    <Compile Include="Services\Concrete\ServicesUnitOfWork.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\GoodsStore.Business.Models\GoodsStore.Business.Models.csproj">
+      <Project>{e6d8c253-90cc-4489-b553-31084b210449}</Project>
+      <Name>GoodsStore.Business.Models</Name>
+    </ProjectReference>
     <ProjectReference Include="..\GoodsStore.Domain\GoodsStore.Domain.csproj">
       <Project>{bfa5c016-0c94-4abc-9211-4814a7c28bf5}</Project>
       <Name>GoodsStore.Domain</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Models\" />
-    <Folder Include="Services\Concrete\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <None Include="App.config" />
     <None Include="packages.config" />
