@@ -1,4 +1,7 @@
-﻿using GoodsStore.Domain.Abstract;
+﻿using GoodsStore.Business.Models;
+using GoodsStore.Business.Services.Abstract;
+using GoodsStore.Business.Services.Concrete;
+using GoodsStore.Domain.Abstract;
 using GoodsStore.Domain.Concrete;
 using GoodsStore.Domain.Context;
 using GoodsStore.Domain.Entities;
@@ -20,7 +23,7 @@ namespace GoodsStore.Business.Infrastrucure
             _ninjectKernel = new StandardKernel();
 
             // Domain
-            _ninjectKernel.Bind<DbContext>().To<GoodsStoreDB>().InThreadScope();// InSingletonScope();
+            _ninjectKernel.Bind<DbContext>().To<GoodsStoreDB>();
             _ninjectKernel.Bind<IRepository<Good>>().To<GenericRepository<Good>>();
             _ninjectKernel.Bind<IRepository<Category>>().To<GenericRepository<Category>>();
             _ninjectKernel.Bind<IRepository<Manufacturer>>().To<GenericRepository<Manufacturer>>();
@@ -29,6 +32,17 @@ namespace GoodsStore.Business.Infrastrucure
             _ninjectKernel.Bind<IRepository<SalePos>>().To<GenericRepository<SalePos>>();
             _ninjectKernel.Bind<IRepository<User>>().To<GenericRepository<User>>();
             _ninjectKernel.Bind<IUnitOfWork>().To<UnitOfWork>();
+
+            // Business
+            _ninjectKernel.Bind<IService<GoodDTO>>().To<GenericService<GoodDTO,Good>>();
+            _ninjectKernel.Bind<IService<CategoryDTO>>().To<GenericService<CategoryDTO,Category>>();
+            _ninjectKernel.Bind<IService<ManufacturerDTO>>().To<GenericService<ManufacturerDTO,Manufacturer>>();
+            _ninjectKernel.Bind<IService<PhotoDTO>>().To<GenericService<PhotoDTO,Photo>>();
+            _ninjectKernel.Bind<IService<SaleDTO>>().To<GenericService<SaleDTO,Sale>>();
+            _ninjectKernel.Bind<IService<SalePosDTO>>().To<GenericService<SalePosDTO, SalePos>>();
+            _ninjectKernel.Bind<IService<UserDTO>>().To<GenericService<UserDTO, User>>();
+            _ninjectKernel.Bind<IServicesUnitOfWork>().To<ServicesUnitOfWork>();
+
 
             //Mapp
             InitMapping();
