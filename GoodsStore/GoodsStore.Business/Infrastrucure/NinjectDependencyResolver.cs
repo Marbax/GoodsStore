@@ -27,7 +27,15 @@ namespace GoodsStore.Business.Infrastrucure
             _ninjectKernel.Bind<IRepository<Photo>>().To<GenericRepository<Photo>>();
             _ninjectKernel.Bind<IRepository<Sale>>().To<GenericRepository<Sale>>();
             _ninjectKernel.Bind<IRepository<SalePos>>().To<GenericRepository<SalePos>>();
+            _ninjectKernel.Bind<IRepository<User>>().To<GenericRepository<User>>();
             _ninjectKernel.Bind<IUnitOfWork>().To<UnitOfWork>();
+
+            //Mapp
+            InitMapping();
+        }
+
+        private void InitMapping()
+        {
 
         }
 
