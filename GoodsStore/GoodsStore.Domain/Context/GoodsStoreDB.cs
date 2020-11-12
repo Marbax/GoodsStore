@@ -1,6 +1,6 @@
 namespace GoodsStore.Domain.Context
 {
-    using GoodsStore.Entities.Domain;
+    using GoodsStore.Domain.Entities;
     using GoodsStore.Migrations.Domain;
     using System.Data.Entity;
 
