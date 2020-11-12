@@ -1,4 +1,4 @@
-namespace GoodsStore.Context.Domain
+namespace GoodsStore.Domain.Context
 {
     using GoodsStore.Entities.Domain;
     using GoodsStore.Migrations.Domain;
