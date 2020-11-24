@@ -30,6 +30,8 @@ ASP .Net Framework/Core App
         <p>.Net Framework Lib</p>
         <p>Contains services and convert models from data layer to business</p>
         <ul style="margin-top:1rem;padding-left:1rem;">Dependecies
+            <li>Domain</li>
+            <li>Business.Models</li>
             <li>Entity Framework 6.*</li>
             <li>AutoMapper</li>
             <li>AutoMapper.Extensions.ExpressionMapping</li>
@@ -56,15 +58,28 @@ ASP .Net Framework/Core App
 <details style="margin-left:2rem;"><summary>WebServer</summary>
     <div style="margin:0 0 2rem 1rem;">
         <ul style="margin-top:1rem;padding-left:1rem;">Dependecies
-            <li>TODO</li>
+            <li>Infrastructure</li>
+            <li>Business</li>
+            <li>Business.Models</li>
+            <li>Microsoft.AspNet.WebApi.Cors</li>
+        </ul>
+    </div>
+</details>
+
+<details style="margin-left:2rem;"><summary>Client.ViewModels</summary>
+    <div style="margin:0 0 2rem 1rem;">
+    View Models
+        <ul style="margin-top:1rem;padding-left:1rem;">Dependecies
+            <li>Business.Models</li>
         </ul>
     </div>
 </details>
 
 <details style="margin-left:2rem;"><summary>Client</summary>
     <div style="margin:0 0 2rem 1rem;">
+    WebAssembly Progressive App
         <ul style="margin-top:1rem;padding-left:1rem;">Dependecies
-            <li>TODO</li>
+            <li>Client.ViewModels</li>
         </ul>
     </div>
 </details>
