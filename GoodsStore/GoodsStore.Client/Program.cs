@@ -12,6 +12,7 @@ using GoodsStore.Client.ViewModels.Abstract;
 using GoodsStore.Client.ViewModels.Concrete;
 using Microsoft.AspNetCore.Components;
 using GoodsStore.Business.Models.Concrete;
+using GoodsStore.Client.Shared;
 
 namespace GoodsStore.Client
 {
