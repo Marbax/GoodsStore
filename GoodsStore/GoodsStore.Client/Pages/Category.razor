@@ -1,0 +1,63 @@
+@page "/category"
+@inject IGenericCollectionVM<CategoryDTO> _catsVM
+@implements IDisposable
+
+<h1>Categories</h1>
+<p class="text-muted">@_catsVM?.Message</p>
+
+<div class="m-2 d-flex justify-content-start">
+    <a class="btn btn-lg btn-outline-info mx-2" href="/Category/Edit">Add New</a>
+    <button class="btn btn-lg btn-outline-success mx-2" @onclick="_catsVM.GetItemsAsync">Update</button>
+</div>
+
+@if (!_catsVM.IsReady)
+{
+    <div class="text-center">
+        <em>Loading...</em>
+    </div>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Title</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+
+            @foreach (var c in _catsVM.Items)
+            {
+                <tr @key="@($"{c.Id}{c.Title}")">
+                    <td>@c.Id</td>
+                    <td>
+                        <a href="/Category/Edit/@c.Id" class="list-group-item list-group-item-action">
+                            <span>@c.Title</span>
+                        </a>
+                    </td>
+                    <td>
+                        <button class="btn btn-danger" disabled="@(c.Goods.Count()>0)" @onclick="() => _catsVM.RemoveItemAsync(c.Id)">Remove</button>
+                    </td>
+                </tr>
+            }
+
+        </tbody>
+    </table>
+}
+
+
+@code {
+
+    protected override async Task OnInitializedAsync()
+    {
+        _catsVM.OnChange += StateHasChanged;
+        await _catsVM.GetItemsAsync();
+    }
+
+    public void Dispose()
+    {
+        _catsVM.OnChange -= StateHasChanged;
+    }
+}
