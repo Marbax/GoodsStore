@@ -11,5 +11,6 @@ namespace GoodsStore.Domain.Abstract
         IEnumerable<T> Get(Expression<Func<T, bool>> predicate);
         void CreateOrUpdate(T entity);
         T Delete(T entity);
+        T Add(T entity);
     }
 }

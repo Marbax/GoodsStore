@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using GoodsStore.Business.Models;
+using GoodsStore.Business.Models.Concrete;
 using GoodsStore.Business.Services.Abstract;
 using GoodsStore.Domain.Entities;
 using System;

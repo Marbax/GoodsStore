@@ -31,9 +31,25 @@ namespace GoodsStore.Business.Services.Concrete
             _repo.CreateOrUpdate(dbEntity);
         }
 
+        public T Add(T entity)
+        {
+            var dbEntity = MapToDLL(entity);
+            var added = _repo.Add(dbEntity);
+            _db.SaveChanges();
+            return MapToBll(added);
+        }
+
         public T Delete(T entity)
         {
             var dbEntity = MapToDLL(entity);
+            var resp = _repo.Delete(dbEntity);
+            var bllEntity = MapToBll(resp);
+            return bllEntity;
+        }
+
+        public T Delete(int id)
+        {
+            var dbEntity = _repo.Get(id);
             var resp = _repo.Delete(dbEntity);
             var bllEntity = MapToBll(resp);
             return bllEntity;

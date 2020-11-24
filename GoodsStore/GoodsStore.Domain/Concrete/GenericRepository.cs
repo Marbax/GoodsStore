@@ -24,6 +24,11 @@ namespace GoodsStore.Domain.Concrete
             _dbSet.AddOrUpdate(entity);
         }
 
+        public T Add(T entity)
+        {
+            return _dbSet.Add(entity);
+        }
+
         public T Delete(T entity)
         {
             return _dbSet.Remove(entity);

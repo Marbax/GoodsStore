@@ -1,9 +1,10 @@
 ﻿using GoodsStore.Business.Models;
+using GoodsStore.Business.Models.Concrete;
 using System;
 
 namespace GoodsStore.Business.Services.Abstract
 {
-    internal interface IServicesUnitOfWork : IDisposable
+    public interface IServicesUnitOfWork : IDisposable
     {
         IService<GoodDTO> Goods { get; }
         IService<SalePosDTO> SalesPoses { get; }
