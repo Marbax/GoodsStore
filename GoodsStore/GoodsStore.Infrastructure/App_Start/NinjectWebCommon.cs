@@ -24,6 +24,7 @@ namespace GoodsStore.Infrastructure.App_Start
     using AutoMapper;
     using AutoMapper.Extensions.ExpressionMapping;
     using System.Linq;
+    using GoodsStore.Business.Models.Concrete;
 
     /// <summary>
     /// source = http://www.peterprovost.org/blog/2012/06/19/adding-ninject-to-web-api/
