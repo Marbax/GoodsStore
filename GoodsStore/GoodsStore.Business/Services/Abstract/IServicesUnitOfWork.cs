@@ -1,4 +1,5 @@
 ﻿using GoodsStore.Business.Models;
+using GoodsStore.Business.Models.Concrete;
 using System;
 
 namespace GoodsStore.Business.Services.Abstract
