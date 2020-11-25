@@ -1,14 +1,19 @@
+using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
+
 namespace GoodsStore.Domain.Entities
 {
-    using System.ComponentModel.DataAnnotations;
-    using System.ComponentModel.DataAnnotations.Schema;
-
-    [Table("Photo")]
-    public partial class Photo
+    public class Photo
     {
-        public int PhotoId { get; set; }
+        public int Id { get; set; }
 
-        public int? GoodId { get; set; }
+        [Required]
+        [StringLength(200)]
+        public string Title { get; set; }
+
+        [StringLength(100)]
+        [DefaultValue("image/jpeg")]
+        public string MimeType { get; set; }
 
         [Required]
         [StringLength(200)]

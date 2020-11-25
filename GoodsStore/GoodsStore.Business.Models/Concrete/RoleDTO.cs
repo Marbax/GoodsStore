@@ -1,8 +1,9 @@
 ﻿namespace GoodsStore.Business.Models.Concrete
 {
-    public class UserDTO : GenericDTO
+    public class RoleDTO : GenericDTO
     {
 
     }
+
 
 }

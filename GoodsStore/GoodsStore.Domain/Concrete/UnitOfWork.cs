@@ -22,30 +22,31 @@ namespace GoodsStore.Domain.Concrete
             }
         }
 
-        private GenericRepository<SalePos> _salesPosRepo;
-        public IRepository<SalePos> SalesPoses
+        private GenericRepository<OrderDetails> _orderDetailsRepo;
+        public IRepository<OrderDetails> OrderDetailsRepo
         {
             get
             {
-                if (_salesPosRepo == null)
-                    _salesPosRepo = new GenericRepository<SalePos>(db);
-                return _salesPosRepo;
+                if (_orderDetailsRepo == null)
+                    _orderDetailsRepo = new GenericRepository<OrderDetails>(db);
+                return _orderDetailsRepo;
             }
         }
 
-        private GenericRepository<Sale> _salesRepo;
-        public IRepository<Sale> Sales
+        private GenericRepository<Order> _ordersRepo;
+        public IRepository<Order> Orders
         {
             get
             {
-                if (_salesRepo == null)
-                    _salesRepo = new GenericRepository<Sale>(db);
-                return _salesRepo;
+                if (_ordersRepo == null)
+                    _ordersRepo = new GenericRepository<Order>(db);
+                return _ordersRepo;
             }
         }
 
         private GenericRepository<Photo> _photosRepo;
-        public IRepository<Photo> Photos {
+        public IRepository<Photo> Photos
+        {
             get
             {
                 if (_photosRepo == null)
@@ -55,7 +56,8 @@ namespace GoodsStore.Domain.Concrete
         }
 
         private GenericRepository<Manufacturer> _mansRepo;
-        public IRepository<Manufacturer> Manufacturers {
+        public IRepository<Manufacturer> Manufacturers
+        {
             get
             {
                 if (_mansRepo == null)
@@ -65,7 +67,8 @@ namespace GoodsStore.Domain.Concrete
         }
 
         private GenericRepository<User> _usersRepo;
-        public IRepository<User> Users {
+        public IRepository<User> Users
+        {
             get
             {
                 if (_usersRepo == null)
@@ -75,12 +78,24 @@ namespace GoodsStore.Domain.Concrete
         }
 
         private GenericRepository<Category> _catsRepo;
-        public IRepository<Category> Categories {
+        public IRepository<Category> Categories
+        {
             get
             {
                 if (_catsRepo == null)
                     _catsRepo = new GenericRepository<Category>(db);
                 return _catsRepo;
+            }
+        }
+
+        private GenericRepository<Role> _rolesRepo;
+        public IRepository<Role> Roles
+        {
+            get
+            {
+                if (_rolesRepo == null)
+                    _rolesRepo = new GenericRepository<Role>(db);
+                return _rolesRepo;
             }
         }
 

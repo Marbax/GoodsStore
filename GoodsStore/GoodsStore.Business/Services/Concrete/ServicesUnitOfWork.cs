@@ -26,24 +26,24 @@ namespace GoodsStore.Business.Services.Concrete
             }
         }
 
-        private GenericService<SalePosDTO, SalePos> _salePosServ;
+        private GenericService<SalePosDTO, OrderDetails> _salePosServ;
         public IService<SalePosDTO> SalesPoses
         {
             get
             {
                 if (_salePosServ == null)
-                    _salePosServ = new GenericService<SalePosDTO, SalePos>(_db, _mapper);
+                    _salePosServ = new GenericService<SalePosDTO, OrderDetails>(_db, _mapper);
                 return _salePosServ;
             }
         }
 
-        private GenericService<SaleDTO, Sale> _saleServ;
+        private GenericService<SaleDTO, Order> _saleServ;
         public IService<SaleDTO> Sales
         {
             get
             {
                 if (_saleServ == null)
-                    _saleServ = new GenericService<SaleDTO, Sale>(_db, _mapper);
+                    _saleServ = new GenericService<SaleDTO, Order>(_db, _mapper);
                 return _saleServ;
             }
         }
@@ -92,6 +92,16 @@ namespace GoodsStore.Business.Services.Concrete
             }
         }
 
+        private GenericService<RoleDTO, Role> _roleServ;
+        public IService<RoleDTO> Roles
+        {
+            get
+            {
+                if (_roleServ == null)
+                    _roleServ = new GenericService<RoleDTO, Role>(_db, _mapper);
+                return _roleServ;
+            }
+        }
 
         public ServicesUnitOfWork(DbContext db, IMapper mapper)
         {
