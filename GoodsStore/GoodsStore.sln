@@ -15,7 +15,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GoodsStore.Infrastructure",
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GoodsStore.Client", "GoodsStore.Client\GoodsStore.Client.csproj", "{996E5DD6-2AF3-4934-A93A-5A058A03A851}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GoodsStore.Client.ViewModels", "GoodsStore.Client.ViewModels\GoodsStore.Client.ViewModels.csproj", "{24E6DCF2-0700-4A59-B3CA-5823EA43E5EC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GoodsStore.Client.ViewModels", "GoodsStore.Client.ViewModels\GoodsStore.Client.ViewModels.csproj", "{24E6DCF2-0700-4A59-B3CA-5823EA43E5EC}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

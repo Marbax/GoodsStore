@@ -60,16 +60,16 @@
     <Compile Include="Abstract\IUnitOfWork.cs" />
     <Compile Include="Concrete\GenericRepository.cs" />
     <Compile Include="Concrete\UnitOfWork.cs" />
+    <Compile Include="Context\GoodsStoreDBInitializer.cs" />
     <Compile Include="Entities\Category.cs" />
-    <Compile Include="Migrations\C__EFMigrationsHistory.cs" />
-    <Compile Include="Migrations\C__MigrationHistory.cs" />
+    <Compile Include="Entities\Role.cs" />
     <Compile Include="Entities\Good.cs" />
     <Compile Include="Context\GoodsStoreDB.cs" />
     <Compile Include="Entities\Manufacturer.cs" />
     <Compile Include="Entities\Photo.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Entities\Sale.cs" />
-    <Compile Include="Entities\SalePos.cs" />
+    <Compile Include="Entities\Order.cs" />
+    <Compile Include="Entities\OrderDetails.cs" />
     <Compile Include="Entities\User.cs" />
   </ItemGroup>
   <ItemGroup>

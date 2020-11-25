@@ -1,39 +1,37 @@
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+
 namespace GoodsStore.Domain.Entities
 {
-    using System.Collections.Generic;
-    using System.ComponentModel.DataAnnotations;
-    using System.ComponentModel.DataAnnotations.Schema;
-
-    [Table("Good")]
-    public partial class Good
+    public class Good
     {
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public Good()
-        {
-            SalePos = new HashSet<SalePos>();
-        }
-
-        public int GoodId { get; set; }
+        public int Id { get; set; }
 
         [Required]
-        [StringLength(100)]
-        public string GoodName { get; set; }
+        [StringLength(200)]
+        public string Title { get; set; }
 
-        public int? ManufacturerId { get; set; }
-
-        public int? CategoryId { get; set; }
-
+        [Required]
         [Column(TypeName = "money")]
         public decimal Price { get; set; }
 
-        [Column(TypeName = "numeric")]
-        public decimal GoodCount { get; set; }
+        [Required]
+        public int Count { get; set; }
 
+        [StringLength(500)]
+        [DefaultValue("")]
+        public string Description { get; set; }
+
+        public int CategoryId { get; set; }
         public virtual Category Category { get; set; }
 
+        public int ManufacturerId { get; set; }
         public virtual Manufacturer Manufacturer { get; set; }
 
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<SalePos> SalePos { get; set; }
+        public virtual ICollection<Photo> Photos { get; set; }
+
+        public virtual ICollection<OrderDetails> OrderDetails { get; set; }
     }
 }

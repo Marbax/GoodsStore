@@ -86,13 +86,13 @@ namespace GoodsStore.Infrastructure.App_Start
         private static void RegisterServices(IKernel kernel)
         {
             // Domain
-            kernel.Bind<DbContext>().To<GoodsStoreDB>();
+            kernel.Bind<DbContext>().To<GoodsStoreDB>().WithConstructorArgument("name", "GoodsStoreDB");
             kernel.Bind<IRepository<Good>>().To<GenericRepository<Good>>();
             kernel.Bind<IRepository<Category>>().To<GenericRepository<Category>>();
             kernel.Bind<IRepository<Manufacturer>>().To<GenericRepository<Manufacturer>>();
             kernel.Bind<IRepository<Photo>>().To<GenericRepository<Photo>>();
-            kernel.Bind<IRepository<Sale>>().To<GenericRepository<Sale>>();
-            kernel.Bind<IRepository<SalePos>>().To<GenericRepository<SalePos>>();
+            kernel.Bind<IRepository<Order>>().To<GenericRepository<Order>>();
+            kernel.Bind<IRepository<OrderDetails>>().To<GenericRepository<OrderDetails>>();
             kernel.Bind<IRepository<User>>().To<GenericRepository<User>>();
             kernel.Bind<IUnitOfWork>().To<UnitOfWork>();
 
@@ -101,8 +101,8 @@ namespace GoodsStore.Infrastructure.App_Start
             kernel.Bind<IService<CategoryDTO>>().To<GenericService<CategoryDTO, Category>>();
             kernel.Bind<IService<ManufacturerDTO>>().To<GenericService<ManufacturerDTO, Manufacturer>>();
             kernel.Bind<IService<PhotoDTO>>().To<GenericService<PhotoDTO, Photo>>();
-            kernel.Bind<IService<SaleDTO>>().To<GenericService<SaleDTO, Sale>>();
-            kernel.Bind<IService<SalePosDTO>>().To<GenericService<SalePosDTO, SalePos>>();
+            kernel.Bind<IService<SaleDTO>>().To<GenericService<SaleDTO, Order>>();
+            kernel.Bind<IService<SalePosDTO>>().To<GenericService<SalePosDTO, OrderDetails>>();
             kernel.Bind<IService<UserDTO>>().To<GenericService<UserDTO, User>>();
             kernel.Bind<IServicesUnitOfWork>().To<ServicesUnitOfWork>();
 
@@ -128,24 +128,16 @@ namespace GoodsStore.Infrastructure.App_Start
 
                 #region Map Category
                 cfg.CreateMap<Category, CategoryDTO>()
-                    .ForMember(dto => dto.Id, conf => conf.MapFrom(dll => dll.CategoryId))
-                    .ForMember(dto => dto.Title, conf => conf.MapFrom(dll => dll.CategoryName))
-                    .ForMember(dto => dto.Goods, conf => conf.MapFrom(dll => dll.Good.Select(i => i.GoodId)));
+                    .ForMember(dto => dto.Goods, conf => conf.MapFrom(dll => dll.Goods.Select(i => i.Id)));
                 cfg.CreateMap<CategoryDTO, Category>()
-                    .ForMember(dll => dll.CategoryId, conf => conf.MapFrom(dto => dto.Id))
-                    .ForMember(dll => dll.CategoryName, conf => conf.MapFrom(dto => dto.Title))
-                    .ForMember(dll => dll.Good, conf => conf.Ignore());
+                    .ForMember(dll => dll.Goods, conf => conf.Ignore());
                 #endregion
 
                 #region Map manufacturer
                 cfg.CreateMap<Manufacturer, ManufacturerDTO>()
-                    .ForMember(dto => dto.Id, conf => conf.MapFrom(dll => dll.ManufacturerId))
-                    .ForMember(dto => dto.Title, conf => conf.MapFrom(dll => dll.ManufacturerName))
-                    .ForMember(dto => dto.Goods, conf => conf.MapFrom(dll => dll.Good.Select(i => i.GoodId)));
+                    .ForMember(dto => dto.Goods, conf => conf.MapFrom(dll => dll.Goods.Select(i => i.Id)));
                 cfg.CreateMap<ManufacturerDTO, Manufacturer>()
-                    .ForMember(dll => dll.ManufacturerId, conf => conf.MapFrom(dto => dto.Id))
-                    .ForMember(dll => dll.ManufacturerName, conf => conf.MapFrom(dto => dto.Title))
-                    .ForMember(dll => dll.Good, conf => conf.Ignore());
+                    .ForMember(dll => dll.Goods, conf => conf.Ignore());
                 #endregion
 
 

@@ -1,13 +1,13 @@
 {
-  "name": "GoodsStore.Client",
-  "short_name": "GoodsStore.Client",
+  "name": "Goods Store",
+  "short_name": "GS",
   "start_url": "./",
   "display": "standalone",
   "background_color": "#ffffff",
   "theme_color": "#03173d",
   "icons": [
     {
-      "src": "icon-512.png",
+      "src": "logo-512.png",
       "type": "image/png",
       "sizes": "512x512"
     }

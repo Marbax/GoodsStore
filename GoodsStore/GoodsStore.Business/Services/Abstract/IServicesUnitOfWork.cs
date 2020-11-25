@@ -1,5 +1,4 @@
-﻿using GoodsStore.Business.Models;
-using GoodsStore.Business.Models.Concrete;
+﻿using GoodsStore.Business.Models.Concrete;
 using System;
 
 namespace GoodsStore.Business.Services.Abstract
@@ -12,6 +11,7 @@ namespace GoodsStore.Business.Services.Abstract
         IService<PhotoDTO> Photos { get; }
         IService<ManufacturerDTO> Manufacturers { get; }
         IService<UserDTO> Users { get; }
+        IService<RoleDTO> Roles { get; }
         IService<CategoryDTO> Categories { get; }
 
         void Save();
