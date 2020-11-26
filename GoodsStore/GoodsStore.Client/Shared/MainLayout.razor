@@ -1,5 +1,6 @@
 ﻿@inherits LayoutComponentBase
 @inject NavigationManager _navMngr
+@inject UserVM _userVM
 
 <div class="sidebar">
     <NavMenu />
@@ -7,11 +8,17 @@
 
 <div class="main">
     <div class="top-row px-4">
-        <h4>Hello, User</h4>
-        <button class="btn btn-danger" @onclick="Logout">Logout</button>
-    </div>
-    <div class="top-row px-4">
-        <button class="btn btn-success" @onclick="Login">Login</button>
+
+        @if (_userVM.IsSignedIn)
+        {
+            <h4>Hello, @_userVM.User.Email</h4>
+            <button class="btn btn-danger mx-3" @onclick="Logout">Logout</button>
+        }
+        else
+        {
+            <a href="/login" class="btn btn-success mx-2">Login</a>
+            <a href="/register" class="btn btn-success mx-2">Register</a>
+        }
     </div>
 
     <div class="content px-4">
@@ -21,14 +28,9 @@
 
 @code{
 
-    private void Logout()
+    private async Task Logout()
     {
-        _navMngr.NavigateTo("/", true);
-    }
-
-    private void Login()
-    {
-        _navMngr.NavigateTo("/", true);
+        await _userVM.Logout();
     }
 
 }

@@ -1,0 +1,32 @@
+﻿@page "/register"
+@inject UserVM _userVM
+@inject NavigationManager _navMngr
+
+<h3><b>Register</b></h3>
+<hr />
+
+<div class="col-6 m-2">
+    <label>@_userVM.Message</label>
+    <input type="text" @bind-value="_userVM.User.Email" name="email" class="form-control" placeholder="Email address" />
+</div>
+<div class="col-6 m-2">
+    <input type="password" @bind-value="_userVM.User.Password" name="password" class="form-control" placeholder="Password" />
+</div>
+<div class="col-6 m-2">
+    <input type="password" @bind-value="_userVM.PasswordConfirm" name="confirmPassword" class="form-control" placeholder="Password Confirm" />
+</div>
+<div class="col-6 m-2">
+    <button class="btn btn-primary" @onclick="RegisterUser">Register</button>
+</div>
+
+
+
+@code {
+
+    public async Task RegisterUser()
+    {
+        if (await _userVM.Register())
+            _navMngr.NavigateTo("/");
+    }
+
+}
