@@ -12,6 +12,8 @@ using System.Web.Http.Cors;
 
 namespace GoodsStore.WebServer.Controllers.api
 {
+    //[Authorize(Roles = "superadmin,admin,manager")]
+    [AllowAnonymous]
     [EnableCors(origins: "*", headers: "*", methods: "*")]
     public class CategoryController : ApiController
     {

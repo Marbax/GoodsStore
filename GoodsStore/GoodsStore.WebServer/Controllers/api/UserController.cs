@@ -6,34 +6,64 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Threading.Tasks;
+using System.Transactions;
 using System.Web;
 using System.Web.Http;
 using System.Web.Http.Cors;
-using System.Web.Mvc;
 
 namespace GoodsStore.WebServer.Controllers.api
 {
     [EnableCors(origins: "*", headers: "*", methods: "*")]
     public class UserController : ApiController
     {
-        private readonly IServicesUnitOfWork _uow;
+        private readonly IAuthManager _authManager;
 
-        public UserController(IServicesUnitOfWork uow)
+        public UserController(IAuthManager authManager)
         {
-            _uow = uow;
+            _authManager = authManager;
         }
 
-        [System.Web.Mvc.HttpPost]
-        [System.Web.Http.Route("login")]
-        public dynamic Login(UserDTO user)
+        [AllowAnonymous]
+        [HttpPost()]
+        //[System.Web.Http.Route("login")]
+        public async Task<IHttpActionResult> Login(UserDTO user)
         {
             if (!ModelState.IsValid)
-                return new { Code = "401", Message = "Invalid model" };
+                return BadRequest(ModelState);
 
-            //var user = _uow.Users.Get(i => i.Name == user.Name && i.Password == user.Password).FirstOrDefault();
+            UserDTO foundUser = await _authManager.Authenticate(user.Email, user.Password);
+            //AUTH
+            if (foundUser == null)
+                return BadRequest("No such User.");
 
-            return new { Name = "User", Token = "someusertoken" };
+            return Ok(foundUser);
         }
+
+        [AllowAnonymous]
+        [HttpPost()]
+        //[System.Web.Http.Route("register")]
+        public async Task<IHttpActionResult> Register(UserDTO user)
+        {
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            ModelState.AddModelError("Email", "This user already exists.");
+
+            UserDTO newUser = null;
+            using (var trans = new TransactionScope(TransactionScopeOption.RequiresNew, TransactionScopeAsyncFlowOption.Enabled))
+            {
+                newUser = await _authManager.Register(user);
+
+                trans.Complete();
+            }
+
+            if (newUser == null)
+                return BadRequest("No such User.");
+
+            return Ok(newUser);
+        }
+
 
     }
 }
