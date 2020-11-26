@@ -105,7 +105,7 @@ namespace GoodsStore.Infrastructure.App_Start
             kernel.Bind<IService<SalePosDTO>>().To<GenericService<SalePosDTO, OrderDetails>>();
             kernel.Bind<IService<UserDTO>>().To<GenericService<UserDTO, User>>();
             kernel.Bind<IServicesUnitOfWork>().To<ServicesUnitOfWork>();
-
+            kernel.Bind<IAuthManager>().To<JWTAuthManager>().WithConstructorArgument("secret", "mPjVYomEjhmPjVYomEjhSDWhV7cT6K3UE6kq85GNQpSDWhV7cT6K3UE6mPjVYomEjhSDWhV7cT6K3UE6kq85GNQpkq85GNQp");
 
             //Mapp
 
