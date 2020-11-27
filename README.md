@@ -25,12 +25,23 @@ ASP .Net Framework/Core App
     </div>
 </details>
 
+<details style="margin-left:2rem;"><summary>JWT</summary>
+    <div style="margin:0 0 2rem 1rem;">
+        <p>.Net Standard Lib</p>
+        <p>Static class for JWT Bearer token based authentitication </p>
+        <ul style="margin-top:1rem;padding-left:1rem;">Dependecies
+            <li>System.IdentityModel.Tokens.Jwt</li>
+        </ul>
+    </div>
+</details>
+
 <details style="margin-left:2rem;"><summary>Business</summary>
     <div style="margin:0 0 2rem 1rem;">
         <p>.Net Framework Lib</p>
         <p>Contains services and convert models from data layer to business</p>
         <ul style="margin-top:1rem;padding-left:1rem;">Dependecies
             <li>Domain</li>
+            <li>JWT</li>
             <li>Business.Models</li>
             <li>Entity Framework 6.*</li>
             <li>AutoMapper</li>
