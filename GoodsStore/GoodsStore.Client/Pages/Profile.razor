@@ -1,0 +1,48 @@
+﻿@page "/profile"
+@inject UserVM _userVM
+@inject NavigationManager _navMngr
+
+<h3><b>Profile</b></h3>
+<hr />
+
+<label>@_userVM.Message</label>
+<div class="col-6 m-2">
+    <input type="text" @bind-value="_userVM.User.Email" name="email" class="form-control" placeholder="Email address" />
+</div>
+<div class="col-6 m-2">
+    <input type="password" @bind-value="_userVM.User.Password" name="password" class="form-control" placeholder="Change Password" />
+</div>
+<div class="col-6 m-2">
+    <input type="password" @bind-value="_userVM.PasswordConfirm" name="confirmPassword" class="form-control" placeholder="Password Confirm" />
+</div>
+<div class="col-6 m-2">
+    <input type="text" @bind-value="_userVM.User.Address" name="address" class="form-control" placeholder="Address" />
+</div>
+<div class="col-6 m-2">
+    <input type="text" @bind-value="_userVM.User.Country" name="country" class="form-control" placeholder="Country" />
+</div>
+<div class="col-6 m-2">
+    <input type="text" @bind-value="_userVM.User.Name" name="email" class="form-control" placeholder="First Name" />
+</div>
+<div class="col-6 m-2">
+    <input type="text" @bind-value="_userVM.User.Lastname" name="lastname" class="form-control" placeholder="Last Name" />
+</div>
+<div class="col-6 m-2">
+    <input type="text" @bind-value="_userVM.User.Phone" name="phone" class="form-control" placeholder="Phone" />
+</div>
+<div class="col-6 m-2">
+    <button class="btn btn-primary" @onclick="UpdateProfile">Update</button>
+</div>
+
+
+
+@code {
+
+    public async Task UpdateProfile()
+    {
+        //FIXME: add some proxy UserDTO original should change only by api
+
+        await Task.FromResult(_userVM.Message = "Successfully updated");
+    }
+
+}
