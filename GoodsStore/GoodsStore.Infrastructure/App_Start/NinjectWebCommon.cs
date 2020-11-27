@@ -7,9 +7,7 @@ namespace GoodsStore.Infrastructure.App_Start
     using System.Web;
     using System.Web.Http;
     using Ninject.Web.WebApi;
-
     using Microsoft.Web.Infrastructure.DynamicModuleHelper;
-
     using Ninject;
     using Ninject.Web.Common;
     using Ninject.Web.Common.WebHost;
@@ -140,7 +138,12 @@ namespace GoodsStore.Infrastructure.App_Start
                     .ForMember(dll => dll.Goods, conf => conf.Ignore());
                 #endregion
 
-
+                #region Map manufacturer
+                cfg.CreateMap<User, UserDTO>()
+                    .ForMember(dto => dto.Roles, conf => conf.MapFrom(dll => dll.Roles.Select(i => i.Title)));
+                cfg.CreateMap<UserDTO, User>()
+                    .ForMember(dll => dll.Roles, conf => conf.MapFrom(dto => dto.Roles.Select(i => new Role() { Title = i })));
+                #endregion
 
             });
 
