@@ -11,7 +11,7 @@
 
         @if (_userVM.IsSignedIn)
         {
-            <h4>Hello, @_userVM.User.Email</h4>
+            <h4>Hello, <a href="/profile">@_userVM.User</a></h4>
             <button class="btn btn-danger mx-3" @onclick="Logout">Logout</button>
         }
         else
