@@ -20,7 +20,7 @@ ASP .Net Framework/Core App
         <p>.Net Standard Lib</p>
         <p>Business models , friendly for api</p>
         <ul style="margin-top:1rem;padding-left:1rem;">Dependecies
-            <li>None</li>
+            <li>System.ComponentModel.DataAnnotations</li>
         </ul>
     </div>
 </details>
