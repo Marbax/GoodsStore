@@ -3,6 +3,7 @@
     using GoodsStore.Domain.Entities;
     using System.Collections.Generic;
     using System.Data.Entity;
+    using System.Linq;
 
     public class GoodsStoreDBInitializer : DropCreateDatabaseIfModelChanges<GoodsStoreDB>
     {
@@ -49,8 +50,24 @@
                 new Good(){ Id=14, Title= "LG G3s Dual D724 Titan",  ManufacturerId = 6, CategoryId= 1, Price = 3999, Count= 0}
             };
             context.Goods.AddRange(goods);
-
             context.SaveChanges();
+
+            var adm = new Role() { Id = 1, Title = "superadmin" };
+            IEnumerable<Role> roles = new List<Role>() {
+                adm,
+                 new Role(){Id=2,Title= "admin" },
+                 new Role(){Id=3,Title= "manager" },
+                 new Role(){Id=4,Title= "cashier" },
+            };
+            context.Roles.AddRange(roles);
+            context.SaveChanges();
+
+            IEnumerable<User> users = new List<User>() { new User() { Id = 1, Email = "superadmin@gs.com", Password = "superadmin", Roles = roles.ToList() } };
+            context.Users.AddRange(users);
+            context.SaveChanges();
+
+
+
         }
     }
 

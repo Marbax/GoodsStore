@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace GoodsStore.Domain.Entities
 {
@@ -10,6 +11,7 @@ namespace GoodsStore.Domain.Entities
 
         [Required]
         [StringLength(100)]
+        [Index(IsUnique = true)]
         public string Email { get; set; }
 
         [Required]
@@ -40,6 +42,6 @@ namespace GoodsStore.Domain.Entities
         [DefaultValue("")]
         public string Token { get; set; }
 
-        public ICollection<Role> Roles { get; set; }
+        public virtual ICollection<Role> Roles { get; set; }
     }
 }

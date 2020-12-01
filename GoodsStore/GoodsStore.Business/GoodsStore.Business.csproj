@@ -75,9 +75,9 @@
       <Project>{bfa5c016-0c94-4abc-9211-4814a7c28bf5}</Project>
       <Name>GoodsStore.Domain</Name>
     </ProjectReference>
-    <ProjectReference Include="..\GoodsStore.JWT\GoodsStore.JWT.csproj">
-      <Project>{7e964462-ab25-425b-a442-b392b5fb9bae}</Project>
-      <Name>GoodsStore.JWT</Name>
+    <ProjectReference Include="..\GoodsStore.JWTAuth\GoodsStore.JWTAuth.csproj">
+      <Project>{193d317e-e8ee-4553-82e5-2a0df96d62d6}</Project>
+      <Name>GoodsStore.JWTAuth</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup />

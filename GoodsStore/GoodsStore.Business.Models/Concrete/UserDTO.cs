@@ -3,6 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace GoodsStore.Business.Models.Concrete
 {
+
     public class UserDTO : GenericDTO
     {
         public new string Title
@@ -19,27 +20,34 @@ namespace GoodsStore.Business.Models.Concrete
         public string Password { get; set; }
 
         [StringLength(40)]
-        public string Name { get; set; }
+        public string Name { get; set; } = "";
 
         [StringLength(40)]
-        public string Lastname { get; set; }
+        public string Lastname { get; set; } = "";
 
         [StringLength(100)]
-        public string Address { get; set; }
+        public string Address { get; set; } = "";
 
         [StringLength(40)]
-        public string Country { get; set; }
+        public string Country { get; set; } = "";
 
         [StringLength(40)]
-        public string Phone { get; set; }
+        public string Phone { get; set; } = "";
 
-        public string Token { get; set; }
+        public string Token { get; set; } = "";
 
-        public IEnumerable<string> Roles { get; set; }
+        public IEnumerable<int> RoleIds { get; set; } = new List<int>();
 
         public override string ToString()
         {
             return Title;
+        }
+
+        public UserDTO Clone()
+        {
+            UserDTO other = (UserDTO)this.MemberwiseClone();
+
+            return other;
         }
     }
 }

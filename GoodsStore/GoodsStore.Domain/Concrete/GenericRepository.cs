@@ -10,8 +10,8 @@ namespace GoodsStore.Domain.Concrete
 {
     public class GenericRepository<T> : IRepository<T> where T : class
     {
-        private readonly DbContext _db;
-        private readonly DbSet<T> _dbSet;
+        protected readonly DbContext _db;
+        protected readonly DbSet<T> _dbSet;
 
         public GenericRepository(DbContext db)
         {
@@ -19,32 +19,32 @@ namespace GoodsStore.Domain.Concrete
             _dbSet = db.Set<T>();
         }
 
-        public void CreateOrUpdate(T entity)
+        public virtual void CreateOrUpdate(T entity)
         {
             _dbSet.AddOrUpdate(entity);
         }
 
-        public T Add(T entity)
+        public virtual T Add(T entity)
         {
             return _dbSet.Add(entity);
         }
 
-        public T Delete(T entity)
+        public virtual T Delete(T entity)
         {
             return _dbSet.Remove(entity);
         }
 
-        public T Get(int id)
+        public virtual T Get(int id)
         {
             return _dbSet.Find(id);
         }
 
-        public IEnumerable<T> Get(Expression<Func<T, bool>> predicate)
+        public virtual IEnumerable<T> Get(Expression<Func<T, bool>> predicate)
         {
             return _dbSet.AsNoTracking<T>().Where(predicate);
         }
 
-        public IEnumerable<T> GetAll()
+        public virtual IEnumerable<T> GetAll()
         {
             return _dbSet;
         }
