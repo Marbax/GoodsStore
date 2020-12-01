@@ -25,12 +25,13 @@ ASP .Net Framework/Core App
     </div>
 </details>
 
-<details style="margin-left:2rem;"><summary>JWT</summary>
+<details style="margin-left:2rem;"><summary>JWTAuth</summary>
     <div style="margin:0 0 2rem 1rem;">
         <p>.Net Standard Lib</p>
         <p>Static class for JWT Bearer token based authentitication </p>
         <ul style="margin-top:1rem;padding-left:1rem;">Dependecies
             <li>System.IdentityModel.Tokens.Jwt</li>
+            <li>Microsoft.IdentityModel.Tokens</li>
         </ul>
     </div>
 </details>

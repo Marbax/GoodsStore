@@ -7,28 +7,27 @@
 <hr />
 
 <label>@_userVM.Message</label>
-<div class="col-6">
-    <input type="text" @bind-value="_userVM.User.Email" name="email" class="form-control" placeholder="Email address" />
-</div>
-<div class="col-6">
-    <input type="password" @bind-value="_userVM.User.Password" name="password" class="form-control" placeholder="Password" />
-</div>
-<div class="col-6">
-    <button class="btn btn-primary"  @onclick="LoginUser">Login</button>
-</div>
-
+<EditForm Model="@_userVM" OnValidSubmit="@HandleValidSubmit">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+    <div class="col-6 m-2">
+        <InputText type="text" @bind-Value="_userVM.ProxyUser.Email" name="email" class="form-control" placeholder="Email address" />
+    </div>
+    <div class="col-6 m-2">
+        <InputText type="password" @bind-Value="_userVM.ProxyUser.Password" name="password" class="form-control" placeholder="Password" />
+    </div>
+    <div class="col-6 m-2">
+        <button class="btn btn-primary" type="submit">Login</button>
+    </div>
+</EditForm>
 
 
 @code {
 
-    public async Task LoginUser()
+    private async Task HandleValidSubmit()
     {
         if (await _userVM.Login())
             await JS.InvokeVoidAsync("history.back");
-
-        //window.location.reload(window.history.back())
-
-        //_navMngr.NavigateTo("/");
     }
 
 }

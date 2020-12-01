@@ -8,7 +8,6 @@
 
 <div class="main">
     <div class="top-row px-4">
-
         @if (_userVM.IsSignedIn)
         {
             <h4>Hello, <a href="/profile">@_userVM.User</a></h4>
@@ -28,9 +27,10 @@
 
 @code{
 
-    private async Task Logout()
+    private void Logout()
     {
-        await _userVM.Logout();
+        _userVM.Logout();
+        _navMngr.NavigateTo("/");
     }
 
 }

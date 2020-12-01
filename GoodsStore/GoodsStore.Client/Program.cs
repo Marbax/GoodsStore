@@ -23,18 +23,15 @@ namespace GoodsStore.Client
             var builder = WebAssemblyHostBuilder.CreateDefault(args);
             builder.RootComponents.Add<App>("app");
 
+            builder.Services.AddSingleton(sp => new HttpClient { BaseAddress = new Uri("https://localhost:44334/api/") });
+
             builder.Services.AddSingleton<UserVM>();
 
-            builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) });
-
-            builder.Services.AddHttpClient<IGenericCollectionVM<CategoryDTO>, GenericCollectionVM<CategoryDTO>>("BaseHttpClient",
+            builder.Services.AddHttpClient<IGenericCollectionVM<CategoryDTO>, GenericCollectionVM<CategoryDTO>>("BaseHttpCatColClient",
                 client => client.BaseAddress = new Uri($"https://localhost:44334/api/category"));
 
-            builder.Services.AddHttpClient<IGenericItemVM<CategoryDTO>, GenericItem<CategoryDTO>>("BaseHttpClient",
-                client =>
-                {
-                    client.BaseAddress = new Uri($"https://localhost:44334/api/category");
-                });
+            builder.Services.AddHttpClient<IGenericItemVM<CategoryDTO>, GenericItem<CategoryDTO>>("BaseHttpCatClient",
+                client => client.BaseAddress = new Uri($"https://localhost:44334/api/category"));
 
             await builder.Build().RunAsync();
         }

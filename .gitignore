@@ -387,3 +387,4 @@ MigrationBackup/
 
 .git
 *.pdf
+*.http
