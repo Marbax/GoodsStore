@@ -14,5 +14,6 @@ namespace GoodsStore.Business.Services.Abstract
         Task<UserDTO> Authenticate(string login, string password);
         Task<bool> IsUserExists(UserDTO user);
         Task<UserDTO> Register(UserDTO user);
+        Task<UserDTO> UpdateProfile(UserDTO user);
     }
 }

@@ -1,20 +1,19 @@
 ﻿using GoodsStore.Business.Models.Concrete;
 using GoodsStore.Business.Services.Abstract;
-using GoodsStore.JWT;
+using GoodsStore.JWTAuth;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
 using System.Security.Principal;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace GoodsStore.Business.Services.Concrete
 {
     public class JWTAuthManager : IAuthManager
     {
-        private string _secret;
-        private IServicesUnitOfWork _uow;
+        private readonly string _secret;
+        private readonly IServicesUnitOfWork _uow;
 
         public JWTAuthManager(IServicesUnitOfWork uow, string secret)
         {
@@ -29,8 +28,9 @@ namespace GoodsStore.Business.Services.Concrete
                 var claims = new List<Claim>();
                 claims.Add(new Claim(ClaimTypes.Name, user.Email));
                 claims.Add(new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()));
-                foreach (var role in user.Roles)
-                    claims.Add(new Claim(ClaimTypes.Role, role));
+                var roles = _uow.Roles.Get(i => user.RoleIds.Contains(i.Id));
+                foreach (var role in roles)
+                    claims.Add(new Claim(ClaimTypes.Role, role.Title));
 
                 var identity = new ClaimsIdentity(claims, "Jwt");
                 IPrincipal userPrincipal = new ClaimsPrincipal(identity);
@@ -44,23 +44,60 @@ namespace GoodsStore.Business.Services.Concrete
         public async Task<UserDTO> Authenticate(string login, string password)
         {
             var user = _uow.Users.Get(i => i.Email == login && i.Password == password).FirstOrDefault();
+
+            if (user == null)
+                throw new ApplicationException("There is no user with such a paswword and email.");
+
+            if (string.IsNullOrEmpty(user.Token) || !ValidateToken(user.Token, out var _))
+                UpdateToken(user);
+
             return await Task.FromResult(user);
         }
 
         public async Task<UserDTO> Register(UserDTO user)
         {
-            var added = _uow.Users.Add(user);
-            var token = JwtManager.GenerateToken(added.Id, added.Email, added.Roles, _secret);
-            added.Token = token;
-            _uow.Users.CreateOrUpdate(user);
-            _uow.Save();
+            var toAdd = user;
+            var role = _uow.Roles.Get(i => i.Title == "cashier").FirstOrDefault();
+            toAdd.RoleIds = new List<int>() { role.Id }; ;
+            var added = _uow.Users.Add(toAdd);
+
+            UpdateToken(added);
 
             return await Task.FromResult(added);
         }
 
+        private void UpdateToken(UserDTO user)
+        {
+            var roles = _uow.Roles.Get(i => user.RoleIds.Contains(i.Id)).Select(i => i.Title);
+            var token = JwtManager.GenerateToken(user.Id, user.Email, roles, _secret);
+            user.Token = token;
+            _uow.Users.CreateOrUpdate(user);
+            _uow.Save();
+        }
+
+        public async Task<UserDTO> UpdateProfile(UserDTO user)
+        {
+            if (!ValidateToken(user.Token, out var exist))
+                throw new ApplicationException("Invalid token.");
+
+            if (exist == null)
+                throw new ApplicationException("User doesn't exist.");
+
+            if (exist.Id != user.Id)
+                throw new ApplicationException("That's not your profile.");
+
+
+            _uow.Users.CreateOrUpdate(user);
+            _uow.Save();
+
+            return await Task.FromResult(user);
+        }
+
         public async Task<bool> IsUserExists(UserDTO user)
         {
-            return await Task.FromResult(_uow.Users.Get(i => i.Email == user.Email) != null);
+            var found = await Task.FromResult(_uow.Users.Get(i => i.Email == user.Email).FirstOrDefault());
+            var res = found != null;
+            return res;
         }
 
         private bool ValidateToken(string token, out UserDTO user)

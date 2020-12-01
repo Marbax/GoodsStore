@@ -1,6 +1,7 @@
 ﻿using GoodsStore.Business.Models;
 using GoodsStore.Business.Models.Concrete;
 using GoodsStore.Business.Services.Abstract;
+using GoodsStore.WebServer.Filters;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,6 +12,7 @@ using System.Transactions;
 using System.Web;
 using System.Web.Http;
 using System.Web.Http.Cors;
+using System.Security.Claims;
 
 namespace GoodsStore.WebServer.Controllers.api
 {
@@ -26,36 +28,60 @@ namespace GoodsStore.WebServer.Controllers.api
 
         [AllowAnonymous]
         [HttpPost()]
-        //[System.Web.Http.Route("login")]
-        public async Task<IHttpActionResult> Login(UserDTO user)
+        [Route("api/user/login")]
+        public async Task<IHttpActionResult> Login([FromBody] UserDTO user)
         {
-            if (!ModelState.IsValid)
-                return BadRequest(ModelState);
+            if (user == null || string.IsNullOrEmpty(user?.Email) || string.IsNullOrEmpty(user?.Password))
+                return BadRequest("Password and email were empy.");
 
-            UserDTO foundUser = await _authManager.Authenticate(user.Email, user.Password);
-            //AUTH
+            UserDTO foundUser = null;
+
+            try
+            {
+                using (var trans = new TransactionScope(TransactionScopeOption.RequiresNew, TransactionScopeAsyncFlowOption.Enabled))
+                {
+                    foundUser = await _authManager.Authenticate(user.Email, user.Password);
+                    trans.Complete();
+                }
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+
             if (foundUser == null)
-                return BadRequest("No such User.");
+                return BadRequest("No such User. Or incorrect login data.");
 
             return Ok(foundUser);
         }
 
         [AllowAnonymous]
         [HttpPost()]
-        //[System.Web.Http.Route("register")]
-        public async Task<IHttpActionResult> Register(UserDTO user)
+        [Route("api/user/register")]
+        public async Task<IHttpActionResult> Register([FromBody] UserDTO user)
         {
-            if (!ModelState.IsValid)
-                return BadRequest(ModelState);
+            //if (!ModelState.IsValid)
+            //    return BadRequest(ModelState);
+            if (user == null || string.IsNullOrEmpty(user?.Email) || string.IsNullOrEmpty(user?.Password))
+                return BadRequest("Password and email were empy.");
 
-            ModelState.AddModelError("Email", "This user already exists.");
+            if (await _authManager.IsUserExists(user))
+                return BadRequest("This user already exists.");
 
             UserDTO newUser = null;
-            using (var trans = new TransactionScope(TransactionScopeOption.RequiresNew, TransactionScopeAsyncFlowOption.Enabled))
-            {
-                newUser = await _authManager.Register(user);
 
-                trans.Complete();
+            try
+            {
+                using (var trans = new TransactionScope(TransactionScopeOption.RequiresNew, TransactionScopeAsyncFlowOption.Enabled))
+                {
+                    newUser = await _authManager.Register(user);
+
+                    trans.Complete();
+                }
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
             }
 
             if (newUser == null)
@@ -64,6 +90,39 @@ namespace GoodsStore.WebServer.Controllers.api
             return Ok(newUser);
         }
 
+        [HttpPut()]
+        [Route("api/user/update")]
+        public async Task<IHttpActionResult> UpdateProfile([FromBody] UserDTO user)
+        {
+            // can't grap token from simple http method
+            var token = Request.Headers?.Authorization?.Parameter;
+            if (token != null)
+                user.Token = token;
+
+            if (user == null || string.IsNullOrEmpty(user?.Token))
+                return BadRequest("Token is absent.");
+
+            UserDTO updated = null;
+
+            try
+            {
+                using (var trans = new TransactionScope(TransactionScopeOption.RequiresNew, TransactionScopeAsyncFlowOption.Enabled))
+                {
+                    updated = await _authManager.UpdateProfile(user);
+
+                    trans.Complete();
+                }
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+
+            if (updated == null)
+                return BadRequest("Sended data were broken.");
+
+            return Ok(updated);
+        }
 
     }
 }
