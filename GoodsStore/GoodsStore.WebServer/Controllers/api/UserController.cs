@@ -1,7 +1,6 @@
 ﻿using GoodsStore.Business.Models;
 using GoodsStore.Business.Models.Concrete;
 using GoodsStore.Business.Services.Abstract;
-using GoodsStore.WebServer.Filters;
 using System;
 using System.Collections.Generic;
 using System.Linq;
