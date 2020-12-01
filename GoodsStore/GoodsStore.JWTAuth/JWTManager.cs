@@ -1,16 +1,15 @@
 ﻿using Microsoft.IdentityModel.Tokens;
 using System;
 using System.Collections.Generic;
-using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 
-namespace GoodsStore.JWT
+namespace GoodsStore.JWTAuth
 {
     public static class JwtManager
     {
         public static string GenerateToken(int id, string login, IEnumerable<string> roles, string secret, int expireMinutes = 525600)
         {
-            var tokenHandler = new JwtSecurityTokenHandler();
+            var tokenHandler = new System.IdentityModel.Tokens.Jwt.JwtSecurityTokenHandler();
             var symmetricKey = Convert.FromBase64String(secret);
 
             var claims = new List<Claim>();
@@ -36,8 +35,8 @@ namespace GoodsStore.JWT
         {
             try
             {
-                var tokenHandler = new JwtSecurityTokenHandler();
-                var jwtToken = tokenHandler.ReadToken(token) as JwtSecurityToken;
+                var tokenHandler = new System.IdentityModel.Tokens.Jwt.JwtSecurityTokenHandler();
+                var jwtToken = tokenHandler.ReadToken(token) as System.IdentityModel.Tokens.Jwt.JwtSecurityToken;
 
                 if (jwtToken == null)
                     return null;
