@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web.Http;
+using Microsoft.Owin.Security.OAuth;
 
 namespace GoodsStore.WebServer
 {
@@ -12,6 +13,9 @@ namespace GoodsStore.WebServer
             config.MapHttpAttributeRoutes();
 
             config.EnableCors();
+
+            config.SuppressDefaultHostAuthentication();
+            config.Filters.Add(new HostAuthenticationFilter(OAuthDefaults.AuthenticationType));
 
             config.Routes.MapHttpRoute(
                 name: "DefaultApi",

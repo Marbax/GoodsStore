@@ -18,10 +18,10 @@ namespace GoodsStore.Business.Services.Concrete
         private readonly DbContext _db;
         private readonly IMapper _mapper;
 
-        public GenericService(DbContext db, IMapper mapper)
+        public GenericService(DbContext db, IRepository<U> repo, IMapper mapper)
         {
             _db = db;
-            _repo = new GenericRepository<U>(_db);
+            _repo = repo;
             _mapper = mapper;
         }
 

@@ -12,101 +12,37 @@ namespace GoodsStore.Business.Services.Concrete
     {
         private bool _disposedValue = false;
         private readonly DbContext _db;
-        private readonly IMapper _mapper;
 
 
-        private GenericService<GoodDTO, Good> _goodServ;
-        public IService<GoodDTO> Goods
-        {
-            get
-            {
-                if (_goodServ == null)
-                    _goodServ = new GenericService<GoodDTO, Good>(_db, _mapper);
-                return _goodServ;
-            }
-        }
+        public IService<GoodDTO> Goods { get; }
 
-        private GenericService<SalePosDTO, OrderDetails> _salePosServ;
-        public IService<SalePosDTO> SalesPoses
-        {
-            get
-            {
-                if (_salePosServ == null)
-                    _salePosServ = new GenericService<SalePosDTO, OrderDetails>(_db, _mapper);
-                return _salePosServ;
-            }
-        }
+        public IService<SalePosDTO> SalesPoses { get; }
 
-        private GenericService<SaleDTO, Order> _saleServ;
-        public IService<SaleDTO> Sales
-        {
-            get
-            {
-                if (_saleServ == null)
-                    _saleServ = new GenericService<SaleDTO, Order>(_db, _mapper);
-                return _saleServ;
-            }
-        }
+        public IService<SaleDTO> Sales { get; }
 
-        private GenericService<PhotoDTO, Photo> _photoServ;
-        public IService<PhotoDTO> Photos
-        {
-            get
-            {
-                if (_photoServ == null)
-                    _photoServ = new GenericService<PhotoDTO, Photo>(_db, _mapper);
-                return _photoServ;
-            }
-        }
+        public IService<PhotoDTO> Photos { get; }
 
-        private GenericService<ManufacturerDTO, Manufacturer> _manServ;
-        public IService<ManufacturerDTO> Manufacturers
-        {
-            get
-            {
-                if (_manServ == null)
-                    _manServ = new GenericService<ManufacturerDTO, Manufacturer>(_db, _mapper);
-                return _manServ;
-            }
-        }
+        public IService<ManufacturerDTO> Manufacturers { get; }
 
-        private GenericService<UserDTO, User> _userServ;
-        public IService<UserDTO> Users
-        {
-            get
-            {
-                if (_userServ == null)
-                    _userServ = new GenericService<UserDTO, User>(_db, _mapper);
-                return _userServ;
-            }
-        }
+        public IService<UserDTO> Users { get; }
 
-        private GenericService<CategoryDTO, Category> _catServ;
-        public IService<CategoryDTO> Categories
-        {
-            get
-            {
-                if (_catServ == null)
-                    _catServ = new GenericService<CategoryDTO, Category>(_db, _mapper);
-                return _catServ;
-            }
-        }
+        public IService<CategoryDTO> Categories { get; }
 
-        private GenericService<RoleDTO, Role> _roleServ;
-        public IService<RoleDTO> Roles
-        {
-            get
-            {
-                if (_roleServ == null)
-                    _roleServ = new GenericService<RoleDTO, Role>(_db, _mapper);
-                return _roleServ;
-            }
-        }
+        public IService<RoleDTO> Roles { get; }
 
-        public ServicesUnitOfWork(DbContext db, IMapper mapper)
+        public ServicesUnitOfWork(DbContext db, IService<GoodDTO> goods, IService<SalePosDTO> salesPoses,
+            IService<SaleDTO> sales, IService<PhotoDTO> photos, IService<ManufacturerDTO> manufacturers,
+            IService<UserDTO> users, IService<CategoryDTO> categories, IService<RoleDTO> roles)
         {
             _db = db;
-            _mapper = mapper;
+            Goods = goods;
+            SalesPoses = salesPoses;
+            Sales = sales;
+            Photos = photos;
+            Manufacturers = manufacturers;
+            Users = users;
+            Categories = categories;
+            Roles = roles;
         }
 
         public void Save() => _db.SaveChanges();

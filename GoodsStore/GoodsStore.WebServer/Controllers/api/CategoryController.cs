@@ -6,12 +6,15 @@ using System.Data.Entity;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Threading.Tasks;
 using System.Transactions;
 using System.Web.Http;
 using System.Web.Http.Cors;
 
 namespace GoodsStore.WebServer.Controllers.api
 {
+    //[Authorize(Roles = "superadmin,admin,manager")]
+    [AllowAnonymous]
     [EnableCors(origins: "*", headers: "*", methods: "*")]
     public class CategoryController : ApiController
     {
@@ -22,11 +25,11 @@ namespace GoodsStore.WebServer.Controllers.api
             _uow = uow;
         }
 
-        public IHttpActionResult Get()
+        public async Task<IHttpActionResult> Get()
         {
             try
             {
-                var res = _uow.Categories.GetAll();
+                var res = await Task.FromResult(_uow.Categories.GetAll());
 
                 return Ok(res);
             }

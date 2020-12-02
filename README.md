@@ -20,7 +20,18 @@ ASP .Net Framework/Core App
         <p>.Net Standard Lib</p>
         <p>Business models , friendly for api</p>
         <ul style="margin-top:1rem;padding-left:1rem;">Dependecies
-            <li>None</li>
+            <li>System.ComponentModel.DataAnnotations</li>
+        </ul>
+    </div>
+</details>
+
+<details style="margin-left:2rem;"><summary>JWTAuth</summary>
+    <div style="margin:0 0 2rem 1rem;">
+        <p>.Net Standard Lib</p>
+        <p>Static class for JWT Bearer token based authentitication </p>
+        <ul style="margin-top:1rem;padding-left:1rem;">Dependecies
+            <li>System.IdentityModel.Tokens.Jwt</li>
+            <li>Microsoft.IdentityModel.Tokens</li>
         </ul>
     </div>
 </details>
@@ -31,6 +42,7 @@ ASP .Net Framework/Core App
         <p>Contains services and convert models from data layer to business</p>
         <ul style="margin-top:1rem;padding-left:1rem;">Dependecies
             <li>Domain</li>
+            <li>JWT</li>
             <li>Business.Models</li>
             <li>Entity Framework 6.*</li>
             <li>AutoMapper</li>
@@ -66,20 +78,13 @@ ASP .Net Framework/Core App
     </div>
 </details>
 
-<details style="margin-left:2rem;"><summary>Client.ViewModels</summary>
-    <div style="margin:0 0 2rem 1rem;">
-    View Models
-        <ul style="margin-top:1rem;padding-left:1rem;">Dependecies
-            <li>Business.Models</li>
-        </ul>
-    </div>
-</details>
-
 <details style="margin-left:2rem;"><summary>Client</summary>
     <div style="margin:0 0 2rem 1rem;">
-    WebAssembly Progressive App
+    WebAssembly Progressive App  
+    with ViewModels  
+    and client services
         <ul style="margin-top:1rem;padding-left:1rem;">Dependecies
-            <li>Client.ViewModels</li>
+            <li>Business.Models</li>
         </ul>
     </div>
 </details>

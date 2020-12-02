@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace GoodsStore.Domain.Entities
 {
@@ -8,9 +9,10 @@ namespace GoodsStore.Domain.Entities
         public int Id { get; set; }
 
         [Required]
-        [StringLength(60)]
+        [Index(IsUnique = true)]
+        [StringLength(20)]
         public string Title { get; set; }
 
-        public ICollection<User> Users { get; set; }
+        public virtual ICollection<User> Users { get; set; }
     }
 }

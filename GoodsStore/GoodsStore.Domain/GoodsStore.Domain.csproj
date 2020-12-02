@@ -60,6 +60,7 @@
     <Compile Include="Abstract\IUnitOfWork.cs" />
     <Compile Include="Concrete\GenericRepository.cs" />
     <Compile Include="Concrete\UnitOfWork.cs" />
+    <Compile Include="Concrete\UserRepo.cs" />
     <Compile Include="Context\GoodsStoreDBInitializer.cs" />
     <Compile Include="Entities\Category.cs" />
     <Compile Include="Entities\Role.cs" />

@@ -1,5 +1,7 @@
 ﻿@inherits LayoutComponentBase
 @inject NavigationManager _navMngr
+@inject UserVM _userVM
+@implements IDisposable
 
 <div class="sidebar">
     <NavMenu />
@@ -7,11 +9,16 @@
 
 <div class="main">
     <div class="top-row px-4">
-        <h4>Hello, User</h4>
-        <button class="btn btn-danger" @onclick="Logout">Logout</button>
-    </div>
-    <div class="top-row px-4">
-        <button class="btn btn-success" @onclick="Login">Login</button>
+        @if (_userVM.IsSignedIn())
+        {
+            <h4>Hello, <a href="/profile">@_userVM.AuthSrvice.User</a></h4>
+            <button class="btn btn-danger mx-3" @onclick="()=>_userVM.Logout()">Logout</button>
+        }
+        else
+        {
+            <a href="/login" class="btn btn-success mx-2">Login</a>
+            <a href="/register" class="btn btn-success mx-2">Register</a>
+        }
     </div>
 
     <div class="content px-4">
@@ -20,15 +27,14 @@
 </div>
 
 @code{
-
-    private void Logout()
+    protected override void OnInitialized()
     {
-        _navMngr.NavigateTo("/", true);
+        _userVM.OnChange += StateHasChanged;
     }
 
-    private void Login()
+    public void Dispose()
     {
-        _navMngr.NavigateTo("/", true);
+        _userVM.OnChange -= StateHasChanged;
     }
 
 }

@@ -3,28 +3,25 @@
 
 namespace GoodsStore.Infrastructure.App_Start
 {
-    using System;
-    using System.Web;
-    using System.Web.Http;
-    using Ninject.Web.WebApi;
-
+    using AutoMapper;
+    using AutoMapper.Extensions.ExpressionMapping;
+    using GoodsStore.Business.Models.Concrete;
+    using GoodsStore.Business.Services.Abstract;
+    using GoodsStore.Business.Services.Concrete;
+    using GoodsStore.Domain.Abstract;
+    using GoodsStore.Domain.Concrete;
+    using GoodsStore.Domain.Context;
+    using GoodsStore.Domain.Entities;
     using Microsoft.Web.Infrastructure.DynamicModuleHelper;
-
     using Ninject;
     using Ninject.Web.Common;
     using Ninject.Web.Common.WebHost;
-    using GoodsStore.Domain.Context;
-    using GoodsStore.Domain.Abstract;
-    using GoodsStore.Domain.Entities;
-    using GoodsStore.Domain.Concrete;
-    using GoodsStore.Business.Services.Abstract;
-    using GoodsStore.Business.Models;
-    using GoodsStore.Business.Services.Concrete;
+    using Ninject.Web.WebApi;
+    using System;
     using System.Data.Entity;
-    using AutoMapper;
-    using AutoMapper.Extensions.ExpressionMapping;
     using System.Linq;
-    using GoodsStore.Business.Models.Concrete;
+    using System.Web;
+    using System.Web.Http;
 
     /// <summary>
     /// source = http://www.peterprovost.org/blog/2012/06/19/adding-ninject-to-web-api/
@@ -86,14 +83,15 @@ namespace GoodsStore.Infrastructure.App_Start
         private static void RegisterServices(IKernel kernel)
         {
             // Domain
-            kernel.Bind<DbContext>().To<GoodsStoreDB>().WithConstructorArgument("name", "GoodsStoreDB");
+            kernel.Bind<DbContext>().To<GoodsStoreDB>().InThreadScope().WithConstructorArgument("name", "GoodsStoreDB");
             kernel.Bind<IRepository<Good>>().To<GenericRepository<Good>>();
             kernel.Bind<IRepository<Category>>().To<GenericRepository<Category>>();
             kernel.Bind<IRepository<Manufacturer>>().To<GenericRepository<Manufacturer>>();
             kernel.Bind<IRepository<Photo>>().To<GenericRepository<Photo>>();
             kernel.Bind<IRepository<Order>>().To<GenericRepository<Order>>();
             kernel.Bind<IRepository<OrderDetails>>().To<GenericRepository<OrderDetails>>();
-            kernel.Bind<IRepository<User>>().To<GenericRepository<User>>();
+            kernel.Bind<IRepository<User>>().To<UserRepo>();
+            kernel.Bind<IRepository<Role>>().To<GenericRepository<Role>>();
             kernel.Bind<IUnitOfWork>().To<UnitOfWork>();
 
             // Business
@@ -104,8 +102,10 @@ namespace GoodsStore.Infrastructure.App_Start
             kernel.Bind<IService<SaleDTO>>().To<GenericService<SaleDTO, Order>>();
             kernel.Bind<IService<SalePosDTO>>().To<GenericService<SalePosDTO, OrderDetails>>();
             kernel.Bind<IService<UserDTO>>().To<GenericService<UserDTO, User>>();
+            kernel.Bind<IService<RoleDTO>>().To<GenericService<RoleDTO, Role>>();
             kernel.Bind<IServicesUnitOfWork>().To<ServicesUnitOfWork>();
-
+            kernel.Bind<IAuthManager>().To<JWTAuthManager>().WithConstructorArgument("secret", "mPjVYomEjhmPjVYomEjhSDWhV7cT6K3UE6kq85GNQpSDWhV7cT6K3UE6mPjVYomEjhSDWhV7cT6K3UE6kq85GNQpkq85GNQp");
+            //kernel.Bind<IUnitOfWork>().To<RawUnitOfWork>();
 
             //Mapp
 
@@ -140,7 +140,19 @@ namespace GoodsStore.Infrastructure.App_Start
                     .ForMember(dll => dll.Goods, conf => conf.Ignore());
                 #endregion
 
+                #region Map Roles
+                cfg.CreateMap<Role, RoleDTO>()
+                    .ForMember(dto => dto.UserIds, conf => conf.MapFrom(dll => dll.Users.Select(i => i.Id)));
+                cfg.CreateMap<RoleDTO, Role>()
+                    .ForMember(dll => dll.Users, conf => conf.MapFrom(dto => dto.UserIds.Select(i => new User() { Id = i })));
+                #endregion
 
+                #region Map User
+                cfg.CreateMap<User, UserDTO>()
+                    .ForMember(dto => dto.RoleIds, conf => conf.MapFrom(dll => dll.Roles.Select(i => i.Id)));
+                cfg.CreateMap<UserDTO, User>()
+                    .ForMember(dll => dll.Roles, conf => conf.MapFrom(dto => dto.RoleIds.Select(i => new Role() { Id = i })));
+                #endregion
 
             });
 
