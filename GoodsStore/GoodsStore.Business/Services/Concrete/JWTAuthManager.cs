@@ -93,9 +93,9 @@ namespace GoodsStore.Business.Services.Concrete
             return await Task.FromResult(user);
         }
 
-        public async Task<bool> IsUserExists(UserDTO user)
+        public async Task<bool> IsUserExists(string email)
         {
-            var found = await Task.FromResult(_uow.Users.Get(i => i.Email == user.Email).FirstOrDefault());
+            var found = await Task.FromResult(_uow.Users.Get(i => i.Email == email).FirstOrDefault());
             var res = found != null;
             return res;
         }

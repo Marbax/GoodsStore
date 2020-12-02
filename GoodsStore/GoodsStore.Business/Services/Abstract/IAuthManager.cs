@@ -12,7 +12,7 @@ namespace GoodsStore.Business.Services.Abstract
     {
         Task<IPrincipal> Authenticate(string token);
         Task<UserDTO> Authenticate(string login, string password);
-        Task<bool> IsUserExists(UserDTO user);
+        Task<bool> IsUserExists(string email);
         Task<UserDTO> Register(UserDTO user);
         Task<UserDTO> UpdateProfile(UserDTO user);
     }

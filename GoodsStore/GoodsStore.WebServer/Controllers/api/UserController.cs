@@ -12,6 +12,7 @@ using System.Web;
 using System.Web.Http;
 using System.Web.Http.Cors;
 using System.Security.Claims;
+using Newtonsoft.Json.Linq;
 
 namespace GoodsStore.WebServer.Controllers.api
 {
@@ -28,10 +29,13 @@ namespace GoodsStore.WebServer.Controllers.api
         [AllowAnonymous]
         [HttpPost()]
         [Route("api/user/login")]
-        public async Task<IHttpActionResult> Login([FromBody] UserDTO user)
+        public async Task<IHttpActionResult> Login([FromBody] JObject authData)
         {
-            if (user == null || string.IsNullOrEmpty(user?.Email) || string.IsNullOrEmpty(user?.Password))
-                return BadRequest("Password and email were empy.");
+            string username = authData.Value<string>("username");
+            string password = authData.Value<string>("password");
+
+            if (string.IsNullOrEmpty(username) || string.IsNullOrEmpty(password))
+                return BadRequest("Some login data is absent.");
 
             UserDTO foundUser = null;
 
@@ -39,7 +43,7 @@ namespace GoodsStore.WebServer.Controllers.api
             {
                 using (var trans = new TransactionScope(TransactionScopeOption.RequiresNew, TransactionScopeAsyncFlowOption.Enabled))
                 {
-                    foundUser = await _authManager.Authenticate(user.Email, user.Password);
+                    foundUser = await _authManager.Authenticate(username, password);
                     trans.Complete();
                 }
             }
@@ -57,14 +61,15 @@ namespace GoodsStore.WebServer.Controllers.api
         [AllowAnonymous]
         [HttpPost()]
         [Route("api/user/register")]
-        public async Task<IHttpActionResult> Register([FromBody] UserDTO user)
+        public async Task<IHttpActionResult> Register([FromBody] JObject authData)
         {
-            //if (!ModelState.IsValid)
-            //    return BadRequest(ModelState);
-            if (user == null || string.IsNullOrEmpty(user?.Email) || string.IsNullOrEmpty(user?.Password))
-                return BadRequest("Password and email were empy.");
+            string username = authData.Value<string>("username");
+            string password = authData.Value<string>("password");
 
-            if (await _authManager.IsUserExists(user))
+            if (string.IsNullOrEmpty(username) || string.IsNullOrEmpty(password))
+                return BadRequest("Some login data is absent.");
+
+            if (await _authManager.IsUserExists(username))
                 return BadRequest("This user already exists.");
 
             UserDTO newUser = null;
@@ -73,7 +78,7 @@ namespace GoodsStore.WebServer.Controllers.api
             {
                 using (var trans = new TransactionScope(TransactionScopeOption.RequiresNew, TransactionScopeAsyncFlowOption.Enabled))
                 {
-                    newUser = await _authManager.Register(user);
+                    newUser = await _authManager.Register(new UserDTO() { Email = username, Password = password });
 
                     trans.Complete();
                 }
@@ -82,9 +87,6 @@ namespace GoodsStore.WebServer.Controllers.api
             {
                 return BadRequest(ex.Message);
             }
-
-            if (newUser == null)
-                return BadRequest("No such User.");
 
             return Ok(newUser);
         }
