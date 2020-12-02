@@ -78,20 +78,13 @@ ASP .Net Framework/Core App
     </div>
 </details>
 
-<details style="margin-left:2rem;"><summary>Client.ViewModels</summary>
-    <div style="margin:0 0 2rem 1rem;">
-    View Models
-        <ul style="margin-top:1rem;padding-left:1rem;">Dependecies
-            <li>Business.Models</li>
-        </ul>
-    </div>
-</details>
-
 <details style="margin-left:2rem;"><summary>Client</summary>
     <div style="margin:0 0 2rem 1rem;">
-    WebAssembly Progressive App
+    WebAssembly Progressive App  
+    with ViewModels  
+    and client services
         <ul style="margin-top:1rem;padding-left:1rem;">Dependecies
-            <li>Client.ViewModels</li>
+            <li>Business.Models</li>
         </ul>
     </div>
 </details>
