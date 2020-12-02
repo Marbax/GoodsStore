@@ -1,33 +1,53 @@
 ﻿@page "/login"
 @inject UserVM _userVM
-@inject NavigationManager _navMngr
 @inject IJSRuntime JS
+@implements IDisposable
 
 <h3><b>Login</b></h3>
 <hr />
 
-<label>@_userVM.Message</label>
-<EditForm Model="@_userVM" OnValidSubmit="@HandleValidSubmit">
-    <DataAnnotationsValidator />
-    <ValidationSummary />
-    <div class="col-6 m-2">
-        <InputText type="text" @bind-Value="_userVM.ProxyUser.Email" name="email" class="form-control" placeholder="Email address" />
-    </div>
-    <div class="col-6 m-2">
-        <InputText type="password" @bind-Value="_userVM.ProxyUser.Password" name="password" class="form-control" placeholder="Password" />
-    </div>
-    <div class="col-6 m-2">
-        <button class="btn btn-primary" type="submit">Login</button>
-    </div>
-</EditForm>
+@if (!_userVM.IsReady)
+{
+    <Loading Title="Loading." />
+}
+else
+{
 
+    <label>@_userVM.Message</label>
+    <EditForm Model="@_userVM" OnValidSubmit="@HandleValidSubmit">
+        <DataAnnotationsValidator />
+        <div class="col-6 m-2">
+            <InputText type="text" @bind-Value="_userVM.ProxyUser.Email" name="email" class="form-control" placeholder="Email address" />
+            <ValidationMessage For="@(() => _userVM.ProxyUser.Email)" />
+        </div>
+        <div class="col-6 m-2">
+            <InputText type="password" @bind-Value="_userVM.ProxyUser.Password" name="password" class="form-control" placeholder="Password" />
+            <ValidationMessage For="@(() => _userVM.ProxyUser.Password)" />
+        </div>
+        <div class="col-6 m-2">
+            <button class="btn btn-primary" type="submit">Login</button>
+        </div>
+    </EditForm>
+}
 
 @code {
+
+    protected override void OnInitialized()
+    {
+        _userVM.OnChange += StateHasChanged;
+    }
+
 
     private async Task HandleValidSubmit()
     {
         if (await _userVM.Login())
             await JS.InvokeVoidAsync("history.back");
     }
+
+    public void Dispose()
+    {
+        _userVM.OnChange -= StateHasChanged;
+    }
+
 
 }
