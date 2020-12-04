@@ -9,7 +9,7 @@ ASP .Net Framework/Core App
 
 <details style="padding: 1rem;"><summary><b>Projects</b></summary>
 
-<details style="margin-left:2rem;"><summary><b>Domain</b></summary>
+<details style="margin-left:2rem;"><summary>Domain</summary>
     <div style="margin:0 0 2rem 1rem;">
         <p>.Net Framework Lib</p>
         <p>Provide work with db , entities and context</p>
