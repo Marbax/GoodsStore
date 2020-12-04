@@ -26,7 +26,7 @@ namespace GoodsStore.WebServer.App_Start
                                     ValidateAudience = false,
                                     ValidateLifetime = true,
                                     ClockSkew = new TimeSpan(0),
-                                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("mPjVYomEjhmPjVYomEjhSDWhV7cT6K3UE6kq85GNQpSDWhV7cT6K3UE6mPjVYomEjhSDWhV7cT6K3UE6kq85GNQpkq85GNQp"))
+                                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(ConfigurationManager.AppSettings["Secret"]))
                                 }
                             });
         }

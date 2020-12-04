@@ -18,6 +18,7 @@ namespace GoodsStore.Infrastructure.App_Start
     using Ninject.Web.Common.WebHost;
     using Ninject.Web.WebApi;
     using System;
+    using System.Configuration;
     using System.Data.Entity;
     using System.Linq;
     using System.Web;
@@ -104,7 +105,7 @@ namespace GoodsStore.Infrastructure.App_Start
             kernel.Bind<IService<UserDTO>>().To<GenericService<UserDTO, User>>();
             kernel.Bind<IService<RoleDTO>>().To<GenericService<RoleDTO, Role>>();
             kernel.Bind<IServicesUnitOfWork>().To<ServicesUnitOfWork>();
-            kernel.Bind<IAuthManager>().To<JWTAuthManager>().WithConstructorArgument("secret", "mPjVYomEjhmPjVYomEjhSDWhV7cT6K3UE6kq85GNQpSDWhV7cT6K3UE6mPjVYomEjhSDWhV7cT6K3UE6kq85GNQpkq85GNQp");
+            kernel.Bind<IAuthManager>().To<JWTAuthManager>().WithConstructorArgument("secret", ConfigurationManager.AppSettings["Secret"]);
             //kernel.Bind<IUnitOfWork>().To<RawUnitOfWork>();
 
             //Mapp
