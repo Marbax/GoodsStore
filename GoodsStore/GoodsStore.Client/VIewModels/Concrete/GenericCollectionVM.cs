@@ -1,16 +1,16 @@
-﻿using GoodsStore.Client.ViewModels.Abstract;
+﻿using GoodsStore.Client.Services.Abstract;
+using GoodsStore.Client.ViewModels.Abstract;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Net.Http;
-using System.Net.Http.Json;
 using System.Threading.Tasks;
 
 namespace GoodsStore.Client.ViewModels.Concrete
 {
     public class GenericCollectionVM<T> : IGenericCollectionVM<T> where T : class
     {
-        private readonly HttpClient _client;
+        private readonly IHttpService _httpService;
+        private readonly AppSettings _appSettings;
 
         public IEnumerable<T> Items { get; set; }
 
@@ -29,16 +29,17 @@ namespace GoodsStore.Client.ViewModels.Concrete
         public event Action OnChange;
         private void NotifyStateChanged() => OnChange?.Invoke();
 
-        public GenericCollectionVM(HttpClient client)
+        public GenericCollectionVM(IHttpService httpService, AppSettings appSettings)
         {
-            _client = client;
+            _httpService = httpService;
+            _appSettings = appSettings;
         }
 
         public async Task GetItemsAsync()
         {
             try
             {
-                Items = await _client.GetFromJsonAsync<T[]>(_client.BaseAddress);
+                Items = await _httpService.Get<IEnumerable<T>>(_appSettings.CategoriesController.ToString());
                 NotifyStateChanged();
                 Message = "Items loaded successfully.";
             }
@@ -52,13 +53,12 @@ namespace GoodsStore.Client.ViewModels.Concrete
         {
             try
             {
-                var res = await _client.DeleteAsync($"{_client.BaseAddress}/{id}");
-                var removed = await res.Content.ReadFromJsonAsync<T>();
+                var res = await _httpService.Delete<T>($"{_appSettings.CategoriesController}/{id}");
                 var items = Items.ToList();
-                items.Remove(removed);
+                items.Remove(res);
                 Items = items;
                 NotifyStateChanged();
-                Message = $"{removed} successfulle removed.";
+                Message = $"{res} successfully removed.";
             }
             catch (Exception ex)
             {
