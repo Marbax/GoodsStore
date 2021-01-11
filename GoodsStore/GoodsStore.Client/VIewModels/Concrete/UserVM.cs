@@ -37,6 +37,7 @@ namespace GoodsStore.Client.ViewModels.Concrete
             try
             {
                 IsReady = false;
+                Message = "";
                 NotifyStateChanged();
                 await AuthSrvice.Register(ProxyUser.Email, ProxyUser.Password);
                 ProxyUser = AuthSrvice.User.Clone();
@@ -57,6 +58,7 @@ namespace GoodsStore.Client.ViewModels.Concrete
             try
             {
                 IsReady = false;
+                Message = "";
                 NotifyStateChanged();
                 await AuthSrvice.Login(ProxyUser.Email, ProxyUser.Password);
                 ProxyUser = AuthSrvice.User.Clone();
@@ -83,6 +85,7 @@ namespace GoodsStore.Client.ViewModels.Concrete
             try
             {
                 IsReady = false;
+                Message = "";
                 NotifyStateChanged();
                 await AuthSrvice.UpdateProfile(ProxyUser);
                 ProxyUser = AuthSrvice.User.Clone();

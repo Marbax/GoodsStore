@@ -13,6 +13,7 @@ using System.Web.Http;
 using System.Web.Http.Cors;
 using System.Security.Claims;
 using Newtonsoft.Json.Linq;
+using System.Data.Entity.Validation;
 
 namespace GoodsStore.WebServer.Controllers.api
 {
@@ -47,13 +48,10 @@ namespace GoodsStore.WebServer.Controllers.api
                     trans.Complete();
                 }
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                return BadRequest(ex.Message);
+                return BadRequest("No such User or incorrect login data.");
             }
-
-            if (foundUser == null)
-                return BadRequest("No such User. Or incorrect login data.");
 
             return Ok(foundUser);
         }
@@ -113,6 +111,16 @@ namespace GoodsStore.WebServer.Controllers.api
 
                     trans.Complete();
                 }
+            }
+            catch (DbEntityValidationException ex)
+            {
+                string exMsg = "";
+
+                foreach (var eve in ex.EntityValidationErrors)
+                    foreach (var ve in eve.ValidationErrors)
+                        exMsg += $"{ve.ErrorMessage} \n";
+
+                return BadRequest(exMsg);
             }
             catch (Exception ex)
             {

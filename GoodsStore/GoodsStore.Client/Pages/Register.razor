@@ -6,7 +6,7 @@
 <h3><b>Register</b></h3>
 <hr />
 
-@if (!_userVM.IsReady)
+@if (!_userVM.IsReady && string.IsNullOrEmpty(_userVM.Message))
 {
     <Loading Title="Loading." />
 }
