@@ -1,0 +1,87 @@
+﻿@page "/User/Edit"
+@page "/User/Edit/{ItemId:int}"
+@inject IGenericItemVM<UserDTO> _vm
+
+@if (!_vm.IsReady)
+{
+    <Loading Title="User is loading." />
+}
+else
+{
+    <label class="text-muted mx-2">@_vm.Message</label>
+
+    <EditForm Model="@_vm" OnValidSubmit="@HandleValidSubmit">
+        <ValidationSummary />
+        <div class="col-6 m-2">
+            <InputText type="text" @bind-Value="_vm.Item.Email" name="email" class="form-control" placeholder="Email address" />
+            <ValidationMessage For="@(() => _vm.Item.Email)" />
+        </div>
+        <div class="col-6 m-2">
+            <InputText type="password" @bind-Value="_vm.Item.Password" name="password" class="form-control" placeholder="Password" />
+            <ValidationMessage For="@(() => _vm.Item.Password)" />
+        </div>
+
+        <div class="col-6 m-2">
+            <InputText type="text" @bind-Value="_vm.Item.Address" name="address" class="form-control" placeholder="Address" />
+            <ValidationMessage For="@(() => _vm.Item.Address)" />
+        </div>
+        <div class="col-6 m-2">
+            <InputText type="text" @bind-Value="_vm.Item.Country" name="country" class="form-control" placeholder="Country" />
+            <ValidationMessage For="@(() => _vm.Item.Country)" />
+        </div>
+        <div class="col-6 m-2">
+            <InputText type="text" @bind-Value="_vm.Item.Name" name="email" class="form-control" placeholder="First Name" />
+            <ValidationMessage For="@(() => _vm.Item.Name)" />
+        </div>
+        <div class="col-6 m-2">
+            <InputText type="text" @bind-Value="_vm.Item.Lastname" name="lastname" class="form-control" placeholder="Last Name" />
+            <ValidationMessage For="@(() => _vm.Item.Lastname)" />
+        </div>
+        <div class="col-6 m-2">
+            <InputText type="text" @bind-Value="_vm.Item.Phone" name="phone" class="form-control" placeholder="Phone" />
+            <ValidationMessage For="@(() => _vm.Item.Phone)" />
+        </div>
+        <div class="col-6 m-2">
+            <InputText type="text" disabled @bind-Value="_vm.Item.Token" name="phone" class="form-control" placeholder="Token" />
+        </div>
+        @if (_vm.Item.RoleIds.Count() > 0)
+        {
+            //TODO: add normal user's roles editing
+            <div class="form-group row">
+                <label class="control-label col-md-4" for="title">Roles:</label>
+                <input class="form-control col" name="title" type="text" disabled value=@_vm.Item.RoleIds?.Select(i => i.ToString()).Aggregate((f, s) => f + ", " + s) placeholder="Roles" />
+            </div>
+        }
+        @if (ItemId > 0)
+        {
+            <button class="btn btn-primary" type="submit">Update</button>
+
+        }
+        else
+        {
+            <button class="btn btn-primary" type="submit">Add</button>
+        }
+    </EditForm>
+}
+
+@code {
+    [Parameter]
+    public int ItemId { get; set; } = -1;
+
+    protected override async Task OnInitializedAsync()
+    {
+        if (ItemId > 0)
+            await _vm.GetItemAsync(ItemId);
+        else
+            _vm.Item = new UserDTO();
+    }
+
+    private async Task HandleValidSubmit()
+    {
+        if (ItemId > 0)
+            await _vm.UpdateItem();
+        else
+            await _vm.AddItem();
+    }
+
+}
