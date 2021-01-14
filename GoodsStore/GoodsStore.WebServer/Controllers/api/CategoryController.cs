@@ -3,6 +3,7 @@ using GoodsStore.Business.Services.Abstract;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
+using System.Data.Entity.Validation;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
@@ -67,6 +68,16 @@ namespace GoodsStore.WebServer.Controllers.api
                 }
                 return Ok(added);
             }
+            catch (DbEntityValidationException ex)
+            {
+                string exMsg = "";
+
+                foreach (var eve in ex.EntityValidationErrors)
+                    foreach (var ve in eve.ValidationErrors)
+                        exMsg += $"{ve.ErrorMessage} \n";
+
+                return BadRequest(exMsg);
+            }
             catch (Exception ex)
             {
                 return BadRequest(ex.Message);
@@ -88,6 +99,16 @@ namespace GoodsStore.WebServer.Controllers.api
                     trans.Complete();
                 }
                 return Ok(updated);
+            }
+            catch (DbEntityValidationException ex)
+            {
+                string exMsg = "";
+
+                foreach (var eve in ex.EntityValidationErrors)
+                    foreach (var ve in eve.ValidationErrors)
+                        exMsg += $"{ve.ErrorMessage} \n";
+
+                return BadRequest(exMsg);
             }
             catch (Exception ex)
             {
