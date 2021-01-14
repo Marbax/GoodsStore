@@ -1,61 +1,63 @@
 ﻿@page "/Category/Edit"
-@page "/Category/Edit/{CategoryId:int}"
-@inject IGenericItemVM<CategoryDTO> _catVM
+@page "/Category/Edit/{ItemId:int}"
+@inject IGenericItemVM<CategoryDTO> _vm
 
-@if (!_catVM.IsReady)
+@if (!_vm.IsReady)
 {
     <Loading Title="Category is loading." />
 }
 else
 {
-    <div class="row flex justify-content-center">
-        <div class="col-md-8 col-sm-11 p-1">
+    <label class="text-muted mx-2">@_vm.Message</label>
 
-            <div class="form-group row">
-                <label class="control-label col-md-4">Id:</label>
-                <label class="control-label col">@_catVM.Item.Id</label>
-            </div>
-
-            <div class="form-group row">
-                <label class="control-label col-md-4" for="title">Title:</label>
-                <input class="form-control col" name="title" type="text" @bind-value="_catVM.Item.Title" placeholder="Title" />
-            </div>
-
-            @if (_catVM.Item.Goods.Count() > 0)
-            {
-                <div class="form-group row">
-                    <label class="control-label col-md-4">Goods Ids: </label>
-                    <label class="control-label col">@_catVM.Item.Goods.ToList().Select(i => i.ToString()).Aggregate((f, s) => f + " , " + s)</label>
-                </div>
-                <div class="form-group row">
-                    <label class="control-label col-md-4">Goods Count: </label>
-                    <label class="control-label col">@_catVM.Item.Goods.Count()</label>
-                </div>
-            }
-
-            @if (CategoryId > 0)
-            {
-                <button class="btn btn-primary" @onclick="_catVM.UpdateItem">Update</button>
-            }
-            else
-            {
-                <button class="btn btn-primary" @onclick="_catVM.AddItem">Add</button>
-            }
-            <span class="text-muted">@_catVM.Message</span>
+    <EditForm Model="@_vm" OnValidSubmit="@HandleValidSubmit">
+        <ValidationSummary />
+        <div class="col-6 m-2 form-group row">
+            <label class="control-label col-md-4" for="title">Title:</label>
+            <InputText type="text" @bind-Value="_vm.Item.Title" name="title" class="form-control col" placeholder="Title" />
+            <ValidationMessage For="@(() => _vm.Item.Title)" />
         </div>
-    </div>
+        @if (_vm.Item.Goods.Count() > 0)
+        {
+            <div class="form-group row">
+                <label class="control-label col-md-4">Goods Ids: </label>
+                <label class="control-label col">@_vm.Item.Goods.ToList().Select(i => i.ToString()).Aggregate((f, s) => f + " , " + s)</label>
+            </div>
+            <div class="form-group row">
+                <label class="control-label col-md-4">Goods Count: </label>
+                <label class="control-label col">@_vm.Item.Goods.Count()</label>
+            </div>
+        }
+        @if (ItemId > 0)
+        {
+            <button class="btn btn-primary" type="submit">Update</button>
+        }
+        else
+        {
+            <button class="btn btn-primary" type="submit">Add</button>
+        }
+    </EditForm>
 
 }
 
 @code {
     [Parameter]
-    public int CategoryId { get; set; } = -1;
+    public int ItemId { get; set; } = -1;
 
     protected override async Task OnInitializedAsync()
     {
-        if (CategoryId > 0)
-            await _catVM.GetItemAsync(CategoryId);
+        if (ItemId > 0)
+            await _vm.GetItemAsync(ItemId);
         else
-            _catVM.Item = new CategoryDTO();
+            _vm.Item = new CategoryDTO();
     }
+
+    private async Task HandleValidSubmit()
+    {
+        if (ItemId > 0)
+            await _vm.UpdateItem();
+        else
+            await _vm.AddItem();
+    }
+
 }
