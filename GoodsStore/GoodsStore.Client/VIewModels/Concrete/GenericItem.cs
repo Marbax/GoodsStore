@@ -34,7 +34,7 @@ namespace GoodsStore.Client.ViewModels.Concrete
         {
             try
             {
-                Item = await _httpService.Get<T>($"{_appSettings.CategoriesController}/{id}");
+                Item = await _httpService.Get<T>($"{_appSettings.GetController(typeof(T).Name)}/{id}");
                 Message = $"{Item} loaded successfully.";
             }
             catch (Exception ex)
@@ -48,7 +48,7 @@ namespace GoodsStore.Client.ViewModels.Concrete
             try
             {
                 //FIXME: some bug with collection view , item remember different states and changes them randomly
-                var res = await _httpService.Put<T>($"{_appSettings.CategoriesController}", Item);
+                var res = await _httpService.Put<T>($"{_appSettings.GetController(typeof(T).Name)}", Item);
                 Item = res;
                 Message = $"{Item} successfully updated";
             }
@@ -62,7 +62,7 @@ namespace GoodsStore.Client.ViewModels.Concrete
         {
             try
             {
-                var res = await _httpService.Post<T>($"{_appSettings.CategoriesController}", Item);
+                var res = await _httpService.Post<T>($"{_appSettings.GetController(typeof(T).Name)}", Item);
                 Item = res;
                 Message = $"{Item} successfully added";
             }

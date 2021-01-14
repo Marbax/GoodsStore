@@ -39,7 +39,7 @@ namespace GoodsStore.Client.ViewModels.Concrete
         {
             try
             {
-                Items = await _httpService.Get<IEnumerable<T>>(_appSettings.CategoriesController.ToString());
+                Items = await _httpService.Get<IEnumerable<T>>(_appSettings.GetController(typeof(T).Name).ToString());
                 NotifyStateChanged();
                 Message = "Items loaded successfully.";
             }
@@ -53,7 +53,7 @@ namespace GoodsStore.Client.ViewModels.Concrete
         {
             try
             {
-                var res = await _httpService.Delete<T>($"{_appSettings.CategoriesController}/{id}");
+                var res = await _httpService.Delete<T>($"{_appSettings.GetController(typeof(T).Name)}/{id}");
                 var items = Items.ToList();
                 items.Remove(res);
                 Items = items;
