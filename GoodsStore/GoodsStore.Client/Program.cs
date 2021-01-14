@@ -27,11 +27,13 @@ namespace GoodsStore.Client
                 .AddScoped<IStorageService, LocalStorageService>();
 
 
-            builder.Services.AddScoped<UserVM>();
+            builder.Services.AddScoped<UserAuthVM>();
 
-            builder.Services.AddScoped<IGenericCollectionVM<CategoryDTO>, GenericCollectionVM<CategoryDTO>>();
+            builder.Services.AddScoped<IGenericCollectionVM<CategoryDTO>, GenericCollectionVM<CategoryDTO>>()
+                .AddScoped<IGenericCollectionVM<UserDTO>, GenericCollectionVM<UserDTO>>();
 
-            builder.Services.AddScoped<IGenericItemVM<CategoryDTO>, GenericItem<CategoryDTO>>();
+            builder.Services.AddScoped<IGenericItemVM<CategoryDTO>, GenericItem<CategoryDTO>>()
+                .AddScoped<IGenericItemVM<UserDTO>, GenericItem<UserDTO>>();
 
             var host = builder.Build();
 
