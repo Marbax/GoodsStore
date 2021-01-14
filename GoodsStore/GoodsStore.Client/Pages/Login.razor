@@ -1,28 +1,28 @@
 ﻿@page "/login"
-@inject UserVM _userVM
+@inject UserAuthVM _userAuthVM
 @inject IJSRuntime JS
 @implements IDisposable
 
 <h3><b>Login</b></h3>
 <hr />
 
-@if (!_userVM.IsReady && string.IsNullOrEmpty(_userVM.Message))
+@if (!_userAuthVM.IsReady && string.IsNullOrEmpty(_userAuthVM.Message))
 {
     <Loading Title="Loading." />
 }
 else
 {
 
-    <label>@_userVM.Message</label>
-    <EditForm Model="@_userVM" OnValidSubmit="@HandleValidSubmit">
+    <label>@_userAuthVM.Message</label>
+    <EditForm Model="@_userAuthVM" OnValidSubmit="@HandleValidSubmit">
         <DataAnnotationsValidator />
         <div class="col-6 m-2">
-            <InputText type="text" @bind-Value="_userVM.ProxyUser.Email" name="email" class="form-control" placeholder="Email address" />
-            <ValidationMessage For="@(() => _userVM.ProxyUser.Email)" />
+            <InputText type="text" @bind-Value="_userAuthVM.ProxyUser.Email" name="email" class="form-control" placeholder="Email address" />
+            <ValidationMessage For="@(() => _userAuthVM.ProxyUser.Email)" />
         </div>
         <div class="col-6 m-2">
-            <InputText type="password" @bind-Value="_userVM.ProxyUser.Password" name="password" class="form-control" placeholder="Password" />
-            <ValidationMessage For="@(() => _userVM.ProxyUser.Password)" />
+            <InputText type="password" @bind-Value="_userAuthVM.ProxyUser.Password" name="password" class="form-control" placeholder="Password" />
+            <ValidationMessage For="@(() => _userAuthVM.ProxyUser.Password)" />
         </div>
         <div class="col-6 m-2">
             <button class="btn btn-primary" type="submit">Login</button>
@@ -34,19 +34,19 @@ else
 
     protected override void OnInitialized()
     {
-        _userVM.OnChange += StateHasChanged;
+        _userAuthVM.OnChange += StateHasChanged;
     }
 
 
     private async Task HandleValidSubmit()
     {
-        if (await _userVM.Login())
+        if (await _userAuthVM.Login())
             await JS.InvokeVoidAsync("history.back");
     }
 
     public void Dispose()
     {
-        _userVM.OnChange -= StateHasChanged;
+        _userAuthVM.OnChange -= StateHasChanged;
     }
 
 
