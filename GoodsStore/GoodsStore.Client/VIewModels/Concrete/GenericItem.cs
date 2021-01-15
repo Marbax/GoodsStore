@@ -1,14 +1,14 @@
-﻿using GoodsStore.Client.ViewModels.Abstract;
+﻿using GoodsStore.Client.Services.Abstract;
+using GoodsStore.Client.ViewModels.Abstract;
 using System;
-using System.Net.Http;
-using System.Net.Http.Json;
 using System.Threading.Tasks;
 
 namespace GoodsStore.Client.ViewModels.Concrete
 {
     public class GenericItem<T> : IGenericItemVM<T> where T : class
     {
-        private readonly HttpClient _client;
+        private readonly IHttpService _httpService;
+        private readonly AppSettings _appSettings;
 
         public T Item { get; set; }
 
@@ -24,16 +24,17 @@ namespace GoodsStore.Client.ViewModels.Concrete
 
         public string Message { get; set; }
 
-        public GenericItem(HttpClient client)
+        public GenericItem(IHttpService httpService, AppSettings appSettings)
         {
-            _client = client;
+            _httpService = httpService;
+            _appSettings = appSettings;
         }
 
         public async Task GetItemAsync(int id)
         {
             try
             {
-                Item = await _client.GetFromJsonAsync<T>($"{_client.BaseAddress}/{id}");
+                Item = await _httpService.Get<T>($"{_appSettings.GetController(typeof(T).Name)}/{id}");
                 Message = $"{Item} loaded successfully.";
             }
             catch (Exception ex)
@@ -46,9 +47,9 @@ namespace GoodsStore.Client.ViewModels.Concrete
         {
             try
             {
-                var res = await _client.PutAsJsonAsync<T>($"{_client.BaseAddress}", Item);
-                var updated = await res.Content.ReadFromJsonAsync<T>();
-                Item = updated;
+                //FIXME: some bug with collection view , item remember different states and changes them randomly
+                var res = await _httpService.Put<T>($"{_appSettings.GetController(typeof(T).Name)}", Item);
+                Item = res;
                 Message = $"{Item} successfully updated";
             }
             catch (Exception ex)
@@ -61,9 +62,8 @@ namespace GoodsStore.Client.ViewModels.Concrete
         {
             try
             {
-                var res = await _client.PostAsJsonAsync<T>($"{_client.BaseAddress}", Item);
-                var added = await res.Content.ReadFromJsonAsync<T>();
-                Item = added;
+                var res = await _httpService.Post<T>($"{_appSettings.GetController(typeof(T).Name)}", Item);
+                Item = res;
                 Message = $"{Item} successfully added";
             }
             catch (Exception ex)

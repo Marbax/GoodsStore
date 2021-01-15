@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace GoodsStore.Client.ViewModels.Concrete
 {
-    public class UserVM
+    public class UserAuthVM
     {
         public IAuthenticationService AuthSrvice { get; }
         public UserDTO ProxyUser { get; set; } = new UserDTO();
@@ -17,7 +17,7 @@ namespace GoodsStore.Client.ViewModels.Concrete
         public bool IsLoginDataValid { get => !string.IsNullOrEmpty(ProxyUser.Email) && !string.IsNullOrEmpty(ProxyUser.Password); }
         public string Message { get; set; } = "";
 
-        public UserVM(IAuthenticationService authSrvice)
+        public UserAuthVM(IAuthenticationService authSrvice)
         {
             AuthSrvice = authSrvice;
             if (AuthSrvice.User != null)
@@ -37,6 +37,7 @@ namespace GoodsStore.Client.ViewModels.Concrete
             try
             {
                 IsReady = false;
+                Message = "";
                 NotifyStateChanged();
                 await AuthSrvice.Register(ProxyUser.Email, ProxyUser.Password);
                 ProxyUser = AuthSrvice.User.Clone();
@@ -57,6 +58,7 @@ namespace GoodsStore.Client.ViewModels.Concrete
             try
             {
                 IsReady = false;
+                Message = "";
                 NotifyStateChanged();
                 await AuthSrvice.Login(ProxyUser.Email, ProxyUser.Password);
                 ProxyUser = AuthSrvice.User.Clone();
@@ -83,6 +85,7 @@ namespace GoodsStore.Client.ViewModels.Concrete
             try
             {
                 IsReady = false;
+                Message = "";
                 NotifyStateChanged();
                 await AuthSrvice.UpdateProfile(ProxyUser);
                 ProxyUser = AuthSrvice.User.Clone();

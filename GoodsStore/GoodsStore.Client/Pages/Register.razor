@@ -1,31 +1,31 @@
 ﻿@page "/register"
-@inject UserVM _userVM
+@inject UserAuthVM _userAuthVM
 @inject NavigationManager _navMngr
 @implements IDisposable
 
 <h3><b>Register</b></h3>
 <hr />
 
-@if (!_userVM.IsReady)
+@if (!_userAuthVM.IsReady && string.IsNullOrEmpty(_userAuthVM.Message))
 {
     <Loading Title="Loading." />
 }
 else
 {
-    <label>@_userVM.Message</label>
-    <EditForm Model="@_userVM" OnValidSubmit="@HandleValidSubmit">
+    <label>@_userAuthVM.Message</label>
+    <EditForm Model="@_userAuthVM" OnValidSubmit="@HandleValidSubmit">
         <DataAnnotationsValidator />
         <div class="col-6 m-2">
-            <InputText type="text" @bind-Value="_userVM.ProxyUser.Email" name="email" class="form-control" placeholder="Email address" />
-            <ValidationMessage For="@(() => _userVM.ProxyUser.Email)" />
+            <InputText type="text" @bind-Value="_userAuthVM.ProxyUser.Email" name="email" class="form-control" placeholder="Email address" />
+            <ValidationMessage For="@(() => _userAuthVM.ProxyUser.Email)" />
         </div>
         <div class="col-6 m-2">
-            <InputText type="password" @bind-Value="_userVM.ProxyUser.Password" name="password" class="form-control" placeholder="Password" />
-            <ValidationMessage For="@(() => _userVM.ProxyUser.Password)" />
+            <InputText type="password" @bind-Value="_userAuthVM.ProxyUser.Password" name="password" class="form-control" placeholder="Password" />
+            <ValidationMessage For="@(() => _userAuthVM.ProxyUser.Password)" />
         </div>
         <div class="col-6 m-2">
-            <InputText type="password" @bind-Value="_userVM.PasswordConfirm" name="confirmPassword" class="form-control" placeholder="Password Confirm" />
-            <ValidationMessage For="@(() => _userVM.PasswordConfirm)" />
+            <InputText type="password" @bind-Value="_userAuthVM.PasswordConfirm" name="confirmPassword" class="form-control" placeholder="Password Confirm" />
+            <ValidationMessage For="@(() => _userAuthVM.PasswordConfirm)" />
         </div>
         <div class="col-6 m-2">
             <button class="btn btn-primary" type="submit">Register</button>
@@ -37,18 +37,18 @@ else
 
     protected override void OnInitialized()
     {
-        _userVM.OnChange += StateHasChanged;
+        _userAuthVM.OnChange += StateHasChanged;
     }
 
     private async Task HandleValidSubmit()
     {
-        if (await _userVM.Register())
+        if (await _userAuthVM.Register())
             _navMngr.NavigateTo("/profile");
     }
 
     public void Dispose()
     {
-        _userVM.OnChange -= StateHasChanged;
+        _userAuthVM.OnChange -= StateHasChanged;
     }
 
 }

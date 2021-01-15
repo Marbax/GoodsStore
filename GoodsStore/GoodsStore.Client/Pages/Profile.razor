@@ -1,53 +1,53 @@
 ﻿@page "/profile"
-@inject UserVM _userVM
+@inject UserAuthVM _userAuthVM
 @implements IDisposable
 
 <h3><b>Profile</b></h3>
 <hr />
 
-@if (!_userVM.IsReady)
+@if (!_userAuthVM.IsReady && string.IsNullOrEmpty(_userAuthVM.Message))
 {
     <Loading Title="Loading." />
 }
 else
 {
-    <label>@_userVM.Message</label>
-    <EditForm Model="@_userVM" OnValidSubmit="@HandleValidSubmit">
+    <label>@_userAuthVM.Message</label>
+    <EditForm Model="@_userAuthVM" OnValidSubmit="@HandleValidSubmit">
         <ValidationSummary />
         <div class="col-6 m-2">
-            <InputText type="text" @bind-Value="_userVM.ProxyUser.Email" name="email" class="form-control" placeholder="Email address" />
-            <ValidationMessage For="@(() => _userVM.ProxyUser.Email)" />
+            <InputText type="text" @bind-Value="_userAuthVM.ProxyUser.Email" name="email" class="form-control" placeholder="Email address" />
+            <ValidationMessage For="@(() => _userAuthVM.ProxyUser.Email)" />
         </div>
         <div class="col-6 m-2">
-            <InputText type="password" @bind-Value="_userVM.ProxyUser.Password" name="password" class="form-control" placeholder="Password" />
-            <ValidationMessage For="@(() => _userVM.ProxyUser.Password)" />
+            <InputText type="password" @bind-Value="_userAuthVM.ProxyUser.Password" name="password" class="form-control" placeholder="Password" />
+            <ValidationMessage For="@(() => _userAuthVM.ProxyUser.Password)" />
         </div>
         <div class="col-6 m-2">
-            <InputText type="password" @bind-Value="_userVM.PasswordConfirm" name="confirmPassword" class="form-control" placeholder="Password Confirm" />
-            <ValidationMessage For="@(() => _userVM.PasswordConfirm)" />
+            <InputText type="password" @bind-Value="_userAuthVM.PasswordConfirm" name="confirmPassword" class="form-control" placeholder="Password Confirm" />
+            <ValidationMessage For="@(() => _userAuthVM.PasswordConfirm)" />
         </div>
         <div class="col-6 m-2">
-            <InputText type="text" @bind-Value="_userVM.ProxyUser.Address" name="address" class="form-control" placeholder="Address" />
-            <ValidationMessage For="@(() => _userVM.ProxyUser.Address)" />
+            <InputText type="text" @bind-Value="_userAuthVM.ProxyUser.Address" name="address" class="form-control" placeholder="Address" />
+            <ValidationMessage For="@(() => _userAuthVM.ProxyUser.Address)" />
         </div>
         <div class="col-6 m-2">
-            <InputText type="text" @bind-Value="_userVM.ProxyUser.Country" name="country" class="form-control" placeholder="Country" />
-            <ValidationMessage For="@(() => _userVM.ProxyUser.Country)" />
+            <InputText type="text" @bind-Value="_userAuthVM.ProxyUser.Country" name="country" class="form-control" placeholder="Country" />
+            <ValidationMessage For="@(() => _userAuthVM.ProxyUser.Country)" />
         </div>
         <div class="col-6 m-2">
-            <InputText type="text" @bind-Value="_userVM.ProxyUser.Name" name="email" class="form-control" placeholder="First Name" />
-            <ValidationMessage For="@(() => _userVM.ProxyUser.Name)" />
+            <InputText type="text" @bind-Value="_userAuthVM.ProxyUser.Name" name="email" class="form-control" placeholder="First Name" />
+            <ValidationMessage For="@(() => _userAuthVM.ProxyUser.Name)" />
         </div>
         <div class="col-6 m-2">
-            <InputText type="text" @bind-Value="_userVM.ProxyUser.Lastname" name="lastname" class="form-control" placeholder="Last Name" />
-            <ValidationMessage For="@(() => _userVM.ProxyUser.Lastname)" />
+            <InputText type="text" @bind-Value="_userAuthVM.ProxyUser.Lastname" name="lastname" class="form-control" placeholder="Last Name" />
+            <ValidationMessage For="@(() => _userAuthVM.ProxyUser.Lastname)" />
         </div>
         <div class="col-6 m-2">
-            <InputText type="text" @bind-Value="_userVM.ProxyUser.Phone" name="phone" class="form-control" placeholder="Phone" />
-            <ValidationMessage For="@(() => _userVM.ProxyUser.Phone)" />
+            <InputText type="text" @bind-Value="_userAuthVM.ProxyUser.Phone" name="phone" class="form-control" placeholder="Phone" />
+            <ValidationMessage For="@(() => _userAuthVM.ProxyUser.Phone)" />
         </div>
         <div class="col-6 m-2">
-            <InputText type="text" disabled @bind-Value="_userVM.ProxyUser.Token" name="phone" class="form-control" placeholder="Token" />
+            <InputText type="text" disabled @bind-Value="_userAuthVM.ProxyUser.Token" name="phone" class="form-control" placeholder="Token" />
         </div>
         <div class="col-6 m-2">
             <button class="btn btn-primary" type="submit">Update</button>
@@ -59,17 +59,17 @@ else
 
     protected override void OnInitialized()
     {
-        _userVM.OnChange += StateHasChanged;
+        _userAuthVM.OnChange += StateHasChanged;
     }
 
     private async Task HandleValidSubmit()
     {
-        await _userVM.UpdateProfile();
+        await _userAuthVM.UpdateProfile();
     }
 
     public void Dispose()
     {
-        _userVM.OnChange -= StateHasChanged;
+        _userAuthVM.OnChange -= StateHasChanged;
     }
 
 }

@@ -1,12 +1,7 @@
 ﻿using GoodsStore.Business.Models.Concrete;
 using GoodsStore.Business.Services.Abstract;
 using System;
-using System.Collections.Generic;
-using System.Data.Entity;
 using System.Data.Entity.Validation;
-using System.Linq;
-using System.Net;
-using System.Net.Http;
 using System.Threading.Tasks;
 using System.Transactions;
 using System.Web.Http;
@@ -14,14 +9,12 @@ using System.Web.Http.Cors;
 
 namespace GoodsStore.WebServer.Controllers.api
 {
-    //[Authorize(Roles = "superadmin,admin,manager")]
-    [AllowAnonymous]
     [EnableCors(origins: "*", headers: "*", methods: "*")]
-    public class CategoryController : ApiController
+    public class RoleController : ApiController
     {
         private readonly IServicesUnitOfWork _uow;
 
-        public CategoryController(IServicesUnitOfWork uow)
+        public RoleController(IServicesUnitOfWork uow)
         {
             _uow = uow;
         }
@@ -30,9 +23,7 @@ namespace GoodsStore.WebServer.Controllers.api
         {
             try
             {
-                //some how it get's items in different states after item edited , mb some problems with context again
-                // thats happens on lowest level , with dbset (in generic repo)
-                var res = await Task.FromResult(_uow.Categories.GetAll());
+                var res = await Task.FromResult(_uow.Roles.GetAll());
 
                 return Ok(res);
             }
@@ -46,7 +37,7 @@ namespace GoodsStore.WebServer.Controllers.api
         {
             try
             {
-                var res = _uow.Categories.Get(id);
+                var res = _uow.Roles.Get(id);
 
                 return Ok(res);
             }
@@ -57,14 +48,14 @@ namespace GoodsStore.WebServer.Controllers.api
         }
 
         [HttpPost]
-        public IHttpActionResult Create([FromBody] CategoryDTO cat)
+        public IHttpActionResult Create([FromBody] RoleDTO item)
         {
             try
             {
-                CategoryDTO added = null;
+                RoleDTO added = null;
                 using (var trans = new TransactionScope(TransactionScopeOption.RequiresNew, TransactionScopeAsyncFlowOption.Enabled))
                 {
-                    added = _uow.Categories.Add(cat);// "add" method made save to return an item with real id
+                    added = _uow.Roles.Add(item);// "add" method made save
 
                     trans.Complete();
                 }
@@ -87,18 +78,19 @@ namespace GoodsStore.WebServer.Controllers.api
         }
 
         [HttpPut]
-        public IHttpActionResult Update([FromBody] CategoryDTO cat)
+        public IHttpActionResult Update([FromBody] RoleDTO item)
         {
             try
             {
                 using (var trans = new TransactionScope(TransactionScopeOption.RequiresNew, TransactionScopeAsyncFlowOption.Enabled))
                 {
-                    _uow.Categories.CreateOrUpdate(cat);
+                    _uow.Roles.CreateOrUpdate(item);
                     _uow.Save();
 
                     trans.Complete();
                 }
-                CategoryDTO updated = _uow.Categories.Get(cat.Id);
+
+                var updated = _uow.Roles.Get(item.Id);
                 return Ok(updated);
             }
             catch (DbEntityValidationException ex)
@@ -122,10 +114,10 @@ namespace GoodsStore.WebServer.Controllers.api
         {
             try
             {
-                CategoryDTO deleted = null;
+                RoleDTO deleted = null;
                 using (var trans = new TransactionScope(TransactionScopeOption.RequiresNew, TransactionScopeAsyncFlowOption.Enabled))
                 {
-                    deleted = _uow.Categories.Delete(id);
+                    deleted = _uow.Roles.Delete(id);
                     _uow.Save();
 
                     trans.Complete();
@@ -137,5 +129,7 @@ namespace GoodsStore.WebServer.Controllers.api
                 return BadRequest(ex.Message);
             }
         }
+
+
     }
 }

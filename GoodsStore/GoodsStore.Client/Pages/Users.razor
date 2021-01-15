@@ -1,0 +1,80 @@
+﻿@page "/users"
+@inject UserAuthVM _userAuthVM
+@inject IGenericCollectionVM<UserDTO> _usersVM
+@inject IJSRuntime JS
+@implements IDisposable
+
+<h1>Users</h1>
+<p class="text-muted">@_usersVM?.Message</p>
+
+<div class="m-2 d-flex justify-content-start">
+    <a class="btn btn-lg btn-outline-info mx-2" href="/User/Edit">Add New</a>
+    <button class="btn btn-lg btn-outline-success mx-2" @onclick="_usersVM.GetItemsAsync">Update</button>
+</div>
+
+@if (!_usersVM.IsReady)
+{
+    <Loading Title="Users are loading." />
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Title</th>
+                <th>Email</th>
+                <th>Country</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+
+            @foreach (var item in _usersVM.Items)
+            {
+                <tr @key="@($"{item.Id}{item.Title}")">
+                    <td>@item.Id</td>
+                    <td>
+                        <a href="/User/Edit/@item.Id" class="list-group-item list-group-item-action">
+                            <span>@item.Title</span>
+                        </a>
+                    </td>
+                    <td>
+                        @item.Email
+                    </td>
+                    <td>
+                        @item.Country
+                    </td>
+                    <td>
+                        <button class="btn btn-danger" disabled="@(!_userAuthVM.IsSignedIn())" @onclick="() => Delete(item)">Remove</button>
+                    </td>
+                </tr>
+            }
+
+        </tbody>
+    </table>
+}
+
+
+@code {
+    protected override async Task OnInitializedAsync()
+    {
+        _usersVM.OnChange += StateHasChanged;
+        await _usersVM.GetItemsAsync();
+    }
+
+    async Task Delete(UserDTO dto)
+    {
+        if (!await JS.InvokeAsync<bool>(
+            "confirm",
+            $"Are you sure you want to delete the '{dto.ToString()}'?"))
+            return;
+
+        await _usersVM.RemoveItemAsync(dto.Id);
+    }
+
+    public void Dispose()
+    {
+        _usersVM.OnChange -= StateHasChanged;
+    }
+}

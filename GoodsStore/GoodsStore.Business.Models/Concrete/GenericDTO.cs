@@ -1,10 +1,14 @@
 ﻿using GoodsStore.Business.Models.Abstract;
+using System.ComponentModel.DataAnnotations;
 
 namespace GoodsStore.Business.Models.Concrete
 {
     public class GenericDTO : IEqualableByUID<GenericDTO>
     {
         public int Id { get; set; } = 0;
+
+        [Required]
+        [StringLength(100)]
         public string Title { get; set; } = "";
 
         public override bool Equals(object obj)

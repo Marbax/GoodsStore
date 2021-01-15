@@ -1,18 +1,12 @@
-﻿using GoodsStore.Business.Models;
-using GoodsStore.Business.Models.Concrete;
+﻿using GoodsStore.Business.Models.Concrete;
 using GoodsStore.Business.Services.Abstract;
+using Newtonsoft.Json.Linq;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
-using System.Net.Http;
+using System.Data.Entity.Validation;
 using System.Threading.Tasks;
 using System.Transactions;
-using System.Web;
 using System.Web.Http;
 using System.Web.Http.Cors;
-using System.Security.Claims;
-using Newtonsoft.Json.Linq;
 
 namespace GoodsStore.WebServer.Controllers.api
 {
@@ -20,11 +14,125 @@ namespace GoodsStore.WebServer.Controllers.api
     public class UserController : ApiController
     {
         private readonly IAuthManager _authManager;
+        private readonly IServicesUnitOfWork _uow;
 
-        public UserController(IAuthManager authManager)
+        public UserController(IAuthManager authManager, IServicesUnitOfWork uow)
         {
             _authManager = authManager;
+            _uow = uow;
         }
+
+        public async Task<IHttpActionResult> Get()
+        {
+            try
+            {
+                var res = await Task.FromResult(_uow.Users.GetAll());
+
+                return Ok(res);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        public IHttpActionResult Get(int id)
+        {
+            try
+            {
+                var res = _uow.Users.Get(id);
+
+                return Ok(res);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [HttpPost]
+        public IHttpActionResult Create([FromBody] UserDTO user)
+        {
+            try
+            {
+                UserDTO added = null;
+                using (var trans = new TransactionScope(TransactionScopeOption.RequiresNew, TransactionScopeAsyncFlowOption.Enabled))
+                {
+                    added = _uow.Users.Add(user);// "add" method made save
+
+                    trans.Complete();
+                }
+                return Ok(added);
+            }
+            catch (DbEntityValidationException ex)
+            {
+                string exMsg = "";
+
+                foreach (var eve in ex.EntityValidationErrors)
+                    foreach (var ve in eve.ValidationErrors)
+                        exMsg += $"{ve.ErrorMessage} \n";
+
+                return BadRequest(exMsg);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [HttpPut]
+        public IHttpActionResult Update([FromBody] UserDTO user)
+        {
+            try
+            {
+                using (var trans = new TransactionScope(TransactionScopeOption.RequiresNew, TransactionScopeAsyncFlowOption.Enabled))
+                {
+                    _uow.Users.CreateOrUpdate(user);
+                    _uow.Save();
+
+                    trans.Complete();
+                }
+
+                var updated = _uow.Users.Get(user.Id);
+                return Ok(updated);
+            }
+            catch (DbEntityValidationException ex)
+            {
+                string exMsg = "";
+
+                foreach (var eve in ex.EntityValidationErrors)
+                    foreach (var ve in eve.ValidationErrors)
+                        exMsg += $"{ve.ErrorMessage} \n";
+
+                return BadRequest(exMsg);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [HttpDelete]
+        public IHttpActionResult Delete(int id)
+        {
+            try
+            {
+                UserDTO deleted = null;
+                using (var trans = new TransactionScope(TransactionScopeOption.RequiresNew, TransactionScopeAsyncFlowOption.Enabled))
+                {
+                    deleted = _uow.Users.Delete(id);
+                    _uow.Save();
+
+                    trans.Complete();
+                }
+                return Ok(deleted);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
 
         [AllowAnonymous]
         [HttpPost()]
@@ -47,13 +155,10 @@ namespace GoodsStore.WebServer.Controllers.api
                     trans.Complete();
                 }
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                return BadRequest(ex.Message);
+                return BadRequest("No such User or incorrect login data.");
             }
-
-            if (foundUser == null)
-                return BadRequest("No such User. Or incorrect login data.");
 
             return Ok(foundUser);
         }
@@ -113,6 +218,16 @@ namespace GoodsStore.WebServer.Controllers.api
 
                     trans.Complete();
                 }
+            }
+            catch (DbEntityValidationException ex)
+            {
+                string exMsg = "";
+
+                foreach (var eve in ex.EntityValidationErrors)
+                    foreach (var ve in eve.ValidationErrors)
+                        exMsg += $"{ve.ErrorMessage} \n";
+
+                return BadRequest(exMsg);
             }
             catch (Exception ex)
             {
