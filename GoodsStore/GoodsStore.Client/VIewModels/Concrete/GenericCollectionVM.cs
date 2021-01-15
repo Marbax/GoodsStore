@@ -41,7 +41,7 @@ namespace GoodsStore.Client.ViewModels.Concrete
             {
                 Items = await _httpService.Get<IEnumerable<T>>(_appSettings.GetController(typeof(T).Name).ToString());
                 NotifyStateChanged();
-                Message = "Items loaded successfully.";
+                Message = $"{Items.Count()} Items loaded successfully.";
             }
             catch (Exception ex)
             {

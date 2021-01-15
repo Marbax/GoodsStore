@@ -11,7 +11,8 @@ namespace GoodsStore.Client
         public Uri RegisterUri { get; set; }
         public Uri UpdateUri { get; set; }
         public Uri CategoriesController { get; set; }
-        public Uri userController { get; set; }
+        public Uri UserController { get; set; }
+        public Uri RoleController { get; set; }
 
         public AppSettings(WebAssemblyHostConfiguration config)
         {
@@ -20,7 +21,8 @@ namespace GoodsStore.Client
             RegisterUri = new Uri(BaseUri + config["registerMethod"]);
             UpdateUri = new Uri(BaseUri + config["updateProfileMethod"]);
             CategoriesController = new Uri(BaseUri + config["categoriesController"]);
-            userController = new Uri(BaseUri + config["usersController"]);
+            UserController = new Uri(BaseUri + config["usersController"]);
+            RoleController = new Uri(BaseUri + config["rolesController"]);
         }
 
         public Uri GetController(string dtoName)
@@ -28,7 +30,9 @@ namespace GoodsStore.Client
             if (dtoName == typeof(CategoryDTO).Name)
                 return CategoriesController;
             else if (dtoName == typeof(UserDTO).Name)
-                return userController;
+                return UserController;
+            else if (dtoName == typeof(RoleDTO).Name)
+                return RoleController;
             else
                 throw new ApplicationException($"Ther are no controller for {dtoName}.");
         }

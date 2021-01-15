@@ -1,6 +1,7 @@
 ﻿@page "/User/Edit"
 @page "/User/Edit/{ItemId:int}"
 @inject IGenericItemVM<UserDTO> _vm
+@inject IGenericCollectionVM<RoleDTO> _roles
 
 @if (!_vm.IsReady)
 {
@@ -44,18 +45,25 @@ else
         <div class="col-6 m-2">
             <InputText type="text" disabled @bind-Value="_vm.Item.Token" name="phone" class="form-control" placeholder="Token" />
         </div>
-        @if (_vm.Item.RoleIds.Count() > 0)
+        @if (_roles.IsReady)
         {
-            //TODO: add normal user's roles editing
-            <div class="form-group row">
-                <label class="control-label col-md-4" for="title">Roles:</label>
-                <input class="form-control col" name="title" type="text" disabled value=@_vm.Item.RoleIds?.Select(i => i.ToString()).Aggregate((f, s) => f + ", " + s) placeholder="Roles" />
+            //TODO: make it looks like some tag list
+            <label class="control-label col-md-4" for="title">Roles:</label>
+            <div class="col-6 m-2">
+                @foreach (var item in _roles.Items)
+                {
+                    <span class="mx-2">
+                        <label for="@($"{item.Id}_{item.Title}")">@item.Title</label>
+                        <input type="checkbox" id="@($"{item.Id}_{item.Title}")"
+                               checked=@(_vm.Item.RoleIds.Count()>0 && _vm.Item.RoleIds.Contains(item.Id))
+                               @onchange="@((e) => CheckboxChanged(e, item.Id))" />
+                    </span>
+                }
             </div>
         }
         @if (ItemId > 0)
         {
             <button class="btn btn-primary" type="submit">Update</button>
-
         }
         else
         {
@@ -74,6 +82,7 @@ else
             await _vm.GetItemAsync(ItemId);
         else
             _vm.Item = new UserDTO();
+        await _roles.GetItemsAsync();
     }
 
     private async Task HandleValidSubmit()
@@ -82,6 +91,21 @@ else
             await _vm.UpdateItem();
         else
             await _vm.AddItem();
+    }
+
+    private void CheckboxChanged(ChangeEventArgs e, int id)
+    {
+        var userRoles = _vm.Item.RoleIds.ToList();
+        if ((bool)e.Value == true)
+        {
+            userRoles.Add(id);
+            _vm.Item.RoleIds = userRoles;
+        }
+        else if ((bool)e.Value == false)
+        {
+            userRoles.RemoveAll(i => i == id);
+            _vm.Item.RoleIds = userRoles;
+        }
     }
 
 }
