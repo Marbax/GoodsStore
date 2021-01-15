@@ -64,7 +64,7 @@ namespace GoodsStore.WebServer.Controllers.api
                 CategoryDTO added = null;
                 using (var trans = new TransactionScope(TransactionScopeOption.RequiresNew, TransactionScopeAsyncFlowOption.Enabled))
                 {
-                    added = _uow.Categories.Add(cat);// "add" method made save
+                    added = _uow.Categories.Add(cat);// "add" method made save to return an item with real id
 
                     trans.Complete();
                 }
