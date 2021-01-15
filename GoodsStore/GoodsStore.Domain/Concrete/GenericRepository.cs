@@ -44,6 +44,7 @@ namespace GoodsStore.Domain.Concrete
             return _dbSet.AsNoTracking<T>().Where(predicate);
         }
 
+        // some kind of fucking black magick, after item edititing
         public virtual IEnumerable<T> GetAll()
         {
             return _dbSet;
