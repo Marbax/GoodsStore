@@ -20,11 +20,11 @@ namespace GoodsStore.Client.ViewModels.Concrete
         public UserAuthVM(IAuthenticationService authSrvice)
         {
             AuthSrvice = authSrvice;
-            if (AuthSrvice.User != null)
+            if (!(AuthSrvice.User is null))
                 ProxyUser = AuthSrvice.User.Clone();
         }
 
-        public bool IsSignedIn() => AuthSrvice.User != null;
+        public bool IsSignedIn() => !(AuthSrvice.User is null);
 
         public async Task<bool> Register()
         {

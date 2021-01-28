@@ -11,7 +11,7 @@
     <div class="top-row px-4">
         @if (_userAuthVM.IsSignedIn())
         {
-            <h4>Hello, <a href="/profile">@_userAuthVM.AuthSrvice.User</a></h4>
+            <h4>Hello, <a href="/profile">@_userAuthVM.AuthSrvice.User.ToString()</a></h4>
             <button class="btn btn-danger mx-3" @onclick="()=>_userAuthVM.Logout()">Logout</button>
         }
         else

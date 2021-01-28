@@ -6,7 +6,7 @@ namespace GoodsStore.Business.Models.Concrete
 
     public class UserDTO : GenericDTO
     {
-        public new string Title
+        public override string Title
         {
             get => string.IsNullOrEmpty(Name) && string.IsNullOrEmpty(Lastname) ? Email : $"{ Lastname} { Name}";
         }
@@ -37,11 +37,6 @@ namespace GoodsStore.Business.Models.Concrete
         public string Token { get; set; } = "";
 
         public IEnumerable<int> RoleIds { get; set; } = new List<int>();
-
-        public override string ToString()
-        {
-            return Title;
-        }
 
         public UserDTO Clone()
         {
