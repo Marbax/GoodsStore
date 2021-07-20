@@ -1,12 +1,11 @@
-﻿using System;
-using System.Threading.Tasks;
+﻿using Microsoft.IdentityModel.Tokens;
 using Microsoft.Owin;
-using Owin;
-using Microsoft.Owin.Security.Jwt;
 using Microsoft.Owin.Security;
-using Microsoft.IdentityModel.Tokens;
-using System.Text;
+using Microsoft.Owin.Security.Jwt;
+using Owin;
+using System;
 using System.Configuration;
+using System.Text;
 
 [assembly: OwinStartup(typeof(GoodsStore.WebServer.App_Start.Startup))]
 

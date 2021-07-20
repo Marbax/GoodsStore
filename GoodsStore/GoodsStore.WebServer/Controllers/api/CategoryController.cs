@@ -1,12 +1,7 @@
 ﻿using GoodsStore.Business.Models.Concrete;
 using GoodsStore.Business.Services.Abstract;
 using System;
-using System.Collections.Generic;
-using System.Data.Entity;
 using System.Data.Entity.Validation;
-using System.Linq;
-using System.Net;
-using System.Net.Http;
 using System.Threading.Tasks;
 using System.Transactions;
 using System.Web.Http;
