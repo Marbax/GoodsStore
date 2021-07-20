@@ -10,17 +10,28 @@ using System.Web.Http.Cors;
 namespace GoodsStore.WebServer.Controllers.api
 {
     //[Authorize(Roles = "superadmin,admin,manager")]
+    /// <summary>
+    /// Category controller
+    /// </summary>
     [AllowAnonymous]
     [EnableCors(origins: "*", headers: "*", methods: "*")]
     public class CategoryController : ApiController
     {
         private readonly IServicesUnitOfWork _uow;
 
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        /// <param name="uow"></param>
         public CategoryController(IServicesUnitOfWork uow)
         {
             _uow = uow;
         }
 
+        /// <summary>
+        /// Get all categories
+        /// </summary>
+        /// <returns></returns>
         public async Task<IHttpActionResult> Get()
         {
             try
@@ -37,6 +48,11 @@ namespace GoodsStore.WebServer.Controllers.api
             }
         }
 
+        /// <summary>
+        /// Get Category by Category Id
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         public IHttpActionResult Get(int id)
         {
             try
@@ -51,6 +67,28 @@ namespace GoodsStore.WebServer.Controllers.api
             }
         }
 
+        /// <summary>
+        /// Creates new category
+        /// </summary>
+        /// <remarks>
+        /// Sample request:
+        ///
+        ///     {
+        ///        "Id": 1,
+        ///        "Title": "Car",
+        ///        "Description": "Solid good",
+        ///        "Goods": [
+        ///             1,
+        ///             2,
+        ///             3
+        ///        ]
+        ///     }
+        ///
+        /// </remarks>
+        /// <param name="cat"></param>
+        /// <returns>Ok on successfully created category</returns>
+        /// <response code="201">Ok on successfully created category</response>
+        /// <response code="400">Bad request on wrong model or errors during adding to DataBase</response>
         [HttpPost]
         public IHttpActionResult Create([FromBody] CategoryDTO cat)
         {
@@ -81,6 +119,11 @@ namespace GoodsStore.WebServer.Controllers.api
             }
         }
 
+        /// <summary>
+        /// Updates information about category
+        /// </summary>
+        /// <param name="cat"></param>
+        /// <returns></returns>
         [HttpPut]
         public IHttpActionResult Update([FromBody] CategoryDTO cat)
         {
@@ -112,6 +155,11 @@ namespace GoodsStore.WebServer.Controllers.api
             }
         }
 
+        /// <summary>
+        /// Remove Category by Id
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         [HttpDelete]
         public IHttpActionResult Delete(int id)
         {
