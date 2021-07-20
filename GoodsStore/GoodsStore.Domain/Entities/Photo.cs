@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 
@@ -5,7 +6,7 @@ namespace GoodsStore.Domain.Entities
 {
     public class Photo
     {
-        public int Id { get; set; }
+        public long Id { get; set; }
 
         [Required]
         [StringLength(200)]
@@ -16,7 +17,9 @@ namespace GoodsStore.Domain.Entities
         public string MimeType { get; set; }
 
         [Required]
-        [StringLength(200)]
-        public string PhotoPath { get; set; }
+        public byte[] PhotoData { get; set; }
+
+        public virtual ICollection<Good> Goods { get; set; }
+
     }
 }

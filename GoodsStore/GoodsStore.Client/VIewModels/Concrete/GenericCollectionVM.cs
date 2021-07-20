@@ -54,9 +54,7 @@ namespace GoodsStore.Client.ViewModels.Concrete
             try
             {
                 var res = await _httpService.Delete<T>($"{_appSettings.GetController(typeof(T).Name)}/{id}");
-                var items = Items.ToList();
-                items.Remove(res);
-                Items = items;
+                Items = Items.ToList().Where(i => !i.Equals(res));
                 NotifyStateChanged();
                 Message = $"{res} successfully removed.";
             }

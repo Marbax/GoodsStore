@@ -5,18 +5,26 @@ namespace GoodsStore.Domain.Entities
 {
     public class OrderDetails
     {
-        public int Id { get; set; }
+        public long Id { get; set; }
 
         [Required]
         public int Quantity { get; set; }
 
         [Column(TypeName = "money")]
-        public decimal Summ { get; set; }
+        public decimal Total { get; set; }
 
-        public int GoodId { get; set; }
+        /// <summary>
+        /// Value Added Tax (Percentage?)
+        /// </summary>
+        public float Vat { get; set; }
+
+        public long GoodId { get; set; }
         public virtual Good Good { get; set; }
 
-        public int OrderId { get; set; }
+        public long OrderId { get; set; }
         public virtual Order Order { get; set; }
+
+        public long CouponId { get; set; }
+        public Coupon Coupon { get; set; }
     }
 }

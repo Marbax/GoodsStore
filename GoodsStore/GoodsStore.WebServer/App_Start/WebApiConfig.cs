@@ -1,8 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using Microsoft.Owin.Security.OAuth;
 using System.Web.Http;
-using Microsoft.Owin.Security.OAuth;
+using System.Web.Http.Cors;
 
 namespace GoodsStore.WebServer
 {
@@ -12,7 +10,8 @@ namespace GoodsStore.WebServer
         {
             config.MapHttpAttributeRoutes();
 
-            config.EnableCors();
+            var cors = new EnableCorsAttribute("*", "*", "*");
+            config.EnableCors(cors);
 
             config.SuppressDefaultHostAuthentication();
             config.Filters.Add(new HostAuthenticationFilter(OAuthDefaults.AuthenticationType));

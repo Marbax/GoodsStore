@@ -7,7 +7,7 @@ namespace GoodsStore.Domain.Entities
 {
     public class User
     {
-        public int Id { get; set; }
+        public long Id { get; set; }
 
         [Required]
         [StringLength(100)]
@@ -18,8 +18,12 @@ namespace GoodsStore.Domain.Entities
         [StringLength(60)]
         public string Password { get; set; }
 
+        [Required]
+        [StringLength(1000)]
+        public string PasswordHash { get; set; }
+
+        [Required]
         [StringLength(40)]
-        [DefaultValue("")]
         public string Name { get; set; }
 
         [StringLength(40)]
@@ -34,14 +38,18 @@ namespace GoodsStore.Domain.Entities
         [DefaultValue("")]
         public string Country { get; set; }
 
+        [Required]
         [StringLength(40)]
-        [DefaultValue("")]
+        [Index(IsUnique = true)]
         public string Phone { get; set; }
 
         [StringLength(1000)]
         [DefaultValue("")]
         public string Token { get; set; }
 
+        public virtual ICollection<Order> Orders { get; set; }
+
         public virtual ICollection<Role> Roles { get; set; }
+
     }
 }

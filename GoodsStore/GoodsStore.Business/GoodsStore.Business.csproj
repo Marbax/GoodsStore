@@ -62,6 +62,7 @@
     <Compile Include="Services\Abstract\IAuthManager.cs" />
     <Compile Include="Services\Abstract\IService.cs" />
     <Compile Include="Services\Abstract\IServicesUnitOfWork.cs" />
+    <Compile Include="Services\Concrete\Encryption.cs" />
     <Compile Include="Services\Concrete\GenericService.cs" />
     <Compile Include="Services\Concrete\JWTAuthManager.cs" />
     <Compile Include="Services\Concrete\RawUnitOfWork.cs" />

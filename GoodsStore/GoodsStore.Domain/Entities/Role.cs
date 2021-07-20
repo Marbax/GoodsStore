@@ -6,7 +6,7 @@ namespace GoodsStore.Domain.Entities
 {
     public class Role
     {
-        public int Id { get; set; }
+        public long Id { get; set; }
 
         [Required]
         [Index(IsUnique = true)]

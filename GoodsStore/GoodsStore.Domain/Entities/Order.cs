@@ -8,9 +8,9 @@ namespace GoodsStore.Domain.Entities
 {
     public class Order
     {
-        public int Id { get; set; }
+        public long Id { get; set; }
 
-        public int UserId { get; set; }
+        public long UserId { get; set; }
         public virtual User User { get; set; }
 
         [Required]
@@ -28,13 +28,18 @@ namespace GoodsStore.Domain.Entities
         [Column(TypeName = "date")]
         [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
         [DefaultValue("getutcdate()")]
-        public DateTime Date { get; set; }
+        public DateTime OrderDateUtc { get; set; }
 
         [Column(TypeName = "money")]
-        public decimal Summ { get; set; }
+        public decimal Total { get; set; }
 
-        public int Amount { get; set; }
+        /// <summary>
+        /// Is it needed?
+        /// </summary>
+        public int PositionsAmount { get; set; }
 
         public virtual ICollection<OrderDetails> OrderDetails { get; set; }
+
+        public virtual Payment Payment { get; set; }
     }
 }

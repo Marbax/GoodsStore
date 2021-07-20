@@ -64,6 +64,8 @@
     <Compile Include="Concrete\UserRepo.cs" />
     <Compile Include="Context\GoodsStoreDBInitializer.cs" />
     <Compile Include="Entities\Category.cs" />
+    <Compile Include="Entities\Coupon.cs" />
+    <Compile Include="Entities\Payment.cs" />
     <Compile Include="Entities\Role.cs" />
     <Compile Include="Entities\Good.cs" />
     <Compile Include="Context\GoodsStoreDB.cs" />

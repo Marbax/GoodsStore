@@ -34,7 +34,7 @@ namespace GoodsStore.Domain.Concrete
             return _dbSet.Remove(entity);
         }
 
-        public virtual T Get(int id)
+        public virtual T Get(long id)
         {
             return _dbSet.Find(id);
         }
