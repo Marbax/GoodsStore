@@ -11,8 +11,15 @@ using System.Text;
 
 namespace GoodsStore.WebServer.App_Start
 {
+    /// <summary>
+    /// 
+    /// </summary>
     public class Startup
     {
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="app"></param>
         public void Configuration(IAppBuilder app)
         {
             app.UseJwtBearerAuthentication(

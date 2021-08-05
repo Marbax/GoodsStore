@@ -9,16 +9,27 @@ using System.Web.Http.Cors;
 
 namespace GoodsStore.WebServer.Controllers.api
 {
+    /// <summary>
+    /// Role Controller
+    /// </summary>
     [EnableCors(origins: "*", headers: "*", methods: "*")]
     public class RoleController : ApiController
     {
         private readonly IServicesUnitOfWork _uow;
 
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        /// <param name="uow"></param>
         public RoleController(IServicesUnitOfWork uow)
         {
             _uow = uow;
         }
 
+        /// <summary>
+        /// Get all roles
+        /// </summary>
+        /// <returns></returns>
         public async Task<IHttpActionResult> Get()
         {
             try
@@ -33,6 +44,11 @@ namespace GoodsStore.WebServer.Controllers.api
             }
         }
 
+        /// <summary>
+        /// Get Role by id
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         public IHttpActionResult Get(int id)
         {
             try
@@ -47,6 +63,11 @@ namespace GoodsStore.WebServer.Controllers.api
             }
         }
 
+        /// <summary>
+        /// Create new Role
+        /// </summary>
+        /// <param name="item"></param>
+        /// <returns></returns>
         [HttpPost]
         public IHttpActionResult Create([FromBody] RoleDTO item)
         {
@@ -77,6 +98,11 @@ namespace GoodsStore.WebServer.Controllers.api
             }
         }
 
+        /// <summary>
+        /// Update Role
+        /// </summary>
+        /// <param name="item"></param>
+        /// <returns></returns>
         [HttpPut]
         public IHttpActionResult Update([FromBody] RoleDTO item)
         {
@@ -109,6 +135,11 @@ namespace GoodsStore.WebServer.Controllers.api
             }
         }
 
+        /// <summary>
+        /// Delete an Role
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         [HttpDelete]
         public IHttpActionResult Delete(int id)
         {
@@ -129,7 +160,5 @@ namespace GoodsStore.WebServer.Controllers.api
                 return BadRequest(ex.Message);
             }
         }
-
-
     }
 }

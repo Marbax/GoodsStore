@@ -10,18 +10,30 @@ using System.Web.Http.Cors;
 
 namespace GoodsStore.WebServer.Controllers.api
 {
+    /// <summary>
+    /// User Controller
+    /// </summary>
     [EnableCors(origins: "*", headers: "*", methods: "*")]
     public class UserController : ApiController
     {
         private readonly IAuthManager _authManager;
         private readonly IServicesUnitOfWork _uow;
 
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        /// <param name="authManager"></param>
+        /// <param name="uow"></param>
         public UserController(IAuthManager authManager, IServicesUnitOfWork uow)
         {
             _authManager = authManager;
             _uow = uow;
         }
 
+        /// <summary>
+        /// Get all Users
+        /// </summary>
+        /// <returns></returns>
         public async Task<IHttpActionResult> Get()
         {
             try
@@ -36,6 +48,11 @@ namespace GoodsStore.WebServer.Controllers.api
             }
         }
 
+        /// <summary>
+        /// Get user By Id
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         public IHttpActionResult Get(int id)
         {
             try
@@ -50,6 +67,11 @@ namespace GoodsStore.WebServer.Controllers.api
             }
         }
 
+        /// <summary>
+        /// Create an User
+        /// </summary>
+        /// <param name="user"></param>
+        /// <returns></returns>
         [HttpPost]
         public IHttpActionResult Create([FromBody] UserDTO user)
         {
@@ -80,6 +102,11 @@ namespace GoodsStore.WebServer.Controllers.api
             }
         }
 
+        /// <summary>
+        /// Update an User
+        /// </summary>
+        /// <param name="user"></param>
+        /// <returns></returns>
         [HttpPut]
         public IHttpActionResult Update([FromBody] UserDTO user)
         {
@@ -112,6 +139,11 @@ namespace GoodsStore.WebServer.Controllers.api
             }
         }
 
+        /// <summary>
+        /// Delete an User
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         [HttpDelete]
         public IHttpActionResult Delete(int id)
         {
@@ -133,7 +165,11 @@ namespace GoodsStore.WebServer.Controllers.api
             }
         }
 
-
+        /// <summary>
+        /// User login action
+        /// </summary>
+        /// <param name="authData"></param>
+        /// <returns></returns>
         [AllowAnonymous]
         [HttpPost()]
         [Route("api/user/login")]
@@ -163,6 +199,11 @@ namespace GoodsStore.WebServer.Controllers.api
             return Ok(foundUser);
         }
 
+        /// <summary>
+        /// Register a new User
+        /// </summary>
+        /// <param name="authData"></param>
+        /// <returns></returns>
         [AllowAnonymous]
         [HttpPost()]
         [Route("api/user/register")]
@@ -196,6 +237,11 @@ namespace GoodsStore.WebServer.Controllers.api
             return Ok(newUser);
         }
 
+        /// <summary>
+        /// Trying to update User profile
+        /// </summary>
+        /// <param name="user"></param>
+        /// <returns></returns>
         [HttpPut()]
         [Route("api/user/update")]
         public async Task<IHttpActionResult> UpdateProfile([FromBody] UserDTO user)
