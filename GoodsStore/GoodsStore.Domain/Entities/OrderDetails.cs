@@ -5,7 +5,7 @@ namespace GoodsStore.Domain.Entities
 {
     public class OrderDetails
     {
-        public long Id { get; set; }
+        public int Id { get; set; }
 
         [Required]
         public int Quantity { get; set; }
@@ -18,13 +18,13 @@ namespace GoodsStore.Domain.Entities
         /// </summary>
         public float Vat { get; set; }
 
-        public long GoodId { get; set; }
+        public int GoodId { get; set; }
         public virtual Good Good { get; set; }
 
-        public long OrderId { get; set; }
+        public int OrderId { get; set; }
         public virtual Order Order { get; set; }
 
-        public long CouponId { get; set; }
+        public int CouponId { get; set; }
         public Coupon Coupon { get; set; }
     }
 }

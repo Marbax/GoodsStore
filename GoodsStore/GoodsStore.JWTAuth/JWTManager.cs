@@ -7,7 +7,7 @@ namespace GoodsStore.JWTAuth
 {
     public static class JwtManager
     {
-        public static string GenerateToken(int id, string login, IEnumerable<string> roles, string secret, int expireMinutes = 525600)
+        public static string GenerateToken(long id, string login, IEnumerable<string> roles, string secret, int expireMinutes = 525600)
         {
             var tokenHandler = new System.IdentityModel.Tokens.Jwt.JwtSecurityTokenHandler();
             var symmetricKey = Convert.FromBase64String(secret);

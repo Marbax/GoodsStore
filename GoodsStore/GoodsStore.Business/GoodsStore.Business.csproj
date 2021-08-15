@@ -62,7 +62,6 @@
     <Compile Include="Services\Abstract\IAuthManager.cs" />
     <Compile Include="Services\Abstract\IService.cs" />
     <Compile Include="Services\Abstract\IServicesUnitOfWork.cs" />
-    <Compile Include="Services\Concrete\Encryption.cs" />
     <Compile Include="Services\Concrete\GenericService.cs" />
     <Compile Include="Services\Concrete\JWTAuthManager.cs" />
     <Compile Include="Services\Concrete\RawUnitOfWork.cs" />
@@ -72,6 +71,10 @@
     <ProjectReference Include="..\GoodsStore.Business.Models\GoodsStore.Business.Models.csproj">
       <Project>{e6d8c253-90cc-4489-b553-31084b210449}</Project>
       <Name>GoodsStore.Business.Models</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\GoodsStore.Business.Shared\GoodsStore.Business.Shared.csproj">
+      <Project>{734fb5aa-d65e-4881-a97e-478bea0cb7c1}</Project>
+      <Name>GoodsStore.Business.Shared</Name>
     </ProjectReference>
     <ProjectReference Include="..\GoodsStore.Domain\GoodsStore.Domain.csproj">
       <Project>{bfa5c016-0c94-4abc-9211-4814a7c28bf5}</Project>

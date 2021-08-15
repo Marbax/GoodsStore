@@ -5,7 +5,7 @@
     using System.Data.Entity;
     using System.Linq;
 
-    public class GoodsStoreDBInitializer : DropCreateDatabaseAlways<GoodsStoreDB>
+    public class GoodsStoreDBInitializer : DropCreateDatabaseIfModelChanges<GoodsStoreDB>
     {
         protected override void Seed(GoodsStoreDB context)
         {
@@ -19,7 +19,7 @@
                 new Manufacturer(){Id = 7,Title= "Acer"},
                 new Manufacturer(){Id = 8,Title= "HP" , Description="Choppiest notebooks producer."},
                 new Manufacturer(){Id = 9,Title= "Canon" , Description = "Best Printer producer."},
-                new Manufacturer() {Id = 10, Title = "Asus"}
+                new Manufacturer(){Id = 10, Title = "Asus"}
             };
             context.Manufacturers.AddRange(mans);
             context.SaveChanges();
@@ -62,8 +62,7 @@
             context.Roles.AddRange(roles);
             context.SaveChanges();
 
-            var sudo = new User() { Id = 1, Email = "superadmin@gs.com", Password = "superadmin", Phone = "0934223302", Name = "Sudo", Roles = roles.ToList() };
-            sudo.PasswordHash = sudo.Password;
+            var sudo = new User() { Id = 1, Email = "superadmin@gs.com", PasswordHash = "superadmin", Phone = "0934223302", Name = "Sudo", Roles = roles.ToList() };
 
             IEnumerable<User> users = new List<User>() { sudo };
             context.Users.AddRange(users);

@@ -18,6 +18,9 @@ namespace GoodsStore.Business.Models.Concrete
         [Required]
         [StringLength(60)]
         public string Password { get; set; }
+        [Required]
+        [StringLength(1000)]
+        public string PasswordHash { get; set; }
 
         [StringLength(40)]
         public string Name { get; set; } = "";

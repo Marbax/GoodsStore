@@ -1,4 +1,5 @@
 ﻿using GoodsStore.Business.Models.Concrete;
+using GoodsStore.Business.Shared;
 using GoodsStore.Business.Services.Abstract;
 using GoodsStore.JWTAuth;
 using System;
@@ -41,12 +42,15 @@ namespace GoodsStore.Business.Services.Concrete
             return await Task.FromResult<IPrincipal>(null);
         }
 
-        public async Task<UserDTO> Authenticate(string login, string password)
+        public async Task<UserDTO> Authenticate(string email, string password)
         {
-            var user = _uow.Users.Get(i => i.Email == login && i.Password == password).FirstOrDefault();
+            var user = _uow.Users.Get(i => i.Email == email).FirstOrDefault();
 
             if (user == null)
-                throw new ApplicationException("There is no user with such a paswword and email.");
+                throw new UnauthorizedAccessException("There is no user with such email.");
+
+            if (!password.Verify(user.PasswordHash))
+                throw new UnauthorizedAccessException("Wrong password.");
 
             if (string.IsNullOrEmpty(user.Token) || !ValidateToken(user.Token, out var _))
                 UpdateToken(user);

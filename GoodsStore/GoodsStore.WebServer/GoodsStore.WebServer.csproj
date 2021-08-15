@@ -186,6 +186,10 @@
       <Project>{e6d8c253-90cc-4489-b553-31084b210449}</Project>
       <Name>GoodsStore.Business.Models</Name>
     </ProjectReference>
+    <ProjectReference Include="..\GoodsStore.Business.Shared\GoodsStore.Business.Shared.csproj">
+      <Project>{734fb5aa-d65e-4881-a97e-478bea0cb7c1}</Project>
+      <Name>GoodsStore.Business.Shared</Name>
+    </ProjectReference>
     <ProjectReference Include="..\GoodsStore.Business\GoodsStore.Business.csproj">
       <Project>{aa7abca3-d657-49b0-98d6-e66bb2db2671}</Project>
       <Name>GoodsStore.Business</Name>

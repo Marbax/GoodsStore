@@ -1,4 +1,5 @@
 ﻿using GoodsStore.Business.Models.Concrete;
+using GoodsStore.Business.Shared;
 using GoodsStore.Business.Services.Abstract;
 using Newtonsoft.Json.Linq;
 using System;
@@ -78,6 +79,7 @@ namespace GoodsStore.WebServer.Controllers.api
             try
             {
                 UserDTO added = null;
+                user.PasswordHash = user.Password.GetHash();
                 using (var trans = new TransactionScope(TransactionScopeOption.RequiresNew, TransactionScopeAsyncFlowOption.Enabled))
                 {
                     added = _uow.Users.Add(user);// "add" method made save
@@ -177,7 +179,7 @@ namespace GoodsStore.WebServer.Controllers.api
         {
             string username = authData.Value<string>("username");
             string password = authData.Value<string>("password");
-
+            
             if (string.IsNullOrEmpty(username) || string.IsNullOrEmpty(password))
                 return BadRequest("Some login data is absent.");
 

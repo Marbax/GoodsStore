@@ -7,7 +7,7 @@ namespace GoodsStore.Domain.Entities
 {
     public class Category
     {
-        public long Id { get; set; }
+        public int Id { get; set; }
 
         [Required]
         [Index(IsUnique = true)]

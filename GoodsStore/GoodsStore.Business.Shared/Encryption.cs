@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Security.Cryptography;
 
-namespace GoodsStore.Business.Services.Concrete
+namespace GoodsStore.Business.Shared
 {
     public static class Encryption
     {

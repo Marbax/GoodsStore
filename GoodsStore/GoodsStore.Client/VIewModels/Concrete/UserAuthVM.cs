@@ -1,4 +1,5 @@
 ﻿using GoodsStore.Business.Models.Concrete;
+using GoodsStore.Business.Shared;
 using GoodsStore.Client.Services.Abstract;
 using System;
 using System.Threading.Tasks;
@@ -39,7 +40,8 @@ namespace GoodsStore.Client.ViewModels.Concrete
                 IsReady = false;
                 Message = "";
                 NotifyStateChanged();
-                await AuthSrvice.Register(ProxyUser.Email, ProxyUser.Password);
+                ProxyUser.PasswordHash = ProxyUser.Password.GetHash();
+                await AuthSrvice.Register(ProxyUser.Email, ProxyUser.PasswordHash);
                 ProxyUser = AuthSrvice.User.Clone();
                 IsReady = true;
                 NotifyStateChanged();
@@ -60,6 +62,7 @@ namespace GoodsStore.Client.ViewModels.Concrete
                 IsReady = false;
                 Message = "";
                 NotifyStateChanged();
+                ProxyUser.PasswordHash = ProxyUser.Password.GetHash();
                 await AuthSrvice.Login(ProxyUser.Email, ProxyUser.Password);
                 ProxyUser = AuthSrvice.User.Clone();
                 IsReady = true;
@@ -87,6 +90,7 @@ namespace GoodsStore.Client.ViewModels.Concrete
                 IsReady = false;
                 Message = "";
                 NotifyStateChanged();
+                ProxyUser.PasswordHash = ProxyUser.Password.GetHash();
                 await AuthSrvice.UpdateProfile(ProxyUser);
                 ProxyUser = AuthSrvice.User.Clone();
                 IsReady = true;

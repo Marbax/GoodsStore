@@ -7,16 +7,12 @@ namespace GoodsStore.Domain.Entities
 {
     public class User
     {
-        public long Id { get; set; }
+        public int Id { get; set; }
 
         [Required]
         [StringLength(100)]
         [Index(IsUnique = true)]
         public string Email { get; set; }
-
-        [Required]
-        [StringLength(60)]
-        public string Password { get; set; }
 
         [Required]
         [StringLength(1000)]

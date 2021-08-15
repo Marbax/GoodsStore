@@ -7,7 +7,7 @@ namespace GoodsStore.Domain.Entities
 {
     public class Payment
     {
-        public long Id { get; set; }
+        public int Id { get; set; }
 
         public virtual Order Order { get; set; }
 

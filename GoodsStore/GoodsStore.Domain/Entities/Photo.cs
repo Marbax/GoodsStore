@@ -6,7 +6,7 @@ namespace GoodsStore.Domain.Entities
 {
     public class Photo
     {
-        public long Id { get; set; }
+        public int Id { get; set; }
 
         [Required]
         [StringLength(200)]

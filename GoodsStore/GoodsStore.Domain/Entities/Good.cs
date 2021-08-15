@@ -7,7 +7,7 @@ namespace GoodsStore.Domain.Entities
 {
     public class Good
     {
-        public long Id { get; set; }
+        public int Id { get; set; }
 
         [Required]
         [StringLength(200)]
@@ -31,7 +31,7 @@ namespace GoodsStore.Domain.Entities
 
         public virtual ICollection<Category> Categories { get; set; }
 
-        public long ManufacturerId { get; set; }
+        public int ManufacturerId { get; set; }
         public virtual Manufacturer Manufacturer { get; set; }
 
         public virtual ICollection<Photo> Photos { get; set; }
