@@ -1,4 +1,5 @@
 using GoodsStore.Business.Models.Concrete;
+using GoodsStore.Client.Extensions;
 using GoodsStore.Client.Services.Abstract;
 using GoodsStore.Client.Services.Concrete;
 using GoodsStore.Client.ViewModels.Abstract;
@@ -45,6 +46,8 @@ namespace GoodsStore.Client
             var authenticationService = host.Services.GetRequiredService<IAuthenticationService>();
             await authenticationService.Initialize();
 
+            await host.SetDefaultCulture(); 
+            
             await host.RunAsync();
         }
     }
