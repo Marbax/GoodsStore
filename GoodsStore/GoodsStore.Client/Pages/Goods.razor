@@ -1,0 +1,75 @@
+﻿@page "/goods"
+@inject IGenericCollectionVM<GoodDTO> dtosVM
+@inject IJSRuntime JS
+@implements IDisposable
+
+<h1>Goods</h1>
+<p class="text-muted">@dtosVM?.Message</p>
+
+<div class="m-2 d-flex justify-content-start">
+    <a class="btn btn-lg btn-outline-info mx-2" href="/Good/Edit">Add New</a>
+    <button class="btn btn-lg btn-outline-success mx-2" @onclick="dtosVM.GetItemsAsync">Update</button>
+</div>
+
+@if (!dtosVM.IsReady)
+{
+    <Loading Title="Goods are loading." />
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Title</th>
+                <th>Count</th>
+                <th>Price</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+
+            @foreach (var dto in dtosVM.Items)
+            {
+                <tr @key="@($"{dto.Id}{dto.Title}")">
+                    <td>@dto.Id</td>
+                    <td>
+                        <a href="/Good/Edit/@dto.Id" class="list-group-item list-group-item-action">
+                            <span>@dto.Title</span>
+                        </a>
+                    </td>
+                    <td>@dto.Count</td>
+                    <td>@dto.Price.ToString("00.00")</td>
+                    <td>
+                        <button class="btn btn-danger" @onclick="() => Delete(dto)">Remove</button>
+                    </td>
+                </tr>
+            }
+
+        </tbody>
+    </table>
+}
+
+
+@code {
+    protected override async Task OnInitializedAsync()
+    {
+        dtosVM.OnChange += StateHasChanged;
+        await dtosVM.GetItemsAsync();
+    }
+
+    async Task Delete(GoodDTO dto)
+    {
+        if (!await JS.InvokeAsync<bool>(
+            "confirm",
+            $"Are you sure you want to delete the '{dto.ToString()}'?"))
+            return;
+
+        await dtosVM.RemoveItemAsync(dto.Id);
+    }
+
+    public void Dispose()
+    {
+        dtosVM.OnChange -= StateHasChanged;
+    }
+}

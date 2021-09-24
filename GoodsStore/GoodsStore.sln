@@ -17,7 +17,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GoodsStore.Client", "GoodsS
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GoodsStore.JWTAuth", "GoodsStore.JWTAuth\GoodsStore.JWTAuth.csproj", "{193D317E-E8EE-4553-82E5-2A0DF96D62D6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GoodsStore.Business.Shared", "GoodsStore.Business.Shared\GoodsStore.Business.Shared.csproj", "{734FB5AA-D65E-4881-A97E-478BEA0CB7C1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GoodsStore.Business.Shared", "GoodsStore.Business.Shared\GoodsStore.Business.Shared.csproj", "{734FB5AA-D65E-4881-A97E-478BEA0CB7C1}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

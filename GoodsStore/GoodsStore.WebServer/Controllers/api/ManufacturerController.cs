@@ -5,40 +5,34 @@ using System.Data.Entity.Validation;
 using System.Threading.Tasks;
 using System.Transactions;
 using System.Web.Http;
-using System.Web.Http.Cors;
 
 namespace GoodsStore.WebServer.Controllers.api
 {
-    //[Authorize(Roles = "superadmin,admin,manager")]
     /// <summary>
-    /// Category controller
+    /// 
     /// </summary>
-    [AllowAnonymous]
-    [EnableCors(origins: "*", headers: "*", methods: "*")]
-    public class CategoryController : ApiController
+    public class ManufacturerController : ApiController
     {
+
         private readonly IServicesUnitOfWork _uow;
 
         /// <summary>
-        /// Constructor
+        /// 
         /// </summary>
-        /// <param name="uow"></param>
-        public CategoryController(IServicesUnitOfWork uow)
+        public ManufacturerController(IServicesUnitOfWork uow)
         {
             _uow = uow;
         }
 
         /// <summary>
-        /// Get all categories
+        /// GET: api/Manufacturer
         /// </summary>
         /// <returns></returns>
         public async Task<IHttpActionResult> Get()
         {
             try
             {
-                //some how it get's items in different states after item edited , mb some problems with context again
-                // thats happens on lowest level , with dbset (in generic repo)
-                var res = await Task.FromResult(_uow.Categories.GetAll());
+                var res = await Task.FromResult(_uow.Manufacturers.GetAll());
 
                 return Ok(res);
             }
@@ -49,7 +43,7 @@ namespace GoodsStore.WebServer.Controllers.api
         }
 
         /// <summary>
-        /// Get Category by Category Id
+        /// GET: api/Manufacturer/5
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
@@ -68,36 +62,18 @@ namespace GoodsStore.WebServer.Controllers.api
         }
 
         /// <summary>
-        /// Creates new category
+        /// POST: api/Manufacturer
         /// </summary>
-        /// <remarks>
-        /// Sample request:
-        ///
-        ///     {
-        ///        "Id": 1,
-        ///        "Title": "Car",
-        ///        "Description": "Solid good",
-        ///        "Goods": [
-        ///             1,
-        ///             2,
-        ///             3
-        ///        ]
-        ///     }
-        ///
-        /// </remarks>
-        /// <param name="cat"></param>
-        /// <returns>Ok on successfully created category</returns>
-        /// <response code="201">Ok on successfully created category</response>
-        /// <response code="400">Bad request on wrong model or errors during adding to DataBase</response>
+        /// <param name="dto"></param>
         [HttpPost]
-        public IHttpActionResult Create([FromBody] CategoryDTO cat)
+        public IHttpActionResult Create([FromBody] ManufacturerDTO dto)
         {
             try
             {
-                CategoryDTO added = null;
+                ManufacturerDTO added = null;
                 using (var trans = new TransactionScope(TransactionScopeOption.RequiresNew, TransactionScopeAsyncFlowOption.Enabled))
                 {
-                    added = _uow.Categories.Add(cat);// "add" method made save to return an item with real id
+                    added = _uow.Manufacturers.Add(dto);// "add" method made save to return an item with real id
 
                     trans.Complete();
                 }
@@ -120,23 +96,23 @@ namespace GoodsStore.WebServer.Controllers.api
         }
 
         /// <summary>
-        /// Updates information about category
+        /// Update info
         /// </summary>
-        /// <param name="cat"></param>
+        /// <param name="dto"></param>
         /// <returns></returns>
         [HttpPut]
-        public IHttpActionResult Update([FromBody] CategoryDTO cat)
+        public IHttpActionResult Update([FromBody] ManufacturerDTO dto)
         {
             try
             {
                 using (var trans = new TransactionScope(TransactionScopeOption.RequiresNew, TransactionScopeAsyncFlowOption.Enabled))
                 {
-                    _uow.Categories.CreateOrUpdate(cat);
+                    _uow.Manufacturers.CreateOrUpdate(dto);
                     _uow.Save();
 
                     trans.Complete();
                 }
-                CategoryDTO updated = _uow.Categories.Get(cat.Id);
+                ManufacturerDTO updated = _uow.Manufacturers.Get(dto.Id);
                 return Ok(updated);
             }
             catch (DbEntityValidationException ex)
@@ -156,19 +132,18 @@ namespace GoodsStore.WebServer.Controllers.api
         }
 
         /// <summary>
-        /// Remove Category by Id
+        /// DELETE: api/Manufacturer/5
         /// </summary>
         /// <param name="id"></param>
-        /// <returns></returns>
         [HttpDelete]
         public IHttpActionResult Delete(int id)
         {
             try
             {
-                CategoryDTO deleted = null;
+                ManufacturerDTO deleted = null;
                 using (var trans = new TransactionScope(TransactionScopeOption.RequiresNew, TransactionScopeAsyncFlowOption.Enabled))
                 {
-                    deleted = _uow.Categories.Delete(id);
+                    deleted = _uow.Manufacturers.Delete(id);
                     _uow.Save();
 
                     trans.Complete();

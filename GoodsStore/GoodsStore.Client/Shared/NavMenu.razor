@@ -1,4 +1,6 @@
-﻿<div class="top-row pl-4 navbar navbar-dark">
+﻿@inject UserAuthVM _userAuthVM
+
+<div class="top-row pl-4 navbar navbar-dark">
     <a class="navbar-brand" href="">Goods Store</a>
     <button class="navbar-toggler" @onclick="ToggleNavMenu">
         <span class="navbar-toggler-icon"></span>
@@ -13,8 +15,18 @@
             </NavLink>
         </li>
         <li class="nav-item px-3">
+            <NavLink class="nav-link" href="goods">
+                <span class="oi oi-list-rich" aria-hidden="true"></span> Goods
+            </NavLink>
+        </li>
+        <li class="nav-item px-3">
             <NavLink class="nav-link" href="category">
-                <span class="oi oi-list-rich" aria-hidden="true"></span> Category
+                <span class="oi oi-list-rich" aria-hidden="true"></span> Categories
+            </NavLink>
+        </li>
+        <li class="nav-item px-3">
+            <NavLink class="nav-link" href="manufacturer">
+                <span class="oi oi-list-rich" aria-hidden="true"></span> Manufacturers
             </NavLink>
         </li>
         <li class="nav-item px-3">
@@ -22,6 +34,35 @@
                 <span class="oi oi-list-rich" aria-hidden="true"></span> Users
             </NavLink>
         </li>
+        @if (!collapseNavMenu)
+        {
+            if (_userAuthVM.IsSignedIn())
+            {
+                <li class="nav-item px-3">
+                    <NavLink class="nav-link" href="profile">
+                        <span class="oi oi-list-rich" aria-hidden="true"></span> Profile: @_userAuthVM.AuthSrvice.User.ToString()
+                    </NavLink>
+                </li>
+                <li class="nav-item px-3">
+                    <NavLink class="nav-link" href="" @onclick="() => _userAuthVM.Logout()">
+                        <span class="oi oi-list-rich" aria-hidden="true"></span>Logout
+                    </NavLink>
+                </li>
+            }
+            else
+            {
+                <li class="nav-item px-3">
+                    <NavLink class="nav-link" href="login">
+                        <span class="oi oi-list-rich" aria-hidden="true"></span> Login
+                    </NavLink>
+                </li>
+                <li class="nav-item px-3">
+                    <NavLink class="nav-link" href="register">
+                        <span class="oi oi-list-rich" aria-hidden="true"></span> Register
+                    </NavLink>
+                </li>
+            }
+        }
     </ul>
 </div>
 

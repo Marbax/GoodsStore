@@ -78,7 +78,7 @@ namespace GoodsStore.Business.Services.Concrete
             return bllArr;
         }
 
-        private T MapToBll(U entity) => _mapper.Map<U, T>(entity);
+        private T MapToBll(U entity) => _mapper.Map<U, T>(entity); // fix mapping for the good
         private U MapToDLL(T entity) => _mapper.Map<T, U>(entity);
     }
 }

@@ -100,8 +100,8 @@ namespace GoodsStore.Infrastructure.App_Start
             kernel.Bind<IService<CategoryDTO>>().To<GenericService<CategoryDTO, Category>>();
             kernel.Bind<IService<ManufacturerDTO>>().To<GenericService<ManufacturerDTO, Manufacturer>>();
             kernel.Bind<IService<PhotoDTO>>().To<GenericService<PhotoDTO, Photo>>();
-            kernel.Bind<IService<SaleDTO>>().To<GenericService<SaleDTO, Order>>();
-            kernel.Bind<IService<SalePosDTO>>().To<GenericService<SalePosDTO, OrderDetails>>();
+            kernel.Bind<IService<OrderDTO>>().To<GenericService<OrderDTO, Order>>();
+            kernel.Bind<IService<OrderDetailsDTO>>().To<GenericService<OrderDetailsDTO, OrderDetails>>();
             kernel.Bind<IService<UserDTO>>().To<GenericService<UserDTO, User>>();
             kernel.Bind<IService<RoleDTO>>().To<GenericService<RoleDTO, Role>>();
             kernel.Bind<IServicesUnitOfWork>().To<ServicesUnitOfWork>();
@@ -126,6 +126,15 @@ namespace GoodsStore.Infrastructure.App_Start
             {
                 cfg.AddExpressionMapping();
                 //cfg.AddMaps(GetType().Assembly);
+
+                #region Map Good
+                cfg.CreateMap<Good, GoodDTO>()
+                    .ForMember(dto => dto.Categories, conf => conf.MapFrom(dll => dll.Categories))
+                    .ForMember(dto => dto.Manufacturer, conf => conf.MapFrom(dll => dll.Manufacturer));
+                cfg.CreateMap<GoodDTO, Good>()
+                    .ForMember(dll => dll.Categories, conf => conf.MapFrom(dto=>dto.Categories))
+                    .ForMember(dll => dll.Manufacturer, conf => conf.MapFrom(dto => dto.Manufacturer));
+                #endregion
 
                 #region Map Category
                 cfg.CreateMap<Category, CategoryDTO>()

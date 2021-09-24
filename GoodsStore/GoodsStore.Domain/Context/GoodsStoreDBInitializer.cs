@@ -4,6 +4,7 @@
     using System.Collections.Generic;
     using System.Data.Entity;
     using System.Linq;
+    using GoodsStore.Business.Shared;
 
     public class GoodsStoreDBInitializer : DropCreateDatabaseIfModelChanges<GoodsStoreDB>
     {
@@ -62,7 +63,7 @@
             context.Roles.AddRange(roles);
             context.SaveChanges();
 
-            var sudo = new User() { Id = 1, Email = "superadmin@gs.com", PasswordHash = "superadmin", Phone = "0934223302", Name = "Sudo", Roles = roles.ToList() };
+            var sudo = new User() { Id = 1, Email = "superadmin@gs.com", PasswordHash = "superadmin".GetHash(), Phone = "0934223302", Name = "Sudo", Roles = roles.ToList() };
 
             IEnumerable<User> users = new List<User>() { sudo };
             context.Users.AddRange(users);

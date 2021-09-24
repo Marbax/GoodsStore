@@ -6,8 +6,8 @@ namespace GoodsStore.Business.Services.Abstract
     public interface IServicesUnitOfWork : IDisposable
     {
         IService<GoodDTO> Goods { get; }
-        IService<SalePosDTO> SalesPoses { get; }
-        IService<SaleDTO> Sales { get; }
+        IService<OrderDetailsDTO> SalesPoses { get; }
+        IService<OrderDTO> Sales { get; }
         IService<PhotoDTO> Photos { get; }
         IService<ManufacturerDTO> Manufacturers { get; }
         IService<UserDTO> Users { get; }

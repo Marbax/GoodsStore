@@ -156,6 +156,8 @@
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\api\CategoryController.cs" />
     <Compile Include="Controllers\api\DefaultController.cs" />
+    <Compile Include="Controllers\api\GoodController.cs" />
+    <Compile Include="Controllers\api\ManufacturerController.cs" />
     <Compile Include="Controllers\api\RoleController.cs" />
     <Compile Include="Controllers\api\UserController.cs" />
     <Compile Include="Global.asax.cs">
@@ -177,6 +179,7 @@
   <ItemGroup />
   <ItemGroup>
     <None Include="packages.config" />
+    <None Include="Properties\PublishProfiles\GoodsStoreClient20210918153850 - Web Deploy.pubxml" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{4A0DDDB5-7A95-4FBF-97CC-616D07737A77}" />

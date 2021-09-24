@@ -16,9 +16,9 @@ namespace GoodsStore.Business.Services.Concrete
 
         public IService<GoodDTO> Goods { get; }
 
-        public IService<SalePosDTO> SalesPoses { get; }
+        public IService<OrderDetailsDTO> SalesPoses { get; }
 
-        public IService<SaleDTO> Sales { get; }
+        public IService<OrderDTO> Sales { get; }
 
         public IService<PhotoDTO> Photos { get; }
 
@@ -30,8 +30,8 @@ namespace GoodsStore.Business.Services.Concrete
 
         public IService<RoleDTO> Roles { get; }
 
-        public ServicesUnitOfWork(DbContext db, IService<GoodDTO> goods, IService<SalePosDTO> salesPoses,
-            IService<SaleDTO> sales, IService<PhotoDTO> photos, IService<ManufacturerDTO> manufacturers,
+        public ServicesUnitOfWork(DbContext db, IService<GoodDTO> goods, IService<OrderDetailsDTO> salesPoses,
+            IService<OrderDTO> sales, IService<PhotoDTO> photos, IService<ManufacturerDTO> manufacturers,
             IService<UserDTO> users, IService<CategoryDTO> categories, IService<RoleDTO> roles)
         {
             _db = db;

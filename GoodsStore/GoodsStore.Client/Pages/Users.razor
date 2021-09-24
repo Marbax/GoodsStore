@@ -46,7 +46,7 @@ else
                         @item.Country
                     </td>
                     <td>
-                        <button class="btn btn-danger" disabled="@(!_userAuthVM.IsSignedIn())" @onclick="() => Delete(item)">Remove</button>
+                        <button class="btn btn-danger" disabled="@(!_userAuthVM.IsSignedIn() || item.Id == _userAuthVM.AuthSrvice.User.Id)" @onclick="() => Delete(item)">Remove</button>
                     </td>
                 </tr>
             }
