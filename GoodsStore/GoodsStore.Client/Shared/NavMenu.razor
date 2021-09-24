@@ -1,4 +1,5 @@
 ﻿@inject UserAuthVM _userAuthVM
+@inject IStringLocalizer<Resource> localizer
 
 <div class="top-row pl-4 navbar navbar-dark">
     <a class="navbar-brand" href="">Goods Store</a>
@@ -7,31 +8,34 @@
     </button>
 </div>
 
+@{
+    // TODO: rewrite to css calsses
+}
 <div class="@NavMenuCssClass" @onclick="ToggleNavMenu">
     <ul class="nav flex-column">
         <li class="nav-item px-3">
             <NavLink class="nav-link" href="" Match="NavLinkMatch.All">
-                <span class="oi oi-home" aria-hidden="true"></span> Home
+                <span class="oi oi-home" aria-hidden="true"></span> @localizer["HomePage"]
             </NavLink>
         </li>
         <li class="nav-item px-3">
             <NavLink class="nav-link" href="goods">
-                <span class="oi oi-list-rich" aria-hidden="true"></span> Goods
+                <span class="oi oi-list-rich" aria-hidden="true"></span> @localizer["Goods"]
             </NavLink>
         </li>
         <li class="nav-item px-3">
             <NavLink class="nav-link" href="category">
-                <span class="oi oi-list-rich" aria-hidden="true"></span> Categories
+                <span class="oi oi-list-rich" aria-hidden="true"></span> @localizer["Categories"]
             </NavLink>
         </li>
         <li class="nav-item px-3">
             <NavLink class="nav-link" href="manufacturer">
-                <span class="oi oi-list-rich" aria-hidden="true"></span> Manufacturers
+                <span class="oi oi-list-rich" aria-hidden="true"></span> @localizer["Manufacturers"]
             </NavLink>
         </li>
         <li class="nav-item px-3">
             <NavLink class="nav-link" href="users">
-                <span class="oi oi-list-rich" aria-hidden="true"></span> Users
+                <span class="oi oi-list-rich" aria-hidden="true"></span> @localizer["Users"]
             </NavLink>
         </li>
         @if (!collapseNavMenu)
@@ -40,12 +44,12 @@
             {
                 <li class="nav-item px-3">
                     <NavLink class="nav-link" href="profile">
-                        <span class="oi oi-list-rich" aria-hidden="true"></span> Profile: @_userAuthVM.AuthSrvice.User.ToString()
-                    </NavLink>
+                        <span class="oi oi-list-rich" aria-hidden="true"></span> @localizer["Profile"]: @_userAuthVM.AuthSrvice.User.ToString()
+                    </NavLink>@localizer[""]
                 </li>
                 <li class="nav-item px-3">
                     <NavLink class="nav-link" href="" @onclick="() => _userAuthVM.Logout()">
-                        <span class="oi oi-list-rich" aria-hidden="true"></span>Logout
+                        <span class="oi oi-list-rich" aria-hidden="true"></span>@localizer["Logout"]
                     </NavLink>
                 </li>
             }
@@ -53,15 +57,18 @@
             {
                 <li class="nav-item px-3">
                     <NavLink class="nav-link" href="login">
-                        <span class="oi oi-list-rich" aria-hidden="true"></span> Login
+                        <span class="oi oi-list-rich" aria-hidden="true"></span> @localizer["Login"]
                     </NavLink>
                 </li>
                 <li class="nav-item px-3">
                     <NavLink class="nav-link" href="register">
-                        <span class="oi oi-list-rich" aria-hidden="true"></span> Register
+                        <span class="oi oi-list-rich" aria-hidden="true"></span> @localizer["Register"]
                     </NavLink>
                 </li>
             }
+            <li class="nav-item px-3">
+                <CultureSelector />
+            </li>
         }
     </ul>
 </div>

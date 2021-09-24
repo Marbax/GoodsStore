@@ -2,13 +2,14 @@
 @inject UserAuthVM _userAuthVM
 @inject IJSRuntime JS
 @implements IDisposable
+@inject IStringLocalizer<Resource> localizer
 
-<h3><b>Login</b></h3>
+<h3><b>@localizer["LoginPage"]</b></h3>
 <hr />
 
 @if (!_userAuthVM.IsReady && string.IsNullOrEmpty(_userAuthVM.Message))
 {
-    <Loading Title="Loading." />
+    <Loading>@localizer["Loading"]...</Loading>
 }
 else
 {
@@ -17,15 +18,15 @@ else
     <EditForm Model="@_userAuthVM" OnValidSubmit="@HandleValidSubmit">
         <DataAnnotationsValidator />
         <div class="col-6 m-2">
-            <InputText type="text" @bind-Value="_userAuthVM.ProxyUser.Email" name="email" class="form-control" placeholder="Email address" />
+            <InputText type="text" @bind-Value="_userAuthVM.ProxyUser.Email" name="email" class="form-control" placeholder="@localizer["Email"]" />
             <ValidationMessage For="@(() => _userAuthVM.ProxyUser.Email)" />
         </div>
         <div class="col-6 m-2">
-            <InputText type="password" @bind-Value="_userAuthVM.ProxyUser.Password" name="password" class="form-control" placeholder="Password" />
+            <InputText type="password" @bind-Value="_userAuthVM.ProxyUser.Password" name="password" class="form-control" placeholder="@localizer["Password"]" />
             <ValidationMessage For="@(() => _userAuthVM.ProxyUser.Password)" />
         </div>
         <div class="col-6 m-2">
-            <button class="btn btn-primary" type="submit">Login</button>
+            <button class="btn btn-success float-right" type="submit">@localizer["Login"]</button>
         </div>
     </EditForm>
 }

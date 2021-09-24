@@ -1,10 +1,11 @@
 ﻿@page "/Category/Edit"
 @page "/Category/Edit/{ItemId:int}"
 @inject IGenericItemVM<CategoryDTO> _vm
+@inject IStringLocalizer<Resource> localizer
 
 @if (!_vm.IsReady)
 {
-    <Loading Title="Category is loading." />
+    <Loading>@localizer["Loading"]...</Loading>
 }
 else
 {
@@ -12,29 +13,33 @@ else
 
     <EditForm Model="@_vm" OnValidSubmit="@HandleValidSubmit">
         <ValidationSummary />
-        <div class="col-6 m-2 form-group row">
-            <label class="control-label col-md-4" for="title">Title:</label>
-            <InputText type="text" @bind-Value="_vm.Item.Title" name="title" class="form-control col" placeholder="Title" />
+        <div class="col-10 m-2 form-group flex-row">
+            <label class="control-label col-md-4 font-weight-bold" for="title">@localizer["Title"]:</label>
+            <InputText type="text" @bind-Value="_vm.Item.Title" name="title" class="form-control col" placeholder="@localizer["Title"]" />
             <ValidationMessage For="@(() => _vm.Item.Title)" />
         </div>
         @if (_vm.Item.Goods.Count() > 0)
         {
-            <div class="form-group row">
-                <label class="control-label col-md-4">Goods Ids: </label>
+            <div class="col-10 m-2 form-group flex-row">
+                <label class="control-label col-md-4 font-weight-bold">@localizer["GoodsIds"]: </label>
                 <label class="control-label col">@_vm.Item.Goods.ToList().Select(i => i.ToString()).Aggregate((f, s) => f + " , " + s)</label>
             </div>
-            <div class="form-group row">
-                <label class="control-label col-md-4">Goods Count: </label>
+            <div class="col-10 m-2 form-group flex-row">
+                <label class="control-label col-md-4 font-weight-bold">@localizer["GoodsCount"]: </label>
                 <label class="control-label col">@_vm.Item.Goods.Count()</label>
             </div>
         }
         @if (ItemId > 0)
         {
-            <button class="btn btn-primary" type="submit">Update</button>
+            <div class="col-10 m-2">
+                <button class="btn btn-success float-right" type="submit">@localizer["Update"]</button>
+            </div>
         }
         else
         {
-            <button class="btn btn-primary" type="submit">Add</button>
+            <div class="col-10 m-2">
+                <button class="btn btn-success float-right" type="submit">@localizer["Add"]</button>
+            </div>
         }
     </EditForm>
 

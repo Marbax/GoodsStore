@@ -2,27 +2,28 @@
 @inject IGenericCollectionVM<CategoryDTO> _catsVM
 @inject IJSRuntime JS
 @implements IDisposable
+@inject IStringLocalizer<Resource> localizer
 
-<h1>Categories</h1>
+<h1>@localizer["Categories"]</h1>
 <p class="text-muted">@_catsVM?.Message</p>
 
 <div class="m-2 d-flex justify-content-start">
-    <a class="btn btn-lg btn-outline-info mx-2" href="/Category/Edit">Add New</a>
-    <button class="btn btn-lg btn-outline-success mx-2" @onclick="_catsVM.GetItemsAsync">Update</button>
+    <a class="btn btn-lg btn-outline-info mx-2" href="/Category/Edit">@localizer["Add"]</a>
+    <button class="btn btn-lg btn-outline-success mx-2" @onclick="_catsVM.GetItemsAsync">@localizer["Refresh"]</button>
 </div>
 
 @if (!_catsVM.IsReady)
 {
-    <Loading Title="Categories are loading." />
+    <Loading>@localizer["Loading"]...</Loading>
 }
 else
 {
     <table class="table">
         <thead>
             <tr>
-                <th>Id</th>
-                <th>Title</th>
-                <th>Actions</th>
+                <th>@localizer["Id"]</th>
+                <th>@localizer["Title"]</th>
+                <th>@localizer["Actions"]</th>
             </tr>
         </thead>
         <tbody>
@@ -37,7 +38,7 @@ else
                         </a>
                     </td>
                     <td>
-                        <button class="btn btn-danger" disabled="@(c.Goods.Count()>0)" @onclick="() => Delete(c)">Remove</button>
+                        <button class="btn btn-danger" disabled="@(c.Goods.Count()>0)" @onclick="() => Delete(c)">@localizer["Remove"]</button>
                     </td>
                 </tr>
             }
@@ -58,7 +59,7 @@ else
     {
         if (!await JS.InvokeAsync<bool>(
             "confirm",
-            $"Are you sure you want to delete the '{dto.ToString()}'?"))
+            $"{localizer["RemovingConfirm"]} '{dto.ToString()}'"))
             return;
 
         await _catsVM.RemoveItemAsync(dto.Id);

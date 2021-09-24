@@ -2,29 +2,30 @@
 @inject IGenericCollectionVM<GoodDTO> dtosVM
 @inject IJSRuntime JS
 @implements IDisposable
+@inject IStringLocalizer<Resource> localizer
 
-<h1>Goods</h1>
+<h1>@localizer["Goods"]</h1>
 <p class="text-muted">@dtosVM?.Message</p>
 
 <div class="m-2 d-flex justify-content-start">
-    <a class="btn btn-lg btn-outline-info mx-2" href="/Good/Edit">Add New</a>
-    <button class="btn btn-lg btn-outline-success mx-2" @onclick="dtosVM.GetItemsAsync">Update</button>
+    <a class="btn btn-lg btn-outline-info mx-2" href="/Good/Edit">@localizer["Add"]</a>
+    <button class="btn btn-lg btn-outline-success mx-2" @onclick="dtosVM.GetItemsAsync">@localizer["Refresh"]</button>
 </div>
 
 @if (!dtosVM.IsReady)
 {
-    <Loading Title="Goods are loading." />
+    <Loading>@localizer["Loading"]...</Loading>
 }
 else
 {
     <table class="table">
         <thead>
             <tr>
-                <th>Id</th>
-                <th>Title</th>
-                <th>Count</th>
-                <th>Price</th>
-                <th>Actions</th>
+                <th>@localizer["Id"]</th>
+                <th>@localizer["Title"]</th>
+                <th>@localizer["Count"]</th>
+                <th>@localizer["Price"]</th>
+                <th>@localizer["Actions"]</th>
             </tr>
         </thead>
         <tbody>
@@ -41,7 +42,7 @@ else
                     <td>@dto.Count</td>
                     <td>@dto.Price.ToString("00.00")</td>
                     <td>
-                        <button class="btn btn-danger" @onclick="() => Delete(dto)">Remove</button>
+                        <button class="btn btn-danger" @onclick="() => Delete(dto)">@localizer["Remove"]</button>
                     </td>
                 </tr>
             }
@@ -62,7 +63,7 @@ else
     {
         if (!await JS.InvokeAsync<bool>(
             "confirm",
-            $"Are you sure you want to delete the '{dto.ToString()}'?"))
+            $"{localizer["RemovingConfirm"]} '{dto.ToString()}'"))
             return;
 
         await dtosVM.RemoveItemAsync(dto.Id);

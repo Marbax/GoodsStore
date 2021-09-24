@@ -1,5 +1,10 @@
 ﻿@page "/"
+@inject IStringLocalizer<Resource> localizer
 
-<h1>Goods store <sup class="text-muted ">by Marbax</sup></h1>
+    <div class="d-inline-flex w-100">
+        <h3 class="float-right"><span class="text-primary">Goods store</span> <sup class="text-muted ">by Marbax</sup></h3>
+    </div>
 
-<p>Welcome to the shop.</p>
+    <hr />
+
+    <h4 class="m-3">@localizer["ChangeLog"]</h4>

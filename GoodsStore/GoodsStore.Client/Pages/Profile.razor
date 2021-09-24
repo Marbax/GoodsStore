@@ -1,56 +1,66 @@
 ﻿@page "/profile"
 @inject UserAuthVM _userAuthVM
 @implements IDisposable
+@inject IStringLocalizer<Resource> localizer
 
-<h3><b>Profile</b></h3>
+<h3><b>@localizer["Profile"]</b></h3>
 <hr />
 
 @if (!_userAuthVM.IsReady && string.IsNullOrEmpty(_userAuthVM.Message))
 {
-    <Loading Title="Loading." />
+    <Loading>@localizer["Loading"]...</Loading>
 }
 else
 {
     <label>@_userAuthVM.Message</label>
     <EditForm Model="@_userAuthVM" OnValidSubmit="@HandleValidSubmit">
         <ValidationSummary />
-        <div class="col-6 m-2">
-            <InputText type="text" @bind-Value="_userAuthVM.ProxyUser.Email" name="email" class="form-control" placeholder="Email address" />
+        <div class="col-lg-5 col-10 m-2 form-group d-inline-block">
+            <label class="control-label font-weight-bold d-inline" for="email">@localizer["Email"]:</label>
+            <InputText type="text" @bind-Value="_userAuthVM.ProxyUser.Email" name="email" class="form-control w-auto d-inline float-right" placeholder="@localizer["Email"]" />
             <ValidationMessage For="@(() => _userAuthVM.ProxyUser.Email)" />
         </div>
-        <div class="col-6 m-2">
-            <InputText type="password" @bind-Value="_userAuthVM.ProxyUser.Password" name="password" class="form-control" placeholder="Password" />
+        <div class="col-lg-5 col-10 m-2 form-group d-inline-block">
+            <label class="control-label font-weight-bold d-inline" for="password">@localizer["Password"]:</label>
+            <InputText type="password" @bind-Value="_userAuthVM.ProxyUser.Password" name="password" class="form-control w-auto d-inline float-right" placeholder="@localizer["Password"]" />
             <ValidationMessage For="@(() => _userAuthVM.ProxyUser.Password)" />
         </div>
-        <div class="col-6 m-2">
-            <InputText type="password" @bind-Value="_userAuthVM.PasswordConfirm" name="confirmPassword" class="form-control" placeholder="Password Confirm" />
+        <div class="col-lg-5 col-10 m-2 form-group d-inline-block">
+            <label class="control-label font-weight-bold d-inline" for="confirmPassword">@localizer["ConfirmPassword"]:</label>
+            <InputText type="password" @bind-Value="_userAuthVM.PasswordConfirm" name="confirmPassword" class="form-control w-auto d-inline float-right" placeholder="@localizer["ConfirmPassword"]" />
             <ValidationMessage For="@(() => _userAuthVM.PasswordConfirm)" />
         </div>
-        <div class="col-6 m-2">
-            <InputText type="text" @bind-Value="_userAuthVM.ProxyUser.Address" name="address" class="form-control" placeholder="Address" />
+        <div class="col-lg-5 col-10 m-2 form-group d-inline-block">
+            <label class="control-label font-weight-bold d-inline" for="address">@localizer["Address"]:</label>
+            <InputText type="text" @bind-Value="_userAuthVM.ProxyUser.Address" name="address" class="form-control w-auto d-inline float-right" placeholder="@localizer["Address"]" />
             <ValidationMessage For="@(() => _userAuthVM.ProxyUser.Address)" />
         </div>
-        <div class="col-6 m-2">
-            <InputText type="text" @bind-Value="_userAuthVM.ProxyUser.Country" name="country" class="form-control" placeholder="Country" />
+        <div class="col-lg-5 col-10 m-2 form-group d-inline-block">
+            <label class="control-label font-weight-bold d-inline" for="country">@localizer["Country"]:</label>
+            <InputText type="text" @bind-Value="_userAuthVM.ProxyUser.Country" name="country" class="form-control w-auto d-inline float-right" placeholder="@localizer["Country"]" />
             <ValidationMessage For="@(() => _userAuthVM.ProxyUser.Country)" />
         </div>
-        <div class="col-6 m-2">
-            <InputText type="text" @bind-Value="_userAuthVM.ProxyUser.Name" name="email" class="form-control" placeholder="First Name" />
+        <div class="col-lg-5 col-10 m-2 form-group d-inline-block">
+            <label class="control-label font-weight-bold d-inline" for="firstName">@localizer["FirstName"]:</label>
+            <InputText type="text" @bind-Value="_userAuthVM.ProxyUser.Name" name="firstName" class="form-control w-auto d-inline float-right" placeholder="@localizer["FirstName"]" />
             <ValidationMessage For="@(() => _userAuthVM.ProxyUser.Name)" />
         </div>
-        <div class="col-6 m-2">
-            <InputText type="text" @bind-Value="_userAuthVM.ProxyUser.Lastname" name="lastname" class="form-control" placeholder="Last Name" />
+        <div class="col-lg-5 col-10 m-2 form-group d-inline-block">
+            <label class="control-label font-weight-bold d-inline" for="lastName">@localizer["LastName"]:</label>
+            <InputText type="text" @bind-Value="_userAuthVM.ProxyUser.Lastname" name="lastName" class="form-control w-auto d-inline float-right" placeholder="@localizer["LastName"]" />
             <ValidationMessage For="@(() => _userAuthVM.ProxyUser.Lastname)" />
         </div>
-        <div class="col-6 m-2">
-            <InputText type="text" @bind-Value="_userAuthVM.ProxyUser.Phone" name="phone" class="form-control" placeholder="Phone" />
+        <div class="col-lg-5 col-10 m-2 form-group d-inline-block">
+            <label class="control-label font-weight-bold d-inline" for="phone">@localizer["Phone"]:</label>
+            <InputText type="text" @bind-Value="_userAuthVM.ProxyUser.Phone" name="phone" class="form-control w-auto d-inline float-right" placeholder="@localizer["Phone"]" />
             <ValidationMessage For="@(() => _userAuthVM.ProxyUser.Phone)" />
         </div>
-        <div class="col-6 m-2">
-            <InputText type="text" disabled @bind-Value="_userAuthVM.ProxyUser.Token" name="phone" class="form-control" placeholder="Token" />
+        <div class="col-lg-5 col-10 m-2 form-group d-inline-block">
+            <label class="control-label font-weight-bold d-inline" for="token">@localizer["Token"]:</label>
+            <InputText type="textarea" disabled @bind-Value="_userAuthVM.ProxyUser.Token" name="token" class="form-control col-auto-5 col-sm-12" placeholder="@localizer["Token"]" />
         </div>
-        <div class="col-6 m-2">
-            <button class="btn btn-primary" type="submit">Update</button>
+        <div class="col-lg-5 col-10 m-2">
+            <button class="btn btn-success float-right" type="submit">@localizer["Update"]</button>
         </div>
     </EditForm>
 }
