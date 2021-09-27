@@ -1,0 +1,72 @@
+﻿@page "/manufacturer"
+@inject IGenericCollectionVM<ManufacturerDTO> _vms
+@inject IJSRuntime JS
+@implements IDisposable
+@inject IStringLocalizer<Resource> localizer
+
+<h1>@localizer["Manufacturers"]</h1>
+<p class="text-muted">@_vms?.Message</p>
+
+<div class="m-2 d-flex justify-content-start">
+    <a class="btn btn-lg btn-outline-info mx-2" href="/Manufacturer/Edit">@localizer["Add"]</a>
+    <button class="btn btn-lg btn-outline-success mx-2" @onclick="_vms.GetItemsAsync">@localizer["Refresh"]</button>
+</div>
+
+@if (!_vms.IsReady)
+{
+    <Loading>@localizer["Loading"]...</Loading>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>@localizer["Id"]</th>
+                <th>@localizer["Title"]</th>
+                <th>@localizer["Actions"]</th>
+            </tr>
+        </thead>
+        <tbody>
+
+            @foreach (var v in _vms.Items)
+            {
+                <tr @key="@($"{v.Id}{v.Title}")">
+                    <td>@v.Id</td>
+                    <td>
+                        <a href="/Manufacturer/Edit/@v.Id" class="list-group-item list-group-item-action">
+                            <span>@v.Title</span>
+                        </a>
+                    </td>
+                    <td>
+                        <button class="btn btn-danger" disabled="@(v.Goods.Count()>0)" @onclick="() => Delete(v)">@localizer["Remove"]</button>
+                    </td>
+                </tr>
+            }
+
+        </tbody>
+    </table>
+}
+
+
+@code {
+    protected override async Task OnInitializedAsync()
+    {
+        _vms.OnChange += StateHasChanged;
+        await _vms.GetItemsAsync();
+    }
+
+    async Task Delete(ManufacturerDTO dto)
+    {
+        if (!await JS.InvokeAsync<bool>(
+            "confirm",
+            $"{localizer["RemovingConfirm"]} '{dto.ToString()}'"))
+            return;
+
+        await _vms.RemoveItemAsync(dto.Id);
+    }
+
+    public void Dispose()
+    {
+        _vms.OnChange -= StateHasChanged;
+    }
+}

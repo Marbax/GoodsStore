@@ -51,7 +51,7 @@ namespace GoodsStore.WebServer.Controllers.api
         {
             try
             {
-                var res = await Task.FromResult(_uow.Categories.Get(id));
+                var res = await Task.FromResult(_uow.Manufacturers.Get(id));
 
                 return Ok(res);
             }

@@ -14,6 +14,7 @@ namespace GoodsStore.Client
         public Uri UserController { get; set; }
         public Uri RoleController { get; set; }
         public Uri GoodController { get; set; }
+        public Uri ManufacturerController { get; set; }
 
         public AppSettings(WebAssemblyHostConfiguration config)
         {
@@ -25,6 +26,7 @@ namespace GoodsStore.Client
             UserController = new Uri(BaseUri + config["usersController"]);
             RoleController = new Uri(BaseUri + config["rolesController"]);
             GoodController = new Uri(BaseUri + config["goodsController"]);
+            ManufacturerController = new Uri(BaseUri + config["manufacturerController"]);
         }
 
         public Uri GetController(string dtoName)
@@ -37,6 +39,8 @@ namespace GoodsStore.Client
                 return RoleController;
             else if (dtoName == typeof(GoodDTO).Name)
                 return GoodController;
+            else if (dtoName == typeof(ManufacturerDTO).Name)
+                return ManufacturerController;
             else
                 throw new ApplicationException($"Ther are no controller for {dtoName}.");
         }

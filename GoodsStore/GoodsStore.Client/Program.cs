@@ -33,11 +33,13 @@ namespace GoodsStore.Client
             builder.Services.AddScoped<IGenericCollectionVM<CategoryDTO>, GenericCollectionVM<CategoryDTO>>()
                 .AddScoped<IGenericCollectionVM<GoodDTO>, GenericCollectionVM<GoodDTO>>()
                 .AddScoped<IGenericCollectionVM<UserDTO>, GenericCollectionVM<UserDTO>>()
-                .AddScoped<IGenericCollectionVM<RoleDTO>, GenericCollectionVM<RoleDTO>>();
+                .AddScoped<IGenericCollectionVM<RoleDTO>, GenericCollectionVM<RoleDTO>>()
+                .AddScoped<IGenericCollectionVM<ManufacturerDTO>, GenericCollectionVM<ManufacturerDTO>>();
 
             builder.Services.AddScoped<IGenericItemVM<CategoryDTO>, GenericItem<CategoryDTO>>()
                 .AddScoped<IGenericItemVM<UserDTO>, GenericItem<UserDTO>>()
-                .AddScoped<IGenericItemVM<GoodDTO>, GenericItem<GoodDTO>>();
+                .AddScoped<IGenericItemVM<GoodDTO>, GenericItem<GoodDTO>>()
+                .AddScoped<IGenericItemVM<ManufacturerDTO>, GenericItem<ManufacturerDTO>>();
 
             builder.Services.AddLocalization();
 
