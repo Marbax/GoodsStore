@@ -1,9 +1,12 @@
 ﻿using GoodsStore.Business.Models.Concrete;
 using GoodsStore.Business.Services.Abstract;
 using System;
+using System.Collections.Generic;
 using System.Data.Entity.Validation;
+using System.Linq;
 using System.Threading.Tasks;
 using System.Transactions;
+using System.Web;
 using System.Web.Http;
 
 namespace GoodsStore.WebServer.Controllers.api
@@ -64,13 +67,28 @@ namespace GoodsStore.WebServer.Controllers.api
         /// Create new
         /// </summary>
         /// <param name="dto"></param>
+        /// <param name="image"></param>
         /// <returns></returns>
         [HttpPost]
-        public async Task<IHttpActionResult> Create([FromBody] GoodDTO dto)
+        public async Task<IHttpActionResult> Create([FromBody] GoodDTO dto, HttpPostedFileBase image)
         {
             try
             {
                 GoodDTO added = null;
+                PhotoDTO photoAdded = null;
+
+                if (image != null)
+                {
+                    photoAdded = new PhotoDTO();
+                    photoAdded.MimeType = image.ContentType;
+                    photoAdded.PhotoData = new byte[image.ContentLength];
+                    image.InputStream.Read(photoAdded.PhotoData, 0, image.ContentLength);
+                    photoAdded = _uow.Photos.Add(photoAdded);
+                    List<PhotoDTO> photos = dto.Photos.ToList();
+                    photos.Add(photoAdded);
+                    dto.Photos = photos;
+                }
+
                 using (var trans = new TransactionScope(TransactionScopeOption.RequiresNew, TransactionScopeAsyncFlowOption.Enabled))
                 {
                     added = await Task.FromResult(_uow.Goods.Add(dto));// "add" method made save to return an item with real id

@@ -158,6 +158,7 @@
     <Compile Include="Controllers\api\DefaultController.cs" />
     <Compile Include="Controllers\api\GoodController.cs" />
     <Compile Include="Controllers\api\ManufacturerController.cs" />
+    <Compile Include="Controllers\api\PhotoController.cs" />
     <Compile Include="Controllers\api\RoleController.cs" />
     <Compile Include="Controllers\api\UserController.cs" />
     <Compile Include="Global.asax.cs">
