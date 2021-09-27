@@ -189,6 +189,9 @@
   <data name="Manufacturers" xml:space="preserve">
     <value>Manufacturers</value>
   </data>
+  <data name="Name" xml:space="preserve">
+    <value>Name</value>
+  </data>
   <data name="Password" xml:space="preserve">
     <value>Password</value>
   </data>

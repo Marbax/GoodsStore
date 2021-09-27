@@ -61,12 +61,12 @@ else
                 <div class="col-12" name="roles">
                     @foreach (var item in _roles.Items)
                     {
-                        <span class="mx-2">
+                        <div class="mx-2">
                             <label for="@($"{item.Id}_{item.Title}")">@item.Title</label>
                             <input type="checkbox" id="@($"{item.Id}_{item.Title}")"
                                    checked=@(_vm.Item.RoleIds.Count()>0 && _vm.Item.RoleIds.Contains(item.Id))
                                    @onchange="@((e) => CheckboxChanged(e, item.Id))" />
-                        </span>
+                        </div>
                     }
                 </div>
             </div>

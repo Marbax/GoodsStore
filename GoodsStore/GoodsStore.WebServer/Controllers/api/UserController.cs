@@ -100,7 +100,13 @@ namespace GoodsStore.WebServer.Controllers.api
             }
             catch (Exception ex)
             {
-                return BadRequest(ex.Message);
+                string exMsg = ex.Message;
+                while (ex.InnerException != null)
+                {
+                    ex = ex.InnerException;
+                    exMsg = ex.Message;
+                }
+                return BadRequest(exMsg);
             }
         }
 
@@ -226,10 +232,20 @@ namespace GoodsStore.WebServer.Controllers.api
             {
                 using (var trans = new TransactionScope(TransactionScopeOption.RequiresNew, TransactionScopeAsyncFlowOption.Enabled))
                 {
-                    newUser = await _authManager.Register(new UserDTO() { Email = username, Password = password });
+                    newUser = await _authManager.Register(new UserDTO() { Email = username, PasswordHash = password });
 
                     trans.Complete();
                 }
+            }
+            catch (DbEntityValidationException ex)
+            {
+                string exMsg = "";
+
+                foreach (var eve in ex.EntityValidationErrors)
+                    foreach (var ve in eve.ValidationErrors)
+                        exMsg += $"{ve.ErrorMessage} \n";
+
+                return BadRequest(exMsg);
             }
             catch (Exception ex)
             {

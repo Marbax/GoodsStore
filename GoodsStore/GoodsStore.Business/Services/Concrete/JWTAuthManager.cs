@@ -46,7 +46,7 @@ namespace GoodsStore.Business.Services.Concrete
         {
             var user = _uow.Users.Get(i => i.Email == email).FirstOrDefault();
 
-            if (user == null)
+            if (user is null)
                 throw new UnauthorizedAccessException("There is no user with such email.");
 
             if (!password.Verify(user.PasswordHash))
@@ -62,7 +62,7 @@ namespace GoodsStore.Business.Services.Concrete
         {
             var toAdd = user;
             var role = _uow.Roles.Get(i => i.Title == "cashier").FirstOrDefault();
-            toAdd.RoleIds = new List<int>() { role.Id }; ;
+            toAdd.RoleIds = new List<int>() { role.Id };
             var added = _uow.Users.Add(toAdd);
 
             UpdateToken(added);
@@ -100,7 +100,7 @@ namespace GoodsStore.Business.Services.Concrete
         public async Task<bool> IsUserExists(string email)
         {
             var found = await Task.FromResult(_uow.Users.Get(i => i.Email == email).FirstOrDefault());
-            var res = found != null;
+            var res = !(found is null);
             return res;
         }
 

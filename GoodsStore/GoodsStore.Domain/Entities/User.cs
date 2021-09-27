@@ -18,7 +18,6 @@ namespace GoodsStore.Domain.Entities
         [StringLength(1000)]
         public string PasswordHash { get; set; }
 
-        [Required]
         [StringLength(40)]
         public string Name { get; set; }
 
@@ -34,7 +33,6 @@ namespace GoodsStore.Domain.Entities
         [DefaultValue("")]
         public string Country { get; set; }
 
-        [Required]
         [StringLength(40)]
         [Index(IsUnique = true)]
         public string Phone { get; set; }

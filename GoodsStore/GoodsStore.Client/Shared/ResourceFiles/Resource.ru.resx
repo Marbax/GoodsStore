@@ -189,6 +189,9 @@
   <data name="Manufacturers" xml:space="preserve">
     <value>Производители</value>
   </data>
+  <data name="Name" xml:space="preserve">
+    <value>Имя</value>
+  </data>
   <data name="Password" xml:space="preserve">
     <value>Пароль</value>
   </data>
