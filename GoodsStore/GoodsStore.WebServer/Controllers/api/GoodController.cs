@@ -70,13 +70,14 @@ namespace GoodsStore.WebServer.Controllers.api
         /// <param name="image"></param>
         /// <returns></returns>
         [HttpPost]
-        public async Task<IHttpActionResult> Create([FromBody] GoodDTO dto, HttpPostedFileBase image)
+        public async Task<IHttpActionResult> Create([FromBody] GoodDTO dto)
         {
             try
             {
                 GoodDTO added = null;
                 PhotoDTO photoAdded = null;
-
+                // tmp
+                HttpPostedFileBase image = null;
                 if (image != null)
                 {
                     photoAdded = new PhotoDTO();
@@ -88,9 +89,10 @@ namespace GoodsStore.WebServer.Controllers.api
                     photos.Add(photoAdded);
                     dto.Photos = photos;
                 }
+                //
 
                 using (var trans = new TransactionScope(TransactionScopeOption.RequiresNew, TransactionScopeAsyncFlowOption.Enabled))
-                {
+                {//TODO: on insert good in tryes to insert manufacturer to
                     added = await Task.FromResult(_uow.Goods.Add(dto));// "add" method made save to return an item with real id
 
                     trans.Complete();
@@ -109,7 +111,13 @@ namespace GoodsStore.WebServer.Controllers.api
             }
             catch (Exception ex)
             {
-                return BadRequest(ex.Message);
+                string exMsg = ex.Message;
+                while (ex.InnerException != null)
+                {
+                    ex = ex.InnerException;
+                    exMsg = ex.Message;
+                }
+                return BadRequest(exMsg);
             }
         }
 

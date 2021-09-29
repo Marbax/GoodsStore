@@ -1,7 +1,13 @@
 ﻿@page "/Good/Edit"
 @page "/Good/Edit/{ItemId:int}"
 @inject IGenericItemVM<GoodDTO> _vm
+@inject IGenericCollectionVM<ManufacturerDTO> _manufacturersVM
+@inject IGenericCollectionVM<CategoryDTO> _categoriesVM
 @inject IStringLocalizer<Resource> localizer
+
+@using System
+@using System.IO
+@using Microsoft.AspNetCore.Components.Forms
 
 @if (!_vm.IsReady)
 {
@@ -28,22 +34,41 @@ else
             <InputNumber type="number" @bind-Value="_vm.Item.Count" name="count" class="form-control col" placeholder="@localizer["Count"]" />
             <ValidationMessage For="@(() => _vm.Item.Count)" />
         </div>
+        @if (_manufacturersVM.IsReady)
+        {
+            <div class="col-10 m-2 form-group flex-row">
+                <label class="control-label col-md-4 font-weight-bold" for="manufacturer">@localizer["Manufacturer"]:</label>
+                <InputSelect @bind-Value="ManufacturerId" name="manufacturer" class="form-control col">
+                    @foreach (var item in _manufacturersVM?.Items)
+                            {
+                        <option value="@item?.Id">@item?.Title</option>
+                            }
+                </InputSelect>
+            </div>
+        }
+        @if (_categoriesVM.IsReady)
+        {
+            //TODO: make it looks like some normal and adaptive tag list
+            <div class="col-10 m-2 form-group d-inline-block">
+                <label class="control-label font-weight-bold d-inline" for="roles">@localizer["Categories"]:</label>
+                <div class="col-12" name="roles">
+                    @foreach (var item in _categoriesVM.Items)
+                    {
+                        <div class="mx-2">
+                            <label for="@($"{item.Id}_{item.Title}")">@item.Title</label>
+                            <input type="checkbox" id="@($"{item.Id}_{item.Title}")"
+                                   checked=@(_vm.Item.Categories.Count()>0 && _vm.Item.Categories.Select(i=>i.Id).Contains(item.Id))
+                                   @onchange="@((e) => CheckboxChanged(e, item.Id))" />
+                        </div>
+                    }
+                </div>
+            </div>
+        }
         @if (_vm.Item.Categories.Count() > 0)
         {
             <div class="col-10 m-2 form-group flex-row">
                 <label class="control-label col-md-4 font-weight-bold">@localizer["CategoriesCount"]: </label>
                 <label class="control-label col">@_vm.Item.Categories.Count()</label>
-            </div>
-            <div class="col-10 m-2 form-group flex-row">
-                <label class="control-label col-md-4 font-weight-bold">@localizer["Categories"]: </label>
-                <label class="control-label col">@_vm.Item.Categories.ToList().Select(i => i.ToString()).Aggregate((f, s) => f + " , " + s)</label>
-            </div>
-        }
-        @if (_vm.Item.Manufacturer?.Title.Length > 0)
-        {
-            <div class="col-10 m-2 form-group flex-row">
-                <label class="control-label col-md-4 font-weight-bold">@localizer["Manufacturer"]: </label>
-                <label class="control-label col">@_vm.Item.Manufacturer.ToString()</label>
             </div>
         }
         @if (ItemId > 0)
@@ -66,20 +91,46 @@ else
     [Parameter]
     public int ItemId { get; set; } = -1;
 
+    [Parameter]
+    public string ManufacturerId { get; set; }
+
+
     protected override async Task OnInitializedAsync()
     {
         if (ItemId > 0)
             await _vm.GetItemAsync(ItemId);
         else
             _vm.Item = new GoodDTO();
+
+        await _manufacturersVM.GetItemsAsync();
+        await _categoriesVM.GetItemsAsync();
+        ManufacturerId = _vm?.Item?.Manufacturer?.Id.ToString() ?? "1";
     }
 
     private async Task HandleValidSubmit()
     {
+        _vm.Item.Manufacturer = _manufacturersVM.Items.Where(i => i.Id == int.Parse(ManufacturerId)).FirstOrDefault();
+
         if (ItemId > 0)
             await _vm.UpdateItem();
         else
             await _vm.AddItem();
     }
+
+    private void CheckboxChanged(ChangeEventArgs e, int id)
+    {
+        var goodCategories = _vm.Item.Categories.ToList();
+        if ((bool)e.Value == true)
+        {
+            goodCategories.Add(_categoriesVM.Items.First(i => i.Id == id));
+            _vm.Item.Categories = goodCategories;
+        }
+        else if ((bool)e.Value == false)
+        {
+            goodCategories.RemoveAll(i => i.Id == id);
+            _vm.Item.Categories = goodCategories;
+        }
+    }
+
 
 }

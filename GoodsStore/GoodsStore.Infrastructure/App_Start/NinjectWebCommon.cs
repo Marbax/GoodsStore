@@ -85,7 +85,7 @@ namespace GoodsStore.Infrastructure.App_Start
         {
             // Domain
             kernel.Bind<DbContext>().To<GoodsStoreDB>().InThreadScope().WithConstructorArgument("name", "GoodsStoreDB");
-            kernel.Bind<IRepository<Good>>().To<GenericRepository<Good>>();
+            kernel.Bind<IRepository<Good>>().To<GoodRepository>();
             kernel.Bind<IRepository<Category>>().To<GenericRepository<Category>>();
             kernel.Bind<IRepository<Manufacturer>>().To<GenericRepository<Manufacturer>>();
             kernel.Bind<IRepository<Photo>>().To<GenericRepository<Photo>>();
@@ -132,7 +132,7 @@ namespace GoodsStore.Infrastructure.App_Start
                     .ForMember(dto => dto.Categories, conf => conf.MapFrom(dll => dll.Categories))
                     .ForMember(dto => dto.Manufacturer, conf => conf.MapFrom(dll => dll.Manufacturer));
                 cfg.CreateMap<GoodDTO, Good>()
-                    .ForMember(dll => dll.Categories, conf => conf.MapFrom(dto=>dto.Categories))
+                    .ForMember(dll => dll.Categories, conf => conf.MapFrom(dto => dto.Categories))
                     .ForMember(dll => dll.Manufacturer, conf => conf.MapFrom(dto => dto.Manufacturer));
                 #endregion
 
