@@ -119,7 +119,7 @@ else
     public string ManufacturerId { get; set; }
 
     private readonly int _fileSize = 6;
-    private List<IBrowserFile> _loadedFiles;
+    private IReadOnlyList<IBrowserFile> _loadedFiles;
 
 
     protected override async Task OnInitializedAsync()
@@ -161,20 +161,20 @@ else
 
     private void LoadFiles(InputFileChangeEventArgs e)
     {
-        _loadedFiles.Clear();
+        var loadedFiles = new List<IBrowserFile>();
 
         foreach (var file in e.GetMultipleFiles())
         {
             try
             {
-                _loadedFiles.Add(file);
+                loadedFiles.Add(file);
             }
             catch (Exception ex)
             {
                 _vm.Message = ex.Message;
             }
         }
-
+        _loadedFiles = loadedFiles;
         this.StateHasChanged();
     }
 
