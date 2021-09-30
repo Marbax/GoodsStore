@@ -71,6 +71,30 @@ else
                 <label class="control-label col">@_vm.Item.Categories.Count()</label>
             </div>
         }
+        @if (_vm.Item.Photos.Count() > 0)
+        {
+            @if (_loadedFiles.Count > 0)
+            {
+                <div class="card">
+                    <div class="card-body">
+                        <ul>
+                            @foreach (var file in _loadedFiles)
+                            {
+                                <li>
+                                    File: @file.Name
+
+                                </li>
+                            }
+                        </ul>
+                    </div>
+                </div>
+            }
+        }
+    <div class="col-10 m-2 form-group flex-row">
+        <label class="control-label col-md-4 font-weight-bold">@localizer["Photos"]: </label>
+        @*<input type="file" @onchange="@OnInputFileChange" id="fileUpload" name="fileUpload" multiple />*@
+        <InputFile OnChange="OnInputFileChange" multiple />
+    </div>
         @if (ItemId > 0)
         {
             <div class="col-10 m-2">
@@ -93,6 +117,9 @@ else
 
     [Parameter]
     public string ManufacturerId { get; set; }
+
+    private readonly int _fileSize = 6;
+    private List<IBrowserFile> _loadedFiles;
 
 
     protected override async Task OnInitializedAsync()
@@ -132,5 +159,29 @@ else
         }
     }
 
+    private void LoadFiles(InputFileChangeEventArgs e)
+    {
+        _loadedFiles.Clear();
 
+        foreach (var file in e.GetMultipleFiles())
+        {
+            try
+            {
+                _loadedFiles.Add(file);
+            }
+            catch (Exception ex)
+            {
+                _vm.Message = ex.Message;
+            }
+        }
+
+        this.StateHasChanged();
+    }
+
+    private void OnInputFileChange(InputFileChangeEventArgs e)
+    {
+        _loadedFiles = e.GetMultipleFiles();
+        _vm.Message = $"{_loadedFiles.Count} file(s) selected";
+        this.StateHasChanged();
+    }
 }
