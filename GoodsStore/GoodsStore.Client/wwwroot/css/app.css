@@ -239,3 +239,6 @@ app {
 }
 
 /* Loading anim end*/
+.custom-file-label::after{
+    display:none;
+}

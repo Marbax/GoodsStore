@@ -5,10 +5,6 @@
 @inject IGenericCollectionVM<CategoryDTO> _categoriesVM
 @inject IStringLocalizer<Resource> localizer
 
-@using System
-@using System.IO
-@using Microsoft.AspNetCore.Components.Forms
-
 @if (!_vm.IsReady)
 {
     <Loading>@localizer["Loading"]...</Loading>
@@ -71,30 +67,26 @@ else
                 <label class="control-label col">@_vm.Item.Categories.Count()</label>
             </div>
         }
-        @if (_vm.Item.Photos.Count() > 0)
+        <div class="col-lg-3 col-sm-10 m-2 form-group flex-row">
+            <label class="control-label col-md-4 font-weight-bold">@localizer["Photos"]: </label>
+            <div class="custom-file">
+                <label class="custom-file-label" for="fileUpload">@localizer["Browse"]...</label>
+                <InputFile OnChange="OnInputFileChange" multiple accept="image/*" id="fileUpload" name="fileUpload" class="col-12 custom-file-input" style="display:none;"/>
+            </div>
+        </div>
+        @if (_vm.Item?.Photos?.Count() > 0)
         {
-            @if (_loadedFiles.Count > 0)
-            {
-                <div class="card">
-                    <div class="card-body">
-                        <ul>
-                            @foreach (var file in _loadedFiles)
-                            {
-                                <li>
-                                    File: @file.Name
-
-                                </li>
-                            }
-                        </ul>
+            <div class="flex-row">
+                @foreach (var photo in _vm.Item.Photos)
+                {//TODO: title hardcoded split , made some better solution
+                    <div class="col-4 col-sm-7 col-lg-3 m-2 d-inline-block" @key="@($"{photo.Id}{photo.Title}")">
+                        <p class="d-block mx-auto text-truncate col-12">@photo.Title.Split("_.".ToArray()).ElementAt(1)</p>
+                        <img src="@($"data:{photo.MimeType};base64,{Convert.ToBase64String(photo.PhotoData)}")" alt="@photo.Title" class="d-block mx-auto img-fluid" />
+                        <button class="btn btn-outline-danger d-block col-12 my-1" @onclick="() => Delete(photo)">@localizer["Remove"]</button>
                     </div>
-                </div>
-            }
+                }
+            </div>
         }
-    <div class="col-10 m-2 form-group flex-row">
-        <label class="control-label col-md-4 font-weight-bold">@localizer["Photos"]: </label>
-        @*<input type="file" @onchange="@OnInputFileChange" id="fileUpload" name="fileUpload" multiple />*@
-        <InputFile OnChange="OnInputFileChange" multiple />
-    </div>
         @if (ItemId > 0)
         {
             <div class="col-10 m-2">
@@ -118,8 +110,6 @@ else
     [Parameter]
     public string ManufacturerId { get; set; }
 
-    private readonly int _fileSize = 6;
-    private IReadOnlyList<IBrowserFile> _loadedFiles;
 
 
     protected override async Task OnInitializedAsync()
@@ -159,29 +149,34 @@ else
         }
     }
 
-    private void LoadFiles(InputFileChangeEventArgs e)
+    private async Task OnInputFileChange(InputFileChangeEventArgs e)
     {
-        var loadedFiles = new List<IBrowserFile>();
+        List<PhotoDTO> photos = _vm.Item.Photos.ToList();
 
         foreach (var file in e.GetMultipleFiles())
         {
             try
             {
-                loadedFiles.Add(file);
+                var buffers = new byte[file.Size];
+                await file.OpenReadStream().ReadAsync(buffers);
+
+                var photo = new PhotoDTO { MimeType = file.ContentType, PhotoData = buffers, Title = $"{DateTime.UtcNow.Ticks.ToString()}_{file.Name }" };
+                photos.Add(photo);
             }
             catch (Exception ex)
             {
                 _vm.Message = ex.Message;
             }
         }
-        _loadedFiles = loadedFiles;
+
+        _vm.Item.Photos = photos;
+
         this.StateHasChanged();
     }
 
-    private void OnInputFileChange(InputFileChangeEventArgs e)
+    private void Delete(PhotoDTO dto)
     {
-        _loadedFiles = e.GetMultipleFiles();
-        _vm.Message = $"{_loadedFiles.Count} file(s) selected";
-        this.StateHasChanged();
+        _vm.Item.Photos = _vm.Item.Photos.Where(i => i.Title != dto.Title);
     }
+
 }

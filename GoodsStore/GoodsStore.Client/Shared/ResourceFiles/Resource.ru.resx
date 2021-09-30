@@ -126,6 +126,9 @@
   <data name="Address" xml:space="preserve">
     <value>Адресс</value>
   </data>
+  <data name="Browse" xml:space="preserve">
+    <value>Выбрать</value>
+  </data>
   <data name="Categories" xml:space="preserve">
     <value>Категории</value>
   </data>

@@ -130,9 +130,11 @@ namespace GoodsStore.Infrastructure.App_Start
                 #region Map Good
                 cfg.CreateMap<Good, GoodDTO>()
                     .ForMember(dto => dto.Categories, conf => conf.MapFrom(dll => dll.Categories))
+                    .ForMember(dto => dto.Photos, conf => conf.MapFrom(dll => dll.Photos))
                     .ForMember(dto => dto.Manufacturer, conf => conf.MapFrom(dll => dll.Manufacturer));
                 cfg.CreateMap<GoodDTO, Good>()
                     .ForMember(dll => dll.Categories, conf => conf.MapFrom(dto => dto.Categories))
+                    .ForMember(dll => dll.Photos, conf => conf.MapFrom(dto => dto.Photos))
                     .ForMember(dll => dll.Manufacturer, conf => conf.MapFrom(dto => dto.Manufacturer));
                 #endregion
 
@@ -162,6 +164,11 @@ namespace GoodsStore.Infrastructure.App_Start
                     .ForMember(dto => dto.RoleIds, conf => conf.MapFrom(dll => dll.Roles.Select(i => i.Id)));
                 cfg.CreateMap<UserDTO, User>()
                     .ForMember(dll => dll.Roles, conf => conf.MapFrom(dto => dto.RoleIds.Select(i => new Role() { Id = i })));
+                #endregion
+
+                #region Map Photo
+                cfg.CreateMap<Photo, PhotoDTO>();
+                cfg.CreateMap<PhotoDTO, Photo>();
                 #endregion
 
             });
