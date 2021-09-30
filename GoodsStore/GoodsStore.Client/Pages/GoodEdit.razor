@@ -79,7 +79,7 @@ else
             <div class="flex-row">
                 @foreach (var photo in _vm.Item.Photos)
                 {//TODO: title hardcoded split , made some better solution
-                    <div class="col-4 col-sm-7 col-lg-3 m-2 d-inline-block" @key="@($"{photo.Id}{photo.Title}")">
+                    <div class="col-sm-8 col-lg-3 m-2 d-inline-block" @key="@($"{photo.Id}{photo.Title}")">
                         <p class="d-block mx-auto text-truncate col-12">@photo.Title.Split("_.".ToArray()).ElementAt(1)</p>
                         <img src="@($"data:{photo.MimeType};base64,{Convert.ToBase64String(photo.PhotoData)}")" alt="@photo.Title" class="d-block mx-auto img-fluid" />
                         <button class="btn btn-outline-danger d-block col-12 my-1" @onclick="() => Delete(photo)">@localizer["Remove"]</button>
