@@ -9,41 +9,22 @@
 </div>
 
 @{
-    // TODO: rewrite to css calsses
+    // TODO: rewrite to css classes
 }
 <div class="@NavMenuCssClass" @onclick="ToggleNavMenu">
     <ul class="nav flex-column">
         <li class="nav-item px-3">
-            <NavLink class="nav-link" href="" Match="NavLinkMatch.All">
+            <NavLink class="nav-link" href="/" Match="NavLinkMatch.All">
                 <span class="oi oi-home" aria-hidden="true"></span> @localizer["HomePage"]
             </NavLink>
         </li>
-        <li class="nav-item px-3">
-            <NavLink class="nav-link" href="goods">
-                <span class="oi oi-list-rich" aria-hidden="true"></span> @localizer["Goods"]
-            </NavLink>
-        </li>
-        <li class="nav-item px-3">
-            <NavLink class="nav-link" href="category">
-                <span class="oi oi-list-rich" aria-hidden="true"></span> @localizer["Categories"]
-            </NavLink>
-        </li>
-        <li class="nav-item px-3">
-            <NavLink class="nav-link" href="manufacturer">
-                <span class="oi oi-list-rich" aria-hidden="true"></span> @localizer["Manufacturers"]
-            </NavLink>
-        </li>
-        <li class="nav-item px-3">
-            <NavLink class="nav-link" href="users">
-                <span class="oi oi-list-rich" aria-hidden="true"></span> @localizer["Users"]
-            </NavLink>
-        </li>
+        @*TODO: show|hide works incorrect*@
         @if (!collapseNavMenu)
         {
             if (_userAuthVM.IsSignedIn())
             {
                 <li class="nav-item px-3">
-                    <NavLink class="nav-link" href="profile">
+                    <NavLink class="nav-link" href="Profile">
                         <span class="oi oi-list-rich" aria-hidden="true"></span> @localizer["Profile"]: @_userAuthVM.AuthSrvice.User.ToString()
                     </NavLink>@localizer[""]
                 </li>
@@ -56,12 +37,12 @@
             else
             {
                 <li class="nav-item px-3">
-                    <NavLink class="nav-link" href="login">
+                    <NavLink class="nav-link" href="Login">
                         <span class="oi oi-list-rich" aria-hidden="true"></span> @localizer["Login"]
                     </NavLink>
                 </li>
                 <li class="nav-item px-3">
-                    <NavLink class="nav-link" href="register">
+                    <NavLink class="nav-link" href="Register">
                         <span class="oi oi-list-rich" aria-hidden="true"></span> @localizer["Register"]
                     </NavLink>
                 </li>

@@ -1,14 +1,15 @@
-@page "/category"
+@page "/Administration/category"
 @inject IGenericCollectionVM<CategoryDTO> _catsVM
 @inject IJSRuntime JS
 @implements IDisposable
 @inject IStringLocalizer<Resource> localizer
+@layout AdminiistrationLayout
 
 <h1>@localizer["Categories"]</h1>
 <p class="text-muted">@_catsVM?.Message</p>
 
 <div class="m-2 d-flex justify-content-start">
-    <a class="btn btn-lg btn-outline-info mx-2" href="/Category/Edit">@localizer["Add"]</a>
+    <a class="btn btn-lg btn-outline-info mx-2" href="/Administration/Category/Edit">@localizer["Add"]</a>
     <button class="btn btn-lg btn-outline-success mx-2" @onclick="_catsVM.GetItemsAsync">@localizer["Refresh"]</button>
 </div>
 
@@ -33,7 +34,7 @@ else
                 <tr @key="@($"{c.Id}{c.Title}")">
                     <td>@c.Id</td>
                     <td>
-                        <a href="/Category/Edit/@c.Id" class="list-group-item list-group-item-action">
+                        <a href="/Administration/Category/Edit/@c.Id" class="list-group-item list-group-item-action">
                             <span>@c.Title</span>
                         </a>
                     </td>

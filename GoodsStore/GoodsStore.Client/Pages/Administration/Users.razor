@@ -1,15 +1,16 @@
-﻿@page "/users"
+﻿@page "/Administration/Users"
 @inject UserAuthVM _userAuthVM
 @inject IGenericCollectionVM<UserDTO> _usersVM
 @inject IJSRuntime JS
 @implements IDisposable
 @inject IStringLocalizer<Resource> localizer
+@layout AdminiistrationLayout
 
 <h1>@localizer["Users"]</h1>
 <p class="text-muted">@_usersVM?.Message</p>
 
 <div class="m-2 d-flex justify-content-start">
-    <a class="btn btn-lg btn-outline-info mx-2" href="/User/Edit">@localizer["Add"]</a>
+    <a class="btn btn-lg btn-outline-info mx-2" href="/Administration/User/Edit">@localizer["Add"]</a>
     <button class="btn btn-lg btn-outline-success mx-2" @onclick="_usersVM.GetItemsAsync">@localizer["Refresh"]</button>
 </div>
 
@@ -36,7 +37,7 @@ else
                 <tr @key="@($"{item.Id}{item.Title}")">
                     <td>@item.Id</td>
                     <td>
-                        <a href="/User/Edit/@item.Id" class="list-group-item list-group-item-action">
+                        <a href="/Administration/User/Edit/@item.Id" class="list-group-item list-group-item-action">
                             <span>@item.Title</span>
                         </a>
                     </td>

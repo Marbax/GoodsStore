@@ -67,7 +67,6 @@ namespace GoodsStore.WebServer.Controllers.api
         /// Create new
         /// </summary>
         /// <param name="dto"></param>
-        /// <param name="image"></param>
         /// <returns></returns>
         [HttpPost]
         public async Task<IHttpActionResult> Create([FromBody] GoodDTO dto)

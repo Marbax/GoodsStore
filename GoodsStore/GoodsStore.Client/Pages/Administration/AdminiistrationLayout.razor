@@ -5,7 +5,7 @@
 @inject IStringLocalizer<Resource> localizer
 
 <div class="sidebar">
-    <NavMenu />
+    <AdministrationNavMenu />
 </div>
 
 <div class="main">
@@ -13,13 +13,13 @@
         <CultureSelector />
         @if (_userAuthVM.IsSignedIn())
         {
-            <h5 class="mx-2 mt-auto">@localizer["Hello"], <a href="/profile">@_userAuthVM.AuthSrvice.User.ToString()</a></h5>
+            <h5 class="mx-2 mt-auto">@localizer["Hello"], <a href="Profile">@_userAuthVM.AuthSrvice.User.ToString()</a></h5>
             <button class="btn btn-danger mx-2 mt-2" @onclick="()=>_userAuthVM.Logout()">@localizer["Logout"]</button>
         }
         else
         {
-            <a href="/login" class="btn btn-success mx-2">@localizer["Login"]</a>
-            <a href="/register" class="btn btn-success mx-2">@localizer["Register"]</a>
+            <a href="Login" class="btn btn-success mx-2">@localizer["Login"]</a>
+            <a href="Register" class="btn btn-success mx-2">@localizer["Register"]</a>
         }
     </div>
 

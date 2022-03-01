@@ -1,7 +1,8 @@
-﻿@page "/Manufacturer/Edit"
-@page "/Manufacturer/Edit/{ItemId:int}"
-@inject IGenericItemVM<ManufacturerDTO> _vm
+﻿@page "/Administration/Category/Edit"
+@page "/Administration/Category/Edit/{ItemId:int}"
+@inject IGenericItemVM<CategoryDTO> _vm
 @inject IStringLocalizer<Resource> localizer
+@layout AdminiistrationLayout
 
 @if (!_vm.IsReady)
 {
@@ -59,7 +60,7 @@ else
         if (ItemId > 0)
             await _vm.GetItemAsync(ItemId);
         else
-            _vm.Item = new ManufacturerDTO();
+            _vm.Item = new CategoryDTO();
     }
 
     private async Task HandleValidSubmit()

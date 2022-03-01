@@ -1,14 +1,15 @@
-﻿@page "/goods"
+﻿@page "/Administration/Goods"
 @inject IGenericCollectionVM<GoodDTO> dtosVM
 @inject IJSRuntime JS
 @implements IDisposable
 @inject IStringLocalizer<Resource> localizer
+@layout AdminiistrationLayout
 
 <h1>@localizer["Goods"]</h1>
 <p class="text-muted">@dtosVM?.Message</p>
 
 <div class="m-2 d-flex justify-content-start">
-    <a class="btn btn-lg btn-outline-info mx-2" href="/Good/Edit">@localizer["Add"]</a>
+    <a class="btn btn-lg btn-outline-info mx-2" href="/Administration/Good/Edit">@localizer["Add"]</a>
     <button class="btn btn-lg btn-outline-success mx-2" @onclick="dtosVM.GetItemsAsync">@localizer["Refresh"]</button>
 </div>
 
@@ -35,7 +36,7 @@ else
                 <tr @key="@($"{dto.Id}{dto.Title}")">
                     <td>@dto.Id</td>
                     <td>
-                        <a href="/Good/Edit/@dto.Id" class="list-group-item list-group-item-action">
+                        <a href="/Administration/Good/Edit/@dto.Id" class="list-group-item list-group-item-action">
                             <span>@dto.Title</span>
                         </a>
                     </td>

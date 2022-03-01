@@ -1,0 +1,42 @@
+﻿@inherits LayoutComponentBase
+@inject NavigationManager _navMngr
+@inject UserAuthVM _userAuthVM
+@implements IDisposable
+@inject IStringLocalizer<Resource> localizer
+
+<div class="sidebar">
+    <ClientNavMenu />
+</div>
+
+<div class="main">
+    <div class="top-row p-2 h-auto">
+        <CultureSelector />
+        @if (_userAuthVM.IsSignedIn())
+        {
+            <h5 class="mx-2 mt-auto">@localizer["Hello"], <a href="Profile">@_userAuthVM.AuthSrvice.User.ToString()</a></h5>
+            <button class="btn btn-danger mx-2 mt-2" @onclick="()=>_userAuthVM.Logout()">@localizer["Logout"]</button>
+        }
+        else
+        {
+            <a href="Login" class="btn btn-success mx-2">@localizer["Login"]</a>
+            <a href="Register" class="btn btn-success mx-2">@localizer["Register"]</a>
+        }
+    </div>
+
+    <div class="content px-4">
+        @Body
+    </div>
+</div>
+
+@code{
+    protected override void OnInitialized()
+    {
+        _userAuthVM.OnChange += StateHasChanged;
+    }
+
+    public void Dispose()
+    {
+        _userAuthVM.OnChange -= StateHasChanged;
+    }
+
+}

@@ -1,14 +1,15 @@
-﻿@page "/manufacturer"
+﻿@page "/Administration/Manufacturer"
 @inject IGenericCollectionVM<ManufacturerDTO> _vms
 @inject IJSRuntime JS
 @implements IDisposable
 @inject IStringLocalizer<Resource> localizer
+@layout AdminiistrationLayout
 
 <h1>@localizer["Manufacturers"]</h1>
 <p class="text-muted">@_vms?.Message</p>
 
 <div class="m-2 d-flex justify-content-start">
-    <a class="btn btn-lg btn-outline-info mx-2" href="/Manufacturer/Edit">@localizer["Add"]</a>
+    <a class="btn btn-lg btn-outline-info mx-2" href="/Administration/Manufacturer/Edit">@localizer["Add"]</a>
     <button class="btn btn-lg btn-outline-success mx-2" @onclick="_vms.GetItemsAsync">@localizer["Refresh"]</button>
 </div>
 
@@ -33,7 +34,7 @@ else
                 <tr @key="@($"{v.Id}{v.Title}")">
                     <td>@v.Id</td>
                     <td>
-                        <a href="/Manufacturer/Edit/@v.Id" class="list-group-item list-group-item-action">
+                        <a href="/Administration/Manufacturer/Edit/@v.Id" class="list-group-item list-group-item-action">
                             <span>@v.Title</span>
                         </a>
                     </td>

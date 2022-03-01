@@ -1,9 +1,10 @@
-﻿@page "/Good/Edit"
-@page "/Good/Edit/{ItemId:int}"
+﻿@page "/Administration/Good/Edit"
+@page "/Administration/Good/Edit/{ItemId:int}"
 @inject IGenericItemVM<GoodDTO> _vm
 @inject IGenericCollectionVM<ManufacturerDTO> _manufacturersVM
 @inject IGenericCollectionVM<CategoryDTO> _categoriesVM
 @inject IStringLocalizer<Resource> localizer
+@layout AdminiistrationLayout
 
 @if (!_vm.IsReady)
 {
@@ -71,7 +72,7 @@ else
             <label class="control-label col-md-4 font-weight-bold">@localizer["Photos"]: </label>
             <div class="custom-file">
                 <label class="custom-file-label" for="fileUpload">@localizer["Browse"]...</label>
-                <InputFile OnChange="OnInputFileChange" multiple accept="image/*" id="fileUpload" name="fileUpload" class="col-12 custom-file-input" style="display:none;"/>
+                <InputFile OnChange="OnInputFileChange" multiple accept="image/*" id="fileUpload" name="fileUpload" class="col-12 custom-file-input" style="display:none;" />
             </div>
         </div>
         @if (_vm.Item?.Photos?.Count() > 0)
