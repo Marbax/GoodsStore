@@ -2,7 +2,7 @@
 @using Microsoft.JSInterop;
 @using System.Globalization;
 
-<select class="form-control mx-2 mt-auto w-auto" @bind="Culture">
+<select class="bg-transparent text-info border-0" @bind="Culture">
     @foreach (var culture in cultures)
     {
         <option value="@culture">@culture.DisplayName</option>

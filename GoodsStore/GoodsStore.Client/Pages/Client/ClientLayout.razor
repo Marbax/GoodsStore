@@ -10,7 +10,6 @@
 
 <div class="main">
     <div class="top-row p-2 h-auto">
-        <CultureSelector />
         @if (_userAuthVM.IsSignedIn())
         {
             <h5 class="mx-2 mt-auto">@localizer["Hello"], <a href="Profile">@_userAuthVM.AuthSrvice.User.ToString()</a></h5>

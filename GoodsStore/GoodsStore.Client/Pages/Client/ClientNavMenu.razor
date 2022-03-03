@@ -3,6 +3,7 @@
 
 <div class="top-row pl-4 navbar navbar-dark">
     <a class="navbar-brand" href="">Goods Store</a>
+    <CultureSelector />
     <button class="navbar-toggler" @onclick="ToggleNavMenu">
         <span class="navbar-toggler-icon"></span>
     </button>
@@ -18,37 +19,30 @@
                 <span class="oi oi-home" aria-hidden="true"></span> @localizer["HomePage"]
             </NavLink>
         </li>
-        @*TODO: show|hide works incorrect*@
-        @if (!collapseNavMenu)
+        @if (_userAuthVM.IsSignedIn())
         {
-            if (_userAuthVM.IsSignedIn())
-            {
-                <li class="nav-item px-3">
-                    <NavLink class="nav-link" href="Profile">
-                        <span class="oi oi-list-rich" aria-hidden="true"></span> @localizer["Profile"]: @_userAuthVM.AuthSrvice.User.ToString()
-                    </NavLink>@localizer[""]
-                </li>
-                <li class="nav-item px-3">
-                    <NavLink class="nav-link" href="" @onclick="() => _userAuthVM.Logout()">
-                        <span class="oi oi-list-rich" aria-hidden="true"></span>@localizer["Logout"]
-                    </NavLink>
-                </li>
-            }
-            else
-            {
-                <li class="nav-item px-3">
-                    <NavLink class="nav-link" href="Login">
-                        <span class="oi oi-list-rich" aria-hidden="true"></span> @localizer["Login"]
-                    </NavLink>
-                </li>
-                <li class="nav-item px-3">
-                    <NavLink class="nav-link" href="Register">
-                        <span class="oi oi-list-rich" aria-hidden="true"></span> @localizer["Register"]
-                    </NavLink>
-                </li>
-            }
             <li class="nav-item px-3">
-                <CultureSelector />
+                <NavLink class="nav-link" href="Profile">
+                    <span class="oi oi-list-rich" aria-hidden="true"></span> @localizer["Profile"]: @_userAuthVM.AuthSrvice.User.ToString()
+                </NavLink>@localizer[""]
+            </li>
+            <li class="nav-item px-3">
+                <NavLink class="nav-link" href="" @onclick="() => _userAuthVM.Logout()">
+                    <span class="oi oi-list-rich" aria-hidden="true"></span>@localizer["Logout"]
+                </NavLink>
+            </li>
+        }
+        else
+        {
+            <li class="nav-item px-3">
+                <NavLink class="nav-link" href="Login">
+                    <span class="oi oi-list-rich" aria-hidden="true"></span> @localizer["Login"]
+                </NavLink>
+            </li>
+            <li class="nav-item px-3">
+                <NavLink class="nav-link" href="Register">
+                    <span class="oi oi-list-rich" aria-hidden="true"></span> @localizer["Register"]
+                </NavLink>
             </li>
         }
     </ul>
