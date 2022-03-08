@@ -1,9 +1,11 @@
 ﻿@inject UserAuthVM _userAuthVM
 @inject IStringLocalizer<Resource> localizer
 
+
 <div class="top-row pl-4 navbar navbar-dark">
     <a class="navbar-brand" href="">Goods Store</a>
     <CultureSelector />
+    <MudThemeProvider @bind-IsDarkMode="@_isDarkMode" Theme="_theme" />
     <button class="navbar-toggler" @onclick="ToggleNavMenu">
         <span class="navbar-toggler-icon"></span>
     </button>
@@ -45,16 +47,20 @@
                 </NavLink>
             </li>
         }
+        <MudSwitch @bind-Checked="@_isDarkMode" Color="Color.Primary" Class="mx-2" T="bool" Label="@localizer["Theme"]" />
     </ul>
 </div>
 
 @code {
-    private bool collapseNavMenu = true;
+    private MudTheme _theme = new();
+    private bool _isDarkMode = true;
 
-    private string NavMenuCssClass => collapseNavMenu ? "collapse" : null;
+    private bool _collapseNavMenu = true;
+
+    private string NavMenuCssClass => _collapseNavMenu ? "collapse" : null;
 
     private void ToggleNavMenu()
     {
-        collapseNavMenu = !collapseNavMenu;
+        _collapseNavMenu = !_collapseNavMenu;
     }
 }
