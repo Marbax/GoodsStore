@@ -1,15 +1,20 @@
 ﻿@using Microsoft.AspNetCore.Components;
 @using Microsoft.JSInterop;
 @using System.Globalization;
+@inject IStringLocalizer<Resource> localizer
 
-<select class="bg-transparent text-info border-0" @bind="Culture">
+@*TODO: strange vertical position(hardfixed)*@
+<MudSelect @bind-Value="Culture" FullWidth="false" ToStringFunc="@_convertFunc" AdornmentColor="Color.Inherit" Class="mb-6">
     @foreach (var culture in cultures)
     {
-        <option value="@culture" >@culture.DisplayName</option>
+        <MudSelectItem Value="@culture" />
     }
-</select>
+</MudSelect>
+
 
 @code{
+    Func<CultureInfo, string> _convertFunc = ci => ci?.DisplayName;
+
     [Inject]
     public NavigationManager NavManager { get; set; }
 
