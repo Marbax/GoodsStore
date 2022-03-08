@@ -126,6 +126,9 @@
   <data name="Address" xml:space="preserve">
     <value>Адресс</value>
   </data>
+  <data name="Administration" xml:space="preserve">
+    <value>Администрирование</value>
+  </data>
   <data name="Browse" xml:space="preserve">
     <value>Выбрать</value>
   </data>
@@ -177,6 +180,9 @@
   <data name="Id" xml:space="preserve">
     <value>Идентификатор</value>
   </data>
+  <data name="Language" xml:space="preserve">
+    <value>Язык</value>
+  </data>
   <data name="LastName" xml:space="preserve">
     <value>Фамилия</value>
   </data>
@@ -227,6 +233,9 @@
   </data>
   <data name="Search" xml:space="preserve">
     <value>Поиск</value>
+  </data>
+  <data name="Shop" xml:space="preserve">
+    <value>Магазин</value>
   </data>
   <data name="SortBy" xml:space="preserve">
     <value>Сортировать по</value>

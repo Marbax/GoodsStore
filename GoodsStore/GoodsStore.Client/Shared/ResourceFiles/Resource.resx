@@ -126,6 +126,9 @@
   <data name="Address" xml:space="preserve">
     <value>Address</value>
   </data>
+  <data name="Administration" xml:space="preserve">
+    <value>Administration</value>
+  </data>
   <data name="Browse" xml:space="preserve">
     <value>Browse</value>
   </data>
@@ -177,6 +180,9 @@
   <data name="Id" xml:space="preserve">
     <value>Id</value>
   </data>
+  <data name="Language" xml:space="preserve">
+    <value>Language</value>
+  </data>
   <data name="LastName" xml:space="preserve">
     <value>Last Name</value>
   </data>
@@ -227,6 +233,9 @@
   </data>
   <data name="Search" xml:space="preserve">
     <value>Search</value>
+  </data>
+  <data name="Shop" xml:space="preserve">
+    <value>Shop</value>
   </data>
   <data name="SortBy" xml:space="preserve">
     <value>Sort By</value>
