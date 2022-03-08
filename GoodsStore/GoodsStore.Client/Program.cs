@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using Microsoft.Extensions.DependencyInjection;
 using System.Net.Http;
 using System.Threading.Tasks;
+using MudBlazor.Services;
 
 namespace GoodsStore.Client
 {
@@ -17,11 +18,13 @@ namespace GoodsStore.Client
         {
             var builder = WebAssemblyHostBuilder.CreateDefault(args);
             builder.RootComponents.Add<App>("app");
-
+            
             builder.Services.AddScoped<AppSettings>(item => new AppSettings(builder.Configuration));
 
             builder.Services.AddScoped<HttpClient>();
 
+            builder.Services.AddMudServices();
+            
             builder.Services
                 .AddScoped<IAuthenticationService, AuthenticationService>()
                 .AddScoped<IHttpService, HttpService>()
