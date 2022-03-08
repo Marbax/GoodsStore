@@ -41,9 +41,9 @@ else
             <MudTh>@localizer["Actions"]</MudTh>
         </HeaderContent>
         <RowTemplate>
-            <MudTd DataLabel="Id">@context.Id</MudTd>
-            <MudTd DataLabel="Title">@context.Title</MudTd>
-            <MudTd DataLabel="Actions">
+            <MudTd DataLabel="@localizer["Id"]">@context.Id</MudTd>
+            <MudTd DataLabel="@localizer["Title"]">@context.Title</MudTd>
+            <MudTd DataLabel="@localizer["Actions"]">
                 <MudButton Class="mud-secondary-text" Disabled="@(context.Goods.Count() > 0)" OnClick="() => Delete(context)">@localizer["Remove"]</MudButton>
                 <MudButton Class="mud-secondary-text" OnClick="() => Edit(context.Id)">@localizer["Edit"]</MudButton>
             </MudTd>
