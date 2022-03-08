@@ -4,14 +4,16 @@
 @implements IDisposable
 @inject IStringLocalizer<Resource> localizer
 @layout AdminiistrationLayout
+@inject NavigationManager _navMngr
 
-<h1>@localizer["Categories"]</h1>
-<p class="text-muted">@_catsVM?.Message</p>
+<MudText class="text-muted">@_catsVM?.Message</MudText>
 
-<div class="m-2 d-flex justify-content-start">
-    <a class="btn btn-lg btn-outline-info mx-2" href="/Administration/Category/Edit">@localizer["Add"]</a>
-    <button class="btn btn-lg btn-outline-success mx-2" @onclick="_catsVM.GetItemsAsync">@localizer["Refresh"]</button>
-</div>
+<MudPaper Elevation="4" Class="my-2 d-flex justify-content-start">
+    <MudButton Class="mud-secondary-text ma-2" OnClick=Add>@localizer["Add"]</MudButton>
+    <MudButton Class="mud-secondary-text ma-2" OnClick=_catsVM.GetItemsAsync>@localizer["Refresh"]</MudButton>
+</MudPaper>
+
+<MudDivider />
 
 @if (!_catsVM.IsReady)
 {
@@ -19,41 +21,60 @@
 }
 else
 {
-    <table class="table table-responsive-md">
-        <thead>
-            <tr>
-                <th>@localizer["Id"]</th>
-                <th>@localizer["Title"]</th>
-                <th>@localizer["Actions"]</th>
-            </tr>
-        </thead>
-        <tbody>
-
-            @foreach (var c in _catsVM.Items)
-            {
-                <tr @key="@($"{c.Id}{c.Title}")">
-                    <td>@c.Id</td>
-                    <td>
-                        <a href="/Administration/Category/Edit/@c.Id" class="list-group-item list-group-item-action">
-                            <span>@c.Title</span>
-                        </a>
-                    </td>
-                    <td>
-                        <button class="btn btn-danger" disabled="@(c.Goods.Count()>0)" @onclick="() => Delete(c)">@localizer["Remove"]</button>
-                    </td>
-                </tr>
-            }
-
-        </tbody>
-    </table>
+    <MudTable Items="@_catsVM.Items" Dense="true" Hover="true" Bordered="false" Striped="true" Filter="new Func<CategoryDTO,bool>(FilterTable)"
+              FixedHeader="true" FixedFooter="true" Height="45vh" SortLabel="@localizer["SortBy"]" Virtualize="true" Elevation="4"
+              @bind-SelectedItem="_selectedItem" Breakpoint="Breakpoint.Sm" Loading="@(!_catsVM.IsReady)" LoadingProgressColor="Color.Info"
+              Class="my-2">
+        <ToolBarContent>
+            <MudText Typo="Typo.h5">@localizer["Categories"]</MudText>
+            <MudSpacer />
+            <MudTextField @bind-Value="_searchString" Placeholder=@localizer["Search"] Adornment="Adornment.Start"
+                          AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" Class="mt-0 mud-primary-text"></MudTextField>
+        </ToolBarContent>
+        <HeaderContent>
+            <MudTh>
+                <MudTableSortLabel Enabled="true" InitialDirection="SortDirection.Ascending" SortBy="new Func<CategoryDTO, object>(x=>x.Id)">@localizer["Id"]</MudTableSortLabel>
+            </MudTh>
+            <MudTh>
+                <MudTableSortLabel Enabled="true" InitialDirection="SortDirection.Ascending" SortBy="new Func<CategoryDTO, object>(x=>x.Title)">@localizer["Title"]</MudTableSortLabel>
+            </MudTh>
+            <MudTh>@localizer["Actions"]</MudTh>
+        </HeaderContent>
+        <RowTemplate>
+            <MudTd DataLabel="Id">@context.Id</MudTd>
+            <MudTd DataLabel="Title">@context.Title</MudTd>
+            <MudTd DataLabel="Actions">
+                <MudButton Class="mud-secondary-text" Disabled="@(context.Goods.Count() > 0)" OnClick="() => Delete(context)">@localizer["Remove"]</MudButton>
+                <MudButton Class="mud-secondary-text" OnClick="() => Edit(context.Id)">@localizer["Edit"]</MudButton>
+            </MudTd>
+        </RowTemplate>
+        <PagerContent>
+            <MudTablePager />
+        </PagerContent>
+    </MudTable>
 }
 
 
 @code {
+    private string _searchString = "";
+    private CategoryDTO _selectedItem = null;
+    private HashSet<CategoryDTO> _selectedItems = new HashSet<CategoryDTO>();
+
     protected override async Task OnInitializedAsync()
     {
+        await base.OnInitializedAsync();
         _catsVM.OnChange += StateHasChanged;
         await _catsVM.GetItemsAsync();
+    }
+
+    void Add()
+    {
+        _navMngr.NavigateTo($"/Administration/Category/Edit/");
+    }
+
+    void Edit(int id)
+    {
+        _navMngr.NavigateTo($"/Administration/Category/Edit/{id}");
     }
 
     async Task Delete(CategoryDTO dto)
@@ -69,5 +90,16 @@ else
     public void Dispose()
     {
         _catsVM.OnChange -= StateHasChanged;
+    }
+
+    private bool FilterTable(CategoryDTO dto) => FilterFunc(dto, _searchString);
+
+    private bool FilterFunc(CategoryDTO dto, string searchString)
+    {
+        if (string.IsNullOrWhiteSpace(searchString))
+            return true;
+        if (dto.Title.Contains(searchString, StringComparison.OrdinalIgnoreCase))
+            return true;
+        return false;
     }
 }
