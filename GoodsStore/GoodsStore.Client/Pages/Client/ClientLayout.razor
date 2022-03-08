@@ -4,30 +4,62 @@
 @implements IDisposable
 @inject IStringLocalizer<Resource> localizer
 
-<div class="sidebar">
-    <ClientNavMenu />
-</div>
+<MudThemeProvider @bind-IsDarkMode="@_isDarkMode" Theme="_theme" />
 
-<div class="main">
-    <div class="top-row p-2 h-auto">
+<MudLayout>
+    <MudAppBar Elevation="1" Dense="@dense">
+        <MudIconButton Icon="@Icons.Material.Filled.Menu" Color="Color.Inherit" Edge="Edge.Start" OnClick="@ToggleDrawer" />
+        <MudSpacer />
+        <CultureSelector />
+        <MudSwitch @bind-Checked="@_isDarkMode" Color="Color.Primary" Class="ma-1" T="bool" Colo Label="@localizer["Theme"]" />
         @if (_userAuthVM.IsSignedIn())
         {
-            <h5 class="mx-2 mt-auto">@localizer["Hello"], <a href="Profile">@_userAuthVM.AuthSrvice.User.ToString()</a></h5>
-            <button class="btn btn-danger mx-2 mt-2" @onclick="()=>_userAuthVM.Logout()">@localizer["Logout"]</button>
+            <MudIconButton Icon="@Icons.Filled.ManageAccounts" Color="Color.Inherit" Link="Profile">@_userAuthVM.AuthSrvice.User.ToString()</MudIconButton>
+            <MudIconButton Icon="@Icons.Filled.Logout" Color="Color.Inherit" OnClick="()=>_userAuthVM.Logout()" />
+
         }
         else
         {
-            <a href="Login" class="btn btn-success mx-2">@localizer["Login"]</a>
-            <a href="Register" class="btn btn-success mx-2">@localizer["Register"]</a>
+            <MudIconButton Icon="@Icons.Filled.Login" Color="Color.Inherit" Link="Login" />
+            <MudIconButton Icon="@Icons.Filled.AppRegistration" Color="Color.Inherit" Link="Register" />
         }
-    </div>
+    </MudAppBar>
 
-    <div class="content px-4">
-        @Body
-    </div>
-</div>
+
+    <MudDrawer @bind-Open="@_open" ClipMode="clipMode" Breakpoint="@breakpoint"
+               PreserveOpenState="@preserveOpenState" Elevation="1" Variant="@DrawerVariant.Responsive">
+        <MudNavMenu>
+            <MudNavLink Match="NavLinkMatch.All" IconColor="Color.Inherit" Icon="@Icons.Filled.Home" Href="/">@localizer["HomePage"]</MudNavLink>
+        </MudNavMenu>
+        @if (true)@*TODO: made check if user have permoission to administrate*@
+        {
+            <MudSpacer />
+            <MudNavMenu>
+                <MudNavLink Match="NavLinkMatch.All" IconColor="Color.Inherit" Icon="@Icons.Filled.Security" Href="Administration">@localizer["Administration"]</MudNavLink>
+            </MudNavMenu>
+        }
+    </MudDrawer>
+
+
+    <MudMainContent>
+        <MudContainer Class="mt-10">
+            @Body
+        </MudContainer>
+    </MudMainContent>
+</MudLayout>
+
 
 @code{
+    bool _open = false;
+    bool dense = false;
+    bool preserveOpenState = false;
+    Breakpoint breakpoint = Breakpoint.Md;
+    DrawerClipMode clipMode = DrawerClipMode.Always;
+    private MudTheme _theme = new();
+    private bool _isDarkMode = true;
+
+    void ToggleDrawer() => _open = !_open;
+
     protected override void OnInitialized()
     {
         _userAuthVM.OnChange += StateHasChanged;
