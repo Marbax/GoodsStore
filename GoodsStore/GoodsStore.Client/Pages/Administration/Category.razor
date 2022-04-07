@@ -1,10 +1,11 @@
 @page "/Administration/category"
-@inject IGenericCollectionVM<CategoryDTO> _catsVM
-@inject IJSRuntime JS
-@implements IDisposable
-@inject IStringLocalizer<Resource> localizer
 @layout AdminiistrationLayout
+@implements IDisposable
+@inject IGenericCollectionVM<CategoryDTO> _catsVM
+@inject IJSRuntime _js
+@inject IStringLocalizer<Resource> localizer
 @inject NavigationManager _navMngr
+@inject IDialogService DialogService
 
 <MudText class="text-muted">@_catsVM?.Message</MudText>
 
@@ -44,7 +45,7 @@ else
             <MudTd DataLabel="@localizer["Id"]">@context.Id</MudTd>
             <MudTd DataLabel="@localizer["Title"]">@context.Title</MudTd>
             <MudTd DataLabel="@localizer["Actions"]">
-                <MudButton Class="mud-secondary-text" Disabled="@(context.Goods.Count() > 0)" OnClick="() => Delete(context)">@localizer["Remove"]</MudButton>
+                <MudButton Class="mud-secondary-text" Disabled="@(context.Goods.Count() > 0)" OnClick="@((e) => Delete(context))">@localizer["Remove"]</MudButton>
                 <MudButton Class="mud-secondary-text" OnClick="() => Edit(context.Id)">@localizer["Edit"]</MudButton>
             </MudTd>
         </RowTemplate>
@@ -79,12 +80,26 @@ else
 
     async Task Delete(CategoryDTO dto)
     {
-        if (!await JS.InvokeAsync<bool>(
+        if (!await _js.InvokeAsync<bool>(
             "confirm",
             $"{localizer["RemovingConfirm"]} '{dto.ToString()}'"))
             return;
 
         await _catsVM.RemoveItemAsync(dto.Id);
+
+        //var parameters = new DialogParameters();
+        //parameters.Add("ContentText", localizer["RemovingConfirm"]);
+        //parameters.Add("ButtonText", "Delete");
+        //parameters.Add("Color", Color.Error);
+
+        //var options = new DialogOptions() { MaxWidth = MaxWidth.ExtraSmall, NoHeader = true };
+
+        //var dialog = DialogService.Show<BasicDialog>("Delete", parameters, options);
+
+        //var result = await dialog.Result;
+
+        //if (!result.Cancelled)
+        //    await _catsVM.RemoveItemAsync(dto.Id);
     }
 
     public void Dispose()
